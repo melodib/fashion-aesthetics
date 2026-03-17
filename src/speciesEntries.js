@@ -1,8 +1,8 @@
 export const SPECIES_ENTRIES = {
  "Steampunk": {
     "summary": "Victorian-era aesthetics fused with speculative machinery, brass-work, and steam-powered innovation.",
-    motif: "Note on Brass & Gears: This is often mistaken for a standalone culture, but is technically a visual motif (texture) rather than a full worldview. It serves as a visual subset of the broader Steampunk lineage.",
-  "era": "19th Century (reimagined) to c.2010s (peak subculture)",
+    "motif": "Note on Brass & Gears: This is often mistaken for a standalone culture, but is technically a visual motif (texture) rather than a full worldview. It serves as a visual subset of the broader Steampunk lineage.",
+    "era": "19th Century (reimagined) to c.2010s (peak subculture)",
     "mood": "Adventurous, industrious, ornate, and retro-futuristic.",
     "visual": "A fusion of polished mahogany, brass gears, and copper piping. Think 'The Time Machine' meets high-Victorian formalwear. Characterized by exposed clockwork mechanisms, steam-venting valves, and industrial-era romanticism.",
     "garments": [
