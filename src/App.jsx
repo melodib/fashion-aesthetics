@@ -127,7 +127,6 @@ const GLOBAL_CSS = `
 `;
 
 // ── SpeciesCard ───────────────────────────────────────────────────────────────
-// ── Fixed SpeciesCard ─────────────────────────────────────────────────────────
 function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick }) {
   const [name, flag] = Array.isArray(species) ? species : [species, ""];
   const entry = SPECIES_ENTRIES[name];
@@ -173,41 +172,72 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
           </div>
         </div>
 
-        {/* Body Content */}
-        <div style={{padding:"1.4rem 1.5rem 1.6rem",display:"flex",flexDirection:"column",gap:"0.9rem"}}>
-          {sensitive && (
-            <div style={{background:"#FFF5F5",border:"1px solid #FECACA",borderLeft:`4px solid ${RED}`,borderRadius:"10px",padding:"0.8rem 1rem"}}>
-              <p style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.85rem",color:"#7F1D1D",margin:0,lineHeight:1.65}}>
-                This aesthetic references a living cultural tradition or ethically complex history. Engage with care.
-              </p>
-            </div>
-          )}
-
-          {entry ? (
-            <>
-              <p style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"1.15rem",color:INK,lineHeight:1.85,margin:0,fontStyle:"italic"}}>{entry.summary}</p>
-              {/* Rest of your existing entry rendering logic here... */}
-              {entry.sub_aesthetics?.length > 0 && (
-                <div style={{ background: SOFT, border: `1px solid ${RULE}`, borderRadius: "10px", padding: "1rem" }}>
-                  <div style={{ fontSize: "0.58rem", color: MUTED, fontFamily: "serif", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "0.7rem" }}>Sub-Categories</div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                    {entry.sub_aesthetics.map((sub, i) => (
-                      <button key={i} onClick={() => onSpeciesClick([sub, ""], phylumNum, className)} style={{ background: "#fff", border: `1px solid ${colors.accent}`, color: colors.accent, borderRadius: "4px", padding: "0.3rem 0.6rem", fontSize: "0.75rem", cursor: "pointer" }}>{sub}</button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </>
-          ) : (
-            <div style={{background:SOFT,borderRadius:"10px",border:`1px solid ${RULE}`,padding:"1rem"}}>
-              <p style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.9rem",color:MUTED,margin:0,fontStyle:"italic"}}>Full field guide entry pending for this species.</p>
-            </div>
-          )}
-        </div>
-      </div>
+       {/* Body Content */}
+<div style={{padding:"1.4rem 1.5rem 1.6rem",display:"flex",flexDirection:"column",gap:"0.9rem"}}>
+  {sensitive && (
+    <div style={{background:"#FFF5F5",border:"1px solid #FECACA",borderLeft:`4px solid ${RED}`,borderRadius:"10px",padding:"0.8rem 1rem"}}>
+      <p style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.85rem",color:"#7F1D1D",margin:0,lineHeight:1.65}}>
+        This aesthetic references a living cultural tradition or ethically complex history. Engage with care.
+      </p>
     </div>
-  );
-}
+  )}
+
+  {entry ? (
+    <>
+      {/* 1. SUMMARY */}
+      <p style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize: "1.15rem", color: INK, lineHeight: 1.85, margin: 0, fontStyle: "italic"}}>{entry.summary}</p>
+
+      {/* 2. ERA & MOOD */}
+      {(entry.era || entry.mood) && (
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.5rem"}}>
+          {entry.era && <div style={{background:SOFT,padding:"0.5rem",borderRadius:"8px"}}><small style={{color:MUTED}}>ERA</small><br/>{entry.era}</div>}
+          {entry.mood && <div style={{background:SOFT,padding:"0.5rem",borderRadius:"8px"}}><small style={{color:MUTED}}>MOOD</small><br/>{entry.mood}</div>}
+        </div>
+      )}
+
+      {/* 3. VISUAL DESCRIPTION */}
+      {entry.visual && (
+        <div style={{background:SOFT,borderLeft:`4px solid ${colors.accent}`,padding:"0.8rem",borderRadius:"0 8px 8px 0"}}>
+          <div style={{fontSize:"0.6rem",color:colors.accent,fontWeight:"bold"}}>VISUAL</div>
+          <p style={{margin:0,fontSize:"0.9rem"}}>{entry.visual}</p>
+        </div>
+      )}
+
+      {/* 4. COLOUR PALETTE */}
+      {entry.colors && (
+        <div style={{display:"flex",gap:"0.5rem",flexWrap:"wrap"}}>
+          {entry.colors.map((c, i) => (
+            <div key={i} style={{display:"flex",alignItems:"center",gap:"5px",fontSize:"0.7rem"}}>
+              <div style={{width:12,height:12,borderRadius:"50%",background:c.split(' ')[0]}} /> {c.split(' ').slice(1).join(' ')}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* 5. GARMENTS */}
+      {entry.garments && (
+        <div style={{display:"flex",gap:"5px",flexWrap:"wrap"}}>
+          {entry.garments.map((g,i) => <span key={i} style={{background:IVORY,border:`1px solid ${RULE}`,padding:"2px 8px",borderRadius:"15px",fontSize:"0.8rem"}}>{g}</span>)}
+        </div>
+      )}
+
+      {/* 6. SUB-AESTHETICS (Already working) */}
+      {entry.sub_aesthetics?.length > 0 && (
+        <div style={{ background: SOFT, border: `1px solid ${RULE}`, borderRadius: "10px", padding: "1rem" }}>
+          <div style={{ fontSize: "0.58rem", color: MUTED, fontFamily: "serif", textTransform: "uppercase", marginBottom: "0.7rem" }}>Sub-Categories</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+            {entry.sub_aesthetics.map((sub, i) => (
+              <button key={i} onClick={() => onSpeciesClick([sub, ""], phylumNum, className)} style={{ background: "#fff", border: `1px solid ${colors.accent}`, color: colors.accent, borderRadius: "4px", padding: "0.3rem 0.6rem", fontSize: "0.75rem", cursor: "pointer" }}>{sub}</button>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
+  ) : (
+    /* Placeholder for missing entries */
+    <div style={{background:SOFT,borderRadius:"10px",padding:"1rem"}}><p>Entry pending.</p></div>
+  )}
+</div>
 
 // ── PhylumView ────────────────────────────────────────────────────────────────
 function PhylumView({ phylum, onSpeciesClick }) {
