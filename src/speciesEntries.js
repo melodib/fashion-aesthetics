@@ -5,6 +5,26 @@ export const SPECIES_ENTRIES = {
   "sub_aesthetics": ["Clockwork Aesthetic", "Inventor Aesthetic", "Victoriana Tech Aesthetic"], 
   "see_also": ["Dieselpunk", "Clockpunk"]
 },
+  "Clockwork Aesthetic": {
+    "summary": "A subset of Steampunk focused on the intricate mechanics of wind-up gears and horology.",
+    "visual": "Brass gears, winding keys, porcelain doll-like features, and ticking mechanisms.",
+    "mood": "Precise, elegant, rhythmic, and slightly eerie.",
+    "see_also": ["Steampunk", "Toycore"]
+  },
+
+  "Inventor Aesthetic": {
+    "summary": "The 'workshop' side of Steampunk, focusing on the tinkerer and the scientist.",
+    "visual": "Leather aprons, welding goggles, blueprints, messy workshops, and grease stains.",
+    "mood": "Academic, chaotic, industrious, and curious.",
+    "see_also": ["Steampunk", "Laboratory Aesthetic"]
+  },
+
+  "Victoriana Tech Aesthetic": {
+    "summary": "The fusion of high-Victorian interior design with advanced steam-powered functionality.",
+    "visual": "Dark mahogany wood, velvet upholstery, ornate brass piping, and telegraph systems.",
+    "mood": "Sophisticated, opulent, formal, and established.",
+    "see_also": ["Steampunk", "Dark Academia"]
+  },
   Cassettepunk: {
     summary:
       "An aesthetic built around 1980s–1990s analog digital tech imagined as a total technological world-state.",
