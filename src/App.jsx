@@ -391,62 +391,83 @@ function SearchView({ query, onSpeciesClick }) {
 // ── StatsView ─────────────────────────────────────────────────────────────────
 function StatsView() {
   const stats = useMemo(() => {
-    let sensitive=0,crossover=0,withEntries=0;
-    for (const p of ATLAS_DATA.phyla) for (const c of p.classes) for (const s of c.species) {
-      if (isSens(s[1]))  sensitive++;
-      if (isCross(s[1])) crossover++;
-      if (getEntry(s[0])) withEntries++;
+    let sensitive = 0, crossover = 0, withEntries = 0;
+    for (const p of ATLAS_DATA.phyla) {
+      for (const c of p.classes) {
+        for (const s of c.species) {
+          if (isSens(s[1])) sensitive++;
+          if (isCross(s[1])) crossover++;
+          if (getEntry(s[0])) withEntries++;
+        }
+      }
     }
-    return {sensitive,crossover,withEntries,totalClasses:ATLAS_DATA.phyla.reduce((a,p)=>a+p.classes.length,0)};
-  },[]);
+    return { 
+      sensitive, 
+      crossover, 
+      withEntries, 
+      totalClasses: ATLAS_DATA.phyla.reduce((a, p) => a + p.classes.length, 0) 
+    };
+  }, []);
 
   return (
     <div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(140px,1fr))",gap:"0.85rem",marginBottom:"2.5rem"}}>
-        {[[ATLAS_DATA.total.toLocaleString(),"Total Species",ACCENT],[12,"Phyla","#7B68EE"],[stats.totalClasses,"Classes","#52B788"],[stats.sensitive,"Sensitive",RED],[stats.crossover,"Crossover","#6060C0"],[stats.withEntries,"Full Entries","#C4A35A"]].map(([v,l,c]) => (
-          <div key={l} style={{background:IVORY,border:`1px solid ${RULE}`,borderTop:`3px solid ${c}`,borderRadius:"10px",padding:"1.1rem"}}>
-            <div style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"1.8rem",fontWeight:500,color:c,lineHeight:1.1,marginBottom:"0.35rem"}}>{v}</div>
-            <div style={{fontFamily:"serif",fontSize:"0.68rem",color:MUTED,textTransform:"uppercase",letterSpacing:"0.08em"}}>{l}</div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(140px,1fr))", gap: "0.85rem", marginBottom: "2.5rem" }}>
+        {[
+          [ATLAS_DATA.total.toLocaleString(), "Total Species", ACCENT],
+          [12, "Phyla", "#7B68EE"],
+          [stats.totalClasses, "Classes", "#52B788"],
+          [stats.sensitive, "Sensitive", RED],
+          [stats.crossover, "Crossover", "#6060C0"],
+          [stats.withEntries, "Full Entries", "#C4A35A"]
+        ].map(([v, l, c]) => (
+          <div key={l} style={{ background: IVORY, border: `1px solid ${RULE}`, borderTop: `3px solid ${c}`, borderRadius: "10px", padding: "1.1rem" }}>
+            <div style={{ fontFamily: "'EB Garamond',Georgia,serif", fontSize: "1.8rem", fontWeight: 500, color: c, lineHeight: 1.1, marginBottom: "0.35rem" }}>{v}</div>
+            <div style={{ fontFamily: "serif", fontSize: "0.68rem", color: MUTED, textTransform: "uppercase", letterSpacing: "0.08em" }}>{l}</div>
           </div>
         ))}
       </div>
-      <h3 style={{fontFamily:"'EB Garamond',Georgia,serif",color:INK,marginBottom:"1.25rem",fontSize:"1.05rem",borderBottom:`1px solid ${RULE}`,paddingBottom:"0.5rem",fontWeight:400}}>Distribution by Phylum</h3>
-      {ATLAS_DATA.phyla.map((p, idx) => { // Added idx here to count the cards
-  const colors = PHYLUM_COLORS[p.number], pct = (p.count / ATLAS_DATA.total * 100).toFixed(1);
-  const sens = p.classes.reduce((a, c) => a + c.species.filter(s => isSens(s[1])).length, 0);
-  const cross = p.classes.reduce((a, c) => a + c.species.filter(s => isCross(s[1])).length, 0);
-  
-  return (
-    <div 
-      key={p.number} 
-      className="phylum-card" // Added this class for the animation
-      style={{ 
-        marginBottom: "0.9rem",
-        animationDelay: `${idx * 0.05}s` // This creates the staggered "waterfall" effect
-      }}
-    >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.25rem" }}>
-        <span style={{ fontFamily: "'EB Garamond',Georgia,serif", fontSize: "0.88rem", color: INK }}>{p.emoji} {p.name}</span>
-        <span style={{ fontFamily: "serif", fontSize: "0.75rem", color: MUTED, display: "flex", gap: "0.75rem" }}>
-          {sens > 0 && <span style={{ color: RED }}>⚠ {sens}</span>}
-          {cross > 0 && <span style={{ color: "#6060C0" }}>◆ {cross}</span>}
-          <span>{p.count}</span>
-        </span>
-      </div>
-      <div style={{ background: "#E8E0D8", borderRadius: "4px", height: "6px", overflow: "hidden" }}>
-        <div 
-          style={{ 
-            background: `linear-gradient(90deg, ${colors.accent}cc, ${colors.accent})`, 
-            height: "100%", 
-            width: `${pct}%`, 
-            borderRadius: "4px", 
-            transition: "width 0.8s ease" 
-          }} 
-        />
-      </div>
-    </div>
+
+      <h3 style={{ fontFamily: "'EB Garamond',Georgia,serif", color: INK, marginBottom: "1.25rem", fontSize: "1.05rem", borderBottom: `1px solid ${RULE}`, paddingBottom: "0.5rem", fontWeight: 400 }}>
+        Distribution by Phylum
+      </h3>
+
+      {ATLAS_DATA.phyla.map((p, idx) => {
+        const colors = PHYLUM_COLORS[p.number];
+        const pct = (p.count / ATLAS_DATA.total * 100).toFixed(1);
+        const sens = p.classes.reduce((a, c) => a + c.species.filter(s => isSens(s[1])).length, 0);
+        const cross = p.classes.reduce((a, c) => a + c.species.filter(s => isCross(s[1])).length, 0);
+
+        return (
+          <div 
+            key={p.number} 
+            className="phylum-card" 
+            style={{ marginBottom: "0.9rem", animationDelay: `${idx * 0.05}s` }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.25rem" }}>
+              <span style={{ fontFamily: "'EB Garamond',Georgia,serif", fontSize: "0.88rem", color: INK }}>{p.emoji} {p.name}</span>
+              <span style={{ fontFamily: "serif", fontSize: "0.75rem", color: MUTED, display: "flex", gap: "0.75rem" }}>
+                {sens > 0 && <span style={{ color: RED }}>⚠ {sens}</span>}
+                {cross > 0 && <span style={{ color: "#6060C0" }}>◆ {cross}</span>}
+                <span>{p.count}</span>
+              </span>
+            </div>
+            <div style={{ background: "#E8E0D8", borderRadius: "4px", height: "6px", overflow: "hidden" }}>
+              <div 
+                style={{ 
+                  background: `linear-gradient(90deg, ${colors.accent}cc, ${colors.accent})`, 
+                  height: "100%", 
+                  width: `${pct}%`, 
+                  borderRadius: "4px", 
+                  transition: "width 0.8s ease" 
+                }} 
+              />
+            </div>
+          </div>
+        );
+      })}
+    </div> // This closes the main StatsView container
   );
-})}
+}
 // ── App ───────────────────────────────────────────────────────────────────────
 export default function App() {
   const [view, setView]                           = useState("home");
