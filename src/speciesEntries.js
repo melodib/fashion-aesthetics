@@ -1,7 +1,6 @@
 export const SPECIES_ENTRIES = {
   "Steampunk": {
   "summary": "Victorian-era aesthetics fused with speculative machinery.",
-  // ... keep all your other lines (era, mood, visual, etc.) ...
   "sub_aesthetics": ["Clockwork Aesthetic", "Inventor Aesthetic", "Victoriana Tech Aesthetic"], 
   "see_also": ["Dieselpunk", "Clockpunk"]
 },
