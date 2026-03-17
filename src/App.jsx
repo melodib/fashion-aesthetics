@@ -12,20 +12,19 @@ const RED    = "#C0392B";
 const SOFT   = "#F0EBE3";
 const RULE   = "#E2D9CF";
 
-// Colors optimised for the NEW phylum order — no two adjacent share a hue family
 const PHYLUM_COLORS = {
-  1:  { bg: "#2C1810", accent: "#C4956A" }, // Historical      — warm amber
-  2:  { bg: "#1A1A2E", accent: "#7B68EE" }, // Cultural        — indigo
-  3:  { bg: "#0D2818", accent: "#4CAF7D" }, // Elemental       — forest green
-  4:  { bg: "#2D1B2E", accent: "#C77DFF" }, // Body            — violet
-  5:  { bg: "#1A1A1A", accent: "#E07B54" }, // Lifestyle       — burnt orange
-  6:  { bg: "#1A1510", accent: "#D4AF37" }, // Status          — gold
-  7:  { bg: "#1A1020", accent: "#E91E8C" }, // Subcultural     — hot pink
-  8:  { bg: "#1C1A14", accent: "#C4A35A" }, // Artistic        — warm gold
-  9:  { bg: "#0F0F2A", accent: "#9C6ADE" }, // Mythic          — deep purple
-  10: { bg: "#0F2419", accent: "#52B788" }, // Brand Born      — teal
-  11: { bg: "#001A33", accent: "#00B4D8" }, // Internet Born   — cyan
-  12: { bg: "#001220", accent: "#00E5FF" }, // Futurist        — electric cyan
+  1:  { bg: "#2C1810", accent: "#C4956A" },
+  2:  { bg: "#1A1A2E", accent: "#7B68EE" },
+  3:  { bg: "#0D2818", accent: "#4CAF7D" },
+  4:  { bg: "#2D1B2E", accent: "#C77DFF" },
+  5:  { bg: "#1A1A1A", accent: "#E07B54" },
+  6:  { bg: "#1A1510", accent: "#D4AF37" },
+  7:  { bg: "#1A1020", accent: "#E91E8C" },
+  8:  { bg: "#1C1A14", accent: "#C4A35A" },
+  9:  { bg: "#0F0F2A", accent: "#9C6ADE" },
+  10: { bg: "#0F2419", accent: "#52B788" },
+  11: { bg: "#001A33", accent: "#00B4D8" },
+  12: { bg: "#001220", accent: "#00E5FF" },
 };
 
 const RARITY_COLOR = {
@@ -36,43 +35,62 @@ const RARITY_COLOR = {
   "Emerging": "#E91E8C",
 };
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-const getNote  = (num, name) => NOTES[`${num}|${name}`] || null;
-const getEntry = (name) => SPECIES_ENTRIES[name] || null;
-const isSens   = f => f === "S" || f === "SX";
-const isCross  = f => f === "X" || f === "SX";
-const phylumOf = num => ATLAS_DATA.phyla.find(p => p.number === num);
+// ── Helpers (With Crash Prevention) ───────────────────────────────────────────
+const getNote  = (num, name) => (NOTES && NOTES[`${num}|${name}`]) || null;
+const getEntry = (name) => (SPECIES_ENTRIES && SPECIES_ENTRIES[name]) || null;
+const phylumOf = num => ATLAS_DATA?.phyla?.find(p => p.number === num);
 
 function hl(text, q) {
-  if (!q) return text;
+  if (!q || !text) return text;
   const i = text.toLowerCase().indexOf(q.toLowerCase());
   if (i < 0) return text;
-  return (<>{text.slice(0,i)}<mark style={{background:"#B8896A33",borderRadius:2,color:"inherit"}}>{text.slice(i,i+q.length)}</mark>{text.slice(i+q.length)}</>);
+  return (
+    <>
+      {text.slice(0, i)}
+      <mark style={{ background: "#B8896A33", borderRadius: 2, color: "inherit" }}>
+        {text.slice(i, i + q.length)}
+      </mark>
+      {text.slice(i + q.length)}
+    </>
+  );
 }
 
-// ── Animated count-up hook ────────────────────────────────────────────────────
+// ── Animated count-up hook (Fixed Memory Leaks) ───────────────────────────────
 function useCountUp(target, duration = 1600) {
   const [count, setCount] = useState(0);
-  const started = useRef(false);
+
   useEffect(() => {
-    if (started.current) return;
-    started.current = true;
+    let frameId;
+    let timeoutId;
     const start = performance.now();
+
     const step = (now) => {
       const progress = Math.min((now - start) / duration, 1);
-      // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       setCount(Math.floor(eased * target));
-      if (progress < 1) requestAnimationFrame(step);
-      else setCount(target);
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(step);
+      } else {
+        setCount(target);
+      }
     };
-    // Small delay so it starts after page paint
-    setTimeout(() => requestAnimationFrame(step), 300);
+
+    timeoutId = setTimeout(() => {
+      frameId = requestAnimationFrame(step);
+    }, 300);
+
+    // CLEANUP: This prevents the "GitHub/React crash" on unmount
+    return () => {
+      clearTimeout(timeoutId);
+      if (frameId) cancelAnimationFrame(frameId);
+    };
   }, [target, duration]);
+
   return count;
 }
-
-// ── Global styles injected once ───────────────────────────────────────────────
+// ── Global styles definition ──────────────────────────────────────────────────
+// This is the "blueprint" of how the site should look.
 const GLOBAL_CSS = `
   @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap');
 
@@ -81,7 +99,7 @@ const GLOBAL_CSS = `
   body {
     margin: 0;
     background: ${IVORY};
-    /* Subtle grain texture */
+    /* Subtle paper/grain texture */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
   }
 
@@ -105,27 +123,40 @@ const GLOBAL_CSS = `
     box-shadow: 0 0 0 2px rgba(184,137,106,0.2);
   }
 
-  /* Staggered card fade-in on home */
   @keyframes cardIn {
     from { opacity: 0; transform: translateY(12px); }
     to   { opacity: 1; transform: translateY(0); }
   }
   .phylum-card { animation: cardIn 0.4s ease both; }
 
-  /* Species card fade-in */
   @keyframes modalIn {
     from { opacity: 0; transform: scale(0.97) translateY(8px); }
     to   { opacity: 1; transform: scale(1) translateY(0); }
   }
   .species-modal { animation: modalIn 0.22s ease both; }
-
-  /* Spinning loader (removed — no API) */
-  @keyframes shimmer {
-    0%   { background-position: -400px 0; }
-    100% { background-position: 400px 0; }
-  }
 `;
 
+// ── Global styles component ───────────────────────────────────────────────────
+// This small function "injects" the blueprint above into your website's head.
+function GlobalStyles() {
+  return <style dangerouslySetInnerHTML={{ __html: GLOBAL_CSS }} />;
+}
+
+// ── Main App ──────────────────────────────────────────────────────────────────
+export default function App() {
+  // ... your other logic like [view, setView] stays here ...
+
+  return (
+    <>
+      {/* ALWAYS keep this at the top of your return so your styles load first */}
+      <GlobalStyles />
+      
+      <div style={{ minHeight: "100vh", color: INK, fontFamily: "'EB Garamond', serif" }}>
+         {/* The rest of your app code goes here */}
+      </div>
+    </>
+  );
+}
 // ── SpeciesCard ───────────────────────────────────────────────────────────────
 function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick }) {
   const [name, flag] = Array.isArray(species) ? species : [species ?? "Unknown", ""];
@@ -446,30 +477,42 @@ function StatsView() {
         ))}
       </div>
       <h3 style={{fontFamily:"'EB Garamond',Georgia,serif",color:INK,marginBottom:"1.25rem",fontSize:"1.05rem",borderBottom:`1px solid ${RULE}`,paddingBottom:"0.5rem",fontWeight:400}}>Distribution by Phylum</h3>
-      {ATLAS_DATA.phyla.map(p => {
-        const colors=PHYLUM_COLORS[p.number],pct=(p.count/ATLAS_DATA.total*100).toFixed(1);
-        const sens=p.classes.reduce((a,c)=>a+c.species.filter(s=>isSens(s[1])).length,0);
-        const cross=p.classes.reduce((a,c)=>a+c.species.filter(s=>isCross(s[1])).length,0);
-        return (
-          <div key={p.number} style={{marginBottom:"0.9rem"}}>
-            <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:"0.25rem"}}>
-              <span style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.88rem",color:INK}}>{p.emoji} {p.name}</span>
-              <span style={{fontFamily:"serif",fontSize:"0.75rem",color:MUTED,display:"flex",gap:"0.75rem"}}>
-                {sens>0&&<span style={{color:RED}}>⚠ {sens}</span>}
-                {cross>0&&<span style={{color:"#6060C0"}}>◆ {cross}</span>}
-                <span>{p.count}</span>
-              </span>
-            </div>
-            <div style={{background:"#E8E0D8",borderRadius:"4px",height:"6px",overflow:"hidden"}}>
-              <div style={{background:`linear-gradient(90deg, ${colors.accent}cc, ${colors.accent})`,height:"100%",width:`${pct}%`,borderRadius:"4px",transition:"width 0.8s ease"}}/>
-            </div>
-          </div>
-        );
-      })}
+      {ATLAS_DATA.phyla.map((p, idx) => { // Added idx here to count the cards
+  const colors = PHYLUM_COLORS[p.number], pct = (p.count / ATLAS_DATA.total * 100).toFixed(1);
+  const sens = p.classes.reduce((a, c) => a + c.species.filter(s => isSens(s[1])).length, 0);
+  const cross = p.classes.reduce((a, c) => a + c.species.filter(s => isCross(s[1])).length, 0);
+  
+  return (
+    <div 
+      key={p.number} 
+      className="phylum-card" // Added this class for the animation
+      style={{ 
+        marginBottom: "0.9rem",
+        animationDelay: `${idx * 0.05}s` // This creates the staggered "waterfall" effect
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.25rem" }}>
+        <span style={{ fontFamily: "'EB Garamond',Georgia,serif", fontSize: "0.88rem", color: INK }}>{p.emoji} {p.name}</span>
+        <span style={{ fontFamily: "serif", fontSize: "0.75rem", color: MUTED, display: "flex", gap: "0.75rem" }}>
+          {sens > 0 && <span style={{ color: RED }}>⚠ {sens}</span>}
+          {cross > 0 && <span style={{ color: "#6060C0" }}>◆ {cross}</span>}
+          <span>{p.count}</span>
+        </span>
+      </div>
+      <div style={{ background: "#E8E0D8", borderRadius: "4px", height: "6px", overflow: "hidden" }}>
+        <div 
+          style={{ 
+            background: `linear-gradient(90deg, ${colors.accent}cc, ${colors.accent})`, 
+            height: "100%", 
+            width: `${pct}%`, 
+            borderRadius: "4px", 
+            transition: "width 0.8s ease" 
+          }} 
+        />
+      </div>
     </div>
   );
-}
-
+})}
 // ── App ───────────────────────────────────────────────────────────────────────
 export default function App() {
   const [view, setView]                           = useState("home");
@@ -564,45 +607,50 @@ const handleSpeciesClick = useCallback((species, phylumNum, className) => {
 
               <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:"0.8rem"}}>
                 {ATLAS_DATA.phyla.map((p, idx) => {
-                  const colors=PHYLUM_COLORS[p.number];
-                  return (
-                    <button key={p.number} className="phylum-card"
-                      onClick={()=>{setActivePhylum(p.number);switchView("phylum");}}
-                      style={{
-                        background:IVORY,
-                        border:`1px solid ${RULE}`,
-                        borderTop:`3px solid ${colors.accent}`,
-                        borderRadius:"12px",
-                        padding:"1.3rem",
-                        cursor:"pointer",
-                        textAlign:"left",
-                        animationDelay:`${idx * 0.04}s`,
-                      }}
-                      onMouseEnter={e=>{
-                        const el=e.currentTarget;
-                        el.style.background=colors.bg;
-                        el.style.borderColor=colors.accent;
-                        el.querySelectorAll(".pn,.pd,.pc").forEach((x,i)=>{
-                          x.style.color=i===0?colors.accent:i===1?"#aaa":"rgba(255,255,255,0.5)";
-                        });
-                      }}
-                      onMouseLeave={e=>{
-                        const el=e.currentTarget;
-                        el.style.background=IVORY;
-                        el.style.borderColor=RULE;
-                        el.querySelectorAll(".pn,.pd,.pc").forEach((x,i)=>{
-                          x.style.color=i===0?INK:i===1?MUTED:colors.accent;
-                        });
-                      }}
-                    >
-                      <div style={{fontSize:"1.5rem",marginBottom:"0.45rem",lineHeight:1}}>{p.emoji}</div>
-                      <div style={{fontSize:"0.58rem",color:ACCENT,fontFamily:"serif",letterSpacing:"0.12em",marginBottom:"0.2rem"}}>PHYLUM {p.number}</div>
-                      <div className="pn" style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"1rem",fontWeight:500,color:INK,marginBottom:"0.25rem",transition:"color 0.2s",lineHeight:1.25}}>{p.name}</div>
-                      <div className="pd" style={{fontFamily:"serif",fontSize:"0.7rem",color:MUTED,lineHeight:1.45,marginBottom:"0.55rem",transition:"color 0.2s"}}>{p.description}</div>
-                      <div className="pc" style={{fontFamily:"serif",fontSize:"0.7rem",color:colors.accent,transition:"color 0.2s"}}>{p.count} species · {p.classes.length} classes</div>
-                    </button>
-                  );
-                })}
+  const colors = PHYLUM_COLORS[p.number];
+  return (
+    <button 
+      key={p.number} 
+      className="phylum-card"
+      onClick={() => {
+        setActivePhylum(p.number); // Matches your App.jsx
+        switchView("phylum");      // Matches your App.jsx
+      }}
+      style={{
+        background: IVORY,
+        border: `1px solid ${RULE}`,
+        borderTop: `3px solid ${colors.accent}`,
+        borderRadius: "12px",
+        padding: "1.3rem",
+        cursor: "pointer",
+        textAlign: "left",
+        animationDelay: `${idx * 0.05}s`, // The stagger effect!
+      }}
+      onMouseEnter={e => {
+        const el = e.currentTarget;
+        el.style.background = colors.bg;
+        el.style.borderColor = colors.accent;
+        el.querySelectorAll(".pn,.pd,.pc").forEach((x, i) => {
+          x.style.color = i === 0 ? colors.accent : i === 1 ? "#aaa" : "rgba(255,255,255,0.5)";
+        });
+      }}
+      onMouseLeave={e => {
+        const el = e.currentTarget;
+        el.style.background = IVORY;
+        el.style.borderColor = RULE;
+        el.querySelectorAll(".pn,.pd,.pc").forEach((x, i) => {
+          x.style.color = i === 0 ? INK : i === 1 ? MUTED : colors.accent;
+        });
+      }}
+    >
+      <div style={{ fontSize: "1.5rem", marginBottom: "0.45rem", lineHeight: 1 }}>{p.emoji}</div>
+      <div style={{ fontSize: "0.58rem", color: ACCENT, fontFamily: "serif", letterSpacing: "0.12em", marginBottom: "0.2rem" }}>PHYLUM {p.number}</div>
+      <div className="pn" style={{ fontFamily: "'EB Garamond',Georgia,serif", fontSize: "1rem", fontWeight: 500, color: INK, marginBottom: "0.25rem", transition: "color 0.2s", lineHeight: 1.25 }}>{p.name}</div>
+      <div className="pd" style={{ fontFamily: "serif", fontSize: "0.7rem", color: MUTED, lineHeight: 1.45, marginBottom: "0.55rem", transition: "color 0.2s" }}>{p.description}</div>
+      <div className="pc" style={{ fontFamily: "serif", fontSize: "0.7rem", color: colors.accent, transition: "color 0.2s" }}>{p.count} species · {p.classes.length} classes</div>
+    </button>
+  );
+})}
               </div>
             </div>
           )}
