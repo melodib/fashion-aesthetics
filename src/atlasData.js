@@ -3598,7 +3598,6 @@ export const ATLAS_DATA = {
             ["Sandalpunk", "N"],
             ["Clockpunk", "N"],
             ["Steampunk", "N"],
-            ["Brass & Gears Aesthetic", "N"],
             ["Airship Aesthetic", "N"],
             ["Gaslamp Fantasy", "X"],
             ["Decopunk", "N"],
