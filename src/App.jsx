@@ -533,9 +533,13 @@ export default function App() {
 
   const animatedCount = useCountUp(ATLAS_DATA.total, 1800);
 
-  const handleSpeciesClick = useCallback((species,phylumNum,className) => {
-    setSelectedSpecies(species); setSelectedPhylumNum(phylumNum); setSelectedClassName(className);
-  },[]);
+ const handleSpeciesClick = useCallback((species, phylumNum, className) => {
+    // This part ensures that if you click a sub-category, 
+    // it stays in the same Phylum/Color as the parent.
+    setSelectedSpecies(species);
+    if (phylumNum !== undefined) setSelectedPhylumNum(phylumNum);
+    if (className !== undefined) setSelectedClassName(className);
+  }, [selectedPhylumNum, selectedClassName]);
 
   const currentPhylum = activePhylum!==null ? ATLAS_DATA.phyla.find(p=>p.number===activePhylum) : null;
 
