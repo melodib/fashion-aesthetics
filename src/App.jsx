@@ -223,7 +223,7 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
     marginTop: "0.8rem" 
   }}>
     <div style={{ fontSize: "0.58rem", color: MUTED, textTransform: "uppercase", marginBottom: "0.4rem" }}>
-      Classification Note: Motif
+      Classification Note: motif
     </div>
     <p style={{ fontFamily: "'EB Garamond',serif", fontSize: "0.85rem", color: INK, margin: 0, fontStyle: "italic" }}>
       {entry.motif}
