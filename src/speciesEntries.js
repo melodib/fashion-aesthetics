@@ -1,9 +1,10 @@
 export const SPECIES_ENTRIES = {
   "Steampunk": {
-  "summary": "Victorian-era aesthetics fused with speculative machinery.",
-  "sub_aesthetics": ["Clockwork Aesthetic", "Inventor Aesthetic", "Victoriana Tech Aesthetic"], 
-  "see_also": ["Dieselpunk", "Clockpunk"]
-},
+    "summary": "Victorian-era aesthetics fused with speculative machinery.",
+    "sub_aesthetics": ["Clockwork Aesthetic", "Inventor Aesthetic", "Victoriana Tech Aesthetic"], 
+    "visual": "Brass gears, cogs, metallic ornament, and polished copper tubing fused with 19th-century tailoring.", 
+    "see_also": ["Dieselpunk", "Clockpunk", "Industrial"]
+  },
   "Clockwork Aesthetic": {
     "summary": "A subset of Steampunk focused on the intricate mechanics of wind-up gears and horology.",
     "visual": "Brass gears, winding keys, porcelain doll-like features, and ticking mechanisms.",
