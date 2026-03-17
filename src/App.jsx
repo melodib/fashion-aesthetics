@@ -207,6 +207,17 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
 
               {/* 3. Visual Description */}
               {entry.visual && (
+              {/* 3.5. Motif / Technical Notes */}
+{entry.motif && (
+  <div style={{ background: "#FDFCFB", border: `1px solid ${RULE}`, borderRadius: "10px", padding: "0.9rem 1rem", borderLeft: `4px solid ${MUTED}` }}>
+    <div style={{ fontSize: "0.58rem", color: MUTED, fontFamily: "serif", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "0.4rem" }}>
+      Classification Note: Motif
+    </div>
+    <p style={{ fontFamily: "'EB Garamond',serif", fontSize: "0.85rem", color: INK, margin: 0, lineHeight: 1.6, fontStyle: "italic" }}>
+      {entry.motif}
+    </p>
+  </div>
+)}
                 <div style={{background:SOFT,border:`1px solid ${RULE}`,borderLeft:`4px solid ${colors.accent}`,borderRadius:"10px",padding:"0.9rem 1rem"}}>
                   <div style={{fontSize:"0.58rem",color:colors.accent,fontFamily:"serif",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:"0.4rem"}}>Visual Description</div>
                   <p style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.92rem",color:INK,margin:0,lineHeight:1.75}}>{entry.visual}</p>
