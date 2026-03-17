@@ -1,11 +1,11 @@
 export const SPECIES_ENTRIES = {
  "Steampunk": {
-    "summary": "Victorian-era aesthetics fused with speculative machinery, brass-work, and steam-powered innovation.",
-    "motif": "Note on Brass & Gears: This is often mistaken for a standalone culture, but is technically a visual motif (texture) rather than a full worldview. It serves as a visual subset of the broader Steampunk lineage.",
-    "era": "19th Century (reimagined) to c.2010s (peak subculture)",
-    "mood": "Adventurous, industrious, ornate, and retro-futuristic.",
-    "visual": "A fusion of polished mahogany, brass gears, and copper piping. Think 'The Time Machine' meets high-Victorian formalwear. Characterized by exposed clockwork mechanisms, steam-venting valves, and industrial-era romanticism.",
-    "garments": [
+    summary: "Victorian-era aesthetics fused with speculative machinery, brass-work, and steam-powered innovation.",
+    motif: "Note on Brass & Gears: This is often mistaken for a standalone culture, but is technically a visual motif (texture) rather than a full worldview. It serves as a visual subset of the broader Steampunk lineage.",
+    era: "19th Century (reimagined) to c.2010s (peak subculture)",
+    mood: "Adventurous, industrious, ornate, and retro-futuristic.",
+    visual: "A fusion of polished mahogany, brass gears, and copper piping. Think 'The Time Machine' meets high-Victorian formalwear. Characterized by exposed clockwork mechanisms, steam-venting valves, and industrial-era romanticism.",
+    garments: [
       "Corsets and waistcoats",
       "Brass aviator goggles",
       "Top hats with gear embellishments",
@@ -13,18 +13,18 @@ export const SPECIES_ENTRIES = {
       "Frock coats with mechanical prosthetics",
       "Pocket watches and clockwork jewelry"
     ],
-    "habitat": "Neo-Victorian conventions, 'League of Extraordinary Gentlemen' media, maker-culture workshops, and alternative history literature.",
-    "context": "Steampunk grew from a literary genre into a massive visual culture. It reimagines a world where technology never moved past the steam engine, but achieved futuristic complexity through mechanical engineering.",
-    "rarity": "Common",
-    "see_also": ["Dieselpunk", "Clockpunk", "Neo-Victorian", "Industrial"],
-    "colors": [
+    habitat: "Neo-Victorian conventions, 'League of Extraordinary Gentlemen' media, maker-culture workshops, and alternative history literature.",
+    context: "Steampunk grew from a literary genre into a massive visual culture. It reimagines a world where technology never moved past the steam engine, but achieved futuristic complexity through mechanical engineering.",
+    rarity: "Common",
+    see_also: ["Dieselpunk", "Clockpunk", "Neo-Victorian", "Industrial"],
+    colors: [
       "#B8896A Polished Brass",
       "#4A2C2A Mahogany Wood",
       "#704214 Antique Leather",
       "#B87333 Copper Pipe",
       "#E2D9CF Aged Lace"
     ],
-    "sub_aesthetics": [
+    sub_aesthetics: [
       "Clockwork Aesthetic", 
       "Inventor Aesthetic", 
       "Victoriana Tech Aesthetic"
@@ -36,24 +36,24 @@ export const SPECIES_ENTRIES = {
   motif: "Verdict: This is a texture, not a worldview. REMOVE → motif tag (Pure visual subset of Steampunk)."
 },
   "Clockwork Aesthetic": {
-    "summary": "A subset of Steampunk focused on the intricate mechanics of wind-up gears and horology.",
-    "visual": "Brass gears, winding keys, porcelain doll-like features, and ticking mechanisms.",
-    "mood": "Precise, elegant, rhythmic, and slightly eerie.",
-    "see_also": ["Steampunk", "Toycore"]
+    summary: "A subset of Steampunk focused on the intricate mechanics of wind-up gears and horology.",
+    visual: "Brass gears, winding keys, porcelain doll-like features, and ticking mechanisms.",
+    mood: "Precise, elegant, rhythmic, and slightly eerie.",
+    see_also: ["Steampunk", "Toycore"]
   },
 
   "Inventor Aesthetic": {
-    "summary": "The 'workshop' side of Steampunk, focusing on the tinkerer and the scientist.",
-    "visual": "Leather aprons, welding goggles, blueprints, messy workshops, and grease stains.",
-    "mood": "Academic, chaotic, industrious, and curious.",
-    "see_also": ["Steampunk", "Laboratory Aesthetic"]
+    summary: "The 'workshop' side of Steampunk, focusing on the tinkerer and the scientist.",
+    visual: "Leather aprons, welding goggles, blueprints, messy workshops, and grease stains.",
+    mood: "Academic, chaotic, industrious, and curious.",
+    see_also: ["Steampunk", "Laboratory Aesthetic"]
   },
 
   "Victoriana Tech Aesthetic": {
-    "summary": "The fusion of high-Victorian interior design with advanced steam-powered functionality.",
-    "visual": "Dark mahogany wood, velvet upholstery, ornate brass piping, and telegraph systems.",
-    "mood": "Sophisticated, opulent, formal, and established.",
-    "see_also": ["Steampunk", "Dark Academia"]
+    summary: "The fusion of high-Victorian interior design with advanced steam-powered functionality.",
+    visual: "Dark mahogany wood, velvet upholstery, ornate brass piping, and telegraph systems.",
+    mood: "Sophisticated, opulent, formal, and established.",
+    see_also: ["Steampunk", "Dark Academia"]
   },
   Cassettepunk: {
     summary:
