@@ -229,7 +229,39 @@ function SpeciesCard({ species, phylumNum, className, onClose }) {
                   </div>
                 </div>
               )}
-
+{/* --- PASTE STARTING HERE --- */}
+{entry.sub_aesthetics?.length > 0 && (
+  <div style={{ background: SOFT, border: `1px solid ${RULE}`, borderRadius: "8px", padding: "1rem", marginTop: "1.5rem", marginBottom: "1.5rem" }}>
+    <div style={{ fontSize: "0.6rem", color: MUTED, fontFamily: "serif", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "0.7rem" }}>
+      Sub-Categories & Variants
+    </div>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+      {entry.sub_aesthetics.map((sub, i) => (
+        <button 
+          key={i} 
+          onClick={() => {
+            // This makes the button clickable so you can jump to the sub-category
+            const target = document.querySelector(`[data-species="${sub}"]`);
+            if (target) target.click();
+          }}
+          style={{ 
+            background: "#fff", 
+            border: `1px solid ${colors.accent}`, 
+            color: colors.accent, 
+            borderRadius: "4px", 
+            padding: "0.3rem 0.6rem", 
+            fontSize: "0.75rem", 
+            fontFamily: "serif",
+            cursor: "pointer"
+          }}
+        >
+          {sub}
+        </button>
+      ))}
+    </div>
+  </div>
+)}
+{/* --- PASTE ENDING HERE --- */}
               {/* Visual */}
               {entry.visual && (
                 <div style={{background:SOFT,border:`1px solid ${RULE}`,borderLeft:`4px solid ${colors.accent}`,borderRadius:"10px",padding:"0.9rem 1rem"}}>
