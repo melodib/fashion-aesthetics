@@ -30,19 +30,6 @@ export const SPECIES_ENTRIES = {
       "Victoriana Tech Aesthetic"
     ]
   },
-  "Brass & Gears": {
-    summary: "A decorative focus on the mechanical aesthetics of the industrial age...",
-    era: "N/A (Visual Motif)",
-    mood: "Mechanical, industrial, metallic.",
-    visual: "Extensive use of polished brass, exposed clockwork, and copper piping.",
-    garments: ["Brass hardware", "Visible gears", "Copper accents"],
-    habitat: "Found as a component of Steampunk and Dieselpunk environments.",
-    context: "This is a texture, not a worldview. It is a pure visual subset of Steampunk.",
-    rarity: "Common",
-    see_also: ["Steampunk"],
-    colors: ["#B8896A Brass", "#B87333 Copper"],
-    motif: "Verdict: This is a texture, not a worldview. REMOVE → motif tag (Pure visual subset of Steampunk)."
-  },
   "Clockwork Aesthetic": {
     summary: "A subset of Steampunk focused on the intricate mechanics of wind-up gears and horology.",
     era: "18th–19th Century influence",
