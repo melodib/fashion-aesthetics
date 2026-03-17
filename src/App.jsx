@@ -128,14 +128,8 @@ const GLOBAL_CSS = `
 
 // ── SpeciesCard ───────────────────────────────────────────────────────────────
 function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick }) {
-  // Use optional chaining to prevent crashes if the species array is malformed
   const [name, flag] = Array.isArray(species) ? species : [species ?? "Unknown", ""];
-  
-  // Safe data retrieval
   const entry = SPECIES_ENTRIES?.[name];
-  const noteData = getNote(phylumNum, name);
-  
-  // Default to a neutral palette if Phylum colors aren't found
   const colors = PHYLUM_COLORS[phylumNum] ?? { bg: "#1A1A1A", accent: "#B8896A" };
   const phylumName = phylumOf(phylumNum)?.name ?? "Unknown Phylum";
   
@@ -146,50 +140,69 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
     <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.62)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1000,padding:"1rem",backdropFilter:"blur(2px)"}}>
       <div className="species-modal" onClick={e=>e.stopPropagation()} style={{background:IVORY,borderRadius:"18px",width:"100%",maxWidth:"580px",maxHeight:"90vh",overflowY:"auto",boxShadow:"0 40px 120px rgba(0,0,0,0.45)"}}>
 
-        {/* Header with safe color access */}
+        {/* Header */}
         <div style={{background:`linear-gradient(135deg, ${colors.bg} 0%, ${colors.bg}ee 100%)`,borderRadius:"18px 18px 0 0",padding:"1.4rem 1.5rem 1.1rem",position:"sticky",top:0,zIndex:10}}>
           <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg, ${colors.accent}44, ${colors.accent}, ${colors.accent}44)`,borderRadius:"18px 18px 0 0"}}/>
-
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
             <div>
               <div style={{fontSize:"0.58rem",color:colors.accent,letterSpacing:"0.18em",textTransform:"uppercase",fontFamily:"'EB Garamond',serif",marginBottom:"0.35rem",opacity:0.85}}>
                 {phylumName} &nbsp;›&nbsp; {className ?? "Unclassified"}
               </div>
               <h2 style={{fontFamily:"'EB Garamond',serif",fontSize:"1.55rem",color:"#fff",margin:0,lineHeight:1.2,fontStyle:"italic",fontWeight:400}}>
-                {name}
+                {name} {sensitive && "⚠"}
               </h2>
             </div>
             <button onClick={onClose} style={{background:"rgba(255,255,255,0.1)",border:"1px solid rgba(255,255,255,0.2)",borderRadius:"50%",width:34,height:34,cursor:"pointer",color:"#fff",fontSize:"1rem"}}>×</button>
           </div>
         </div>
 
-        {/* Body Content with conditional rendering checks */}
+        {/* Body Content */}
         <div style={{padding:"1.4rem 1.5rem 1.6rem",display:"flex",flexDirection:"column",gap:"0.9rem"}}>
           {entry ? (
             <>
               <p style={{fontFamily:"'EB Garamond',serif",fontSize:"1.15rem",color:INK,lineHeight:1.85,margin:0,fontStyle:"italic"}}>
-                {entry.summary ?? "No summary available for this aesthetic."}
+                {entry.summary}
               </p>
 
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.5rem"}}>
-                {entry.era && (
-                  <div style={{background:SOFT,borderRadius:"10px",padding:"0.55rem 0.8rem"}}>
-                    <div style={{fontSize:"0.56rem",color:MUTED,textTransform:"uppercase"}}>Era</div>
-                    <div style={{fontFamily:"'EB Garamond',serif",fontSize:"0.85rem"}}>{entry.era}</div>
+              {(entry.era || entry.mood) && (
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.5rem"}}>
+                  {entry.era && (
+                    <div style={{background:SOFT,borderRadius:"10px",padding:"0.55rem 0.8rem", border:`1px solid ${RULE}`}}>
+                      <div style={{fontSize:"0.56rem",color:MUTED,textTransform:"uppercase"}}>Era</div>
+                      <div style={{fontFamily:"'EB Garamond',serif",fontSize:"0.85rem"}}>{entry.era}</div>
+                    </div>
+                  )}
+                  {entry.mood && (
+                    <div style={{background:SOFT,borderRadius:"10px",padding:"0.55rem 0.8rem", border:`1px solid ${RULE}`}}>
+                      <div style={{fontSize:"0.56rem",color:MUTED,textTransform:"uppercase"}}>Mood</div>
+                      <div style={{fontFamily:"'EB Garamond',serif",fontSize:"0.85rem",fontStyle:"italic"}}>{entry.mood}</div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {entry.visual && (
+                <div style={{background:SOFT,border:`1px solid ${RULE}`,borderLeft:`4px solid ${colors.accent}`,borderRadius:"10px",padding:"0.9rem 1rem"}}>
+                  <div style={{fontSize:"0.58rem",color:colors.accent,textTransform:"uppercase",marginBottom:"0.4rem"}}>Visual Description</div>
+                  <p style={{fontFamily:"'EB Garamond',serif",fontSize:"0.92rem",color:INK,margin:0,lineHeight:1.75}}>{entry.visual}</p>
+                </div>
+              )}
+
+              {entry.colors?.length > 0 && (
+                <div style={{background:SOFT,border:`1px solid ${RULE}`,borderRadius:"10px",padding:"0.8rem 1rem"}}>
+                  <div style={{fontSize:"0.58rem",color:MUTED,textTransform:"uppercase",marginBottom:"0.65rem"}}>Palette</div>
+                  <div style={{display:"flex",gap:"0.7rem",flexWrap:"wrap"}}>
+                    {entry.colors.map((c, i) => (
+                      <span key={i} style={{fontSize:"0.78rem",fontFamily:"'EB Garamond',serif"}}>{c}</span>
+                    ))}
                   </div>
-                )}
-                {entry.mood && (
-                  <div style={{background:SOFT,borderRadius:"10px",padding:"0.55rem 0.8rem"}}>
-                    <div style={{fontSize:"0.56rem",color:MUTED,textTransform:"uppercase"}}>Mood</div>
-                    <div style={{fontFamily:"'EB Garamond',serif",fontSize:"0.85rem",fontStyle:"italic"}}>{entry.mood}</div>
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
             </>
           ) : (
-            <div style={{background:SOFT,borderRadius:"10px",padding:"1rem",textAlign:"center"}}>
+            <div style={{background:SOFT,borderRadius:"10px",padding:"1rem",textAlign:"center", border:`1px solid ${RULE}`}}>
               <p style={{fontFamily:"'EB Garamond',serif",fontSize:"0.9rem",color:MUTED,margin:0,fontStyle:"italic"}}>
-                Full field guide entry pending for Phylum {phylumNum}.
+                Full field guide entry pending.
               </p>
             </div>
           )}
