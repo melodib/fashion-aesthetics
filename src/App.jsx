@@ -172,72 +172,98 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
           </div>
         </div>
 
-       {/* Body Content */}
-<div style={{padding:"1.4rem 1.5rem 1.6rem",display:"flex",flexDirection:"column",gap:"0.9rem"}}>
-  {sensitive && (
-    <div style={{background:"#FFF5F5",border:"1px solid #FECACA",borderLeft:`4px solid ${RED}`,borderRadius:"10px",padding:"0.8rem 1rem"}}>
-      <p style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.85rem",color:"#7F1D1D",margin:0,lineHeight:1.65}}>
-        This aesthetic references a living cultural tradition or ethically complex history. Engage with care.
-      </p>
-    </div>
-  )}
-
-  {entry ? (
-    <>
-      {/* 1. SUMMARY */}
-      <p style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize: "1.15rem", color: INK, lineHeight: 1.85, margin: 0, fontStyle: "italic"}}>{entry.summary}</p>
-
-      {/* 2. ERA & MOOD */}
-      {(entry.era || entry.mood) && (
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.5rem"}}>
-          {entry.era && <div style={{background:SOFT,padding:"0.5rem",borderRadius:"8px"}}><small style={{color:MUTED}}>ERA</small><br/>{entry.era}</div>}
-          {entry.mood && <div style={{background:SOFT,padding:"0.5rem",borderRadius:"8px"}}><small style={{color:MUTED}}>MOOD</small><br/>{entry.mood}</div>}
-        </div>
-      )}
-
-      {/* 3. VISUAL DESCRIPTION */}
-      {entry.visual && (
-        <div style={{background:SOFT,borderLeft:`4px solid ${colors.accent}`,padding:"0.8rem",borderRadius:"0 8px 8px 0"}}>
-          <div style={{fontSize:"0.6rem",color:colors.accent,fontWeight:"bold"}}>VISUAL</div>
-          <p style={{margin:0,fontSize:"0.9rem"}}>{entry.visual}</p>
-        </div>
-      )}
-
-      {/* 4. COLOUR PALETTE */}
-      {entry.colors && (
-        <div style={{display:"flex",gap:"0.5rem",flexWrap:"wrap"}}>
-          {entry.colors.map((c, i) => (
-            <div key={i} style={{display:"flex",alignItems:"center",gap:"5px",fontSize:"0.7rem"}}>
-              <div style={{width:12,height:12,borderRadius:"50%",background:c.split(' ')[0]}} /> {c.split(' ').slice(1).join(' ')}
+    {/* Body Content */}
+        <div style={{padding:"1.4rem 1.5rem 1.6rem",display:"flex",flexDirection:"column",gap:"0.9rem"}}>
+          {sensitive && (
+            <div style={{background:"#FFF5F5",border:"1px solid #FECACA",borderLeft:`4px solid ${RED}`,borderRadius:"10px",padding:"0.8rem 1rem"}}>
+              <p style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.85rem",color:"#7F1D1D",margin:0,lineHeight:1.65}}>
+                This aesthetic references a living cultural tradition or ethically complex history. Engage with care.
+              </p>
             </div>
-          ))}
-        </div>
-      )}
+          )}
 
-      {/* 5. GARMENTS */}
-      {entry.garments && (
-        <div style={{display:"flex",gap:"5px",flexWrap:"wrap"}}>
-          {entry.garments.map((g,i) => <span key={i} style={{background:IVORY,border:`1px solid ${RULE}`,padding:"2px 8px",borderRadius:"15px",fontSize:"0.8rem"}}>{g}</span>)}
-        </div>
-      )}
+          {entry ? (
+            <>
+              {/* 1. Summary */}
+              <p style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"1.15rem",color:INK,lineHeight:1.85,margin:0,fontStyle:"italic"}}>{entry.summary}</p>
 
-      {/* 6. SUB-AESTHETICS (Already working) */}
-      {entry.sub_aesthetics?.length > 0 && (
-        <div style={{ background: SOFT, border: `1px solid ${RULE}`, borderRadius: "10px", padding: "1rem" }}>
-          <div style={{ fontSize: "0.58rem", color: MUTED, fontFamily: "serif", textTransform: "uppercase", marginBottom: "0.7rem" }}>Sub-Categories</div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-            {entry.sub_aesthetics.map((sub, i) => (
-              <button key={i} onClick={() => onSpeciesClick([sub, ""], phylumNum, className)} style={{ background: "#fff", border: `1px solid ${colors.accent}`, color: colors.accent, borderRadius: "4px", padding: "0.3rem 0.6rem", fontSize: "0.75rem", cursor: "pointer" }}>{sub}</button>
-            ))}
-          </div>
+              {/* 2. Era & Mood */}
+              {(entry.era || entry.mood) && (
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.5rem"}}>
+                  {entry.era && (
+                    <div style={{background:SOFT,border:`1px solid ${RULE}`,borderRadius:"10px",padding:"0.55rem 0.8rem"}}>
+                      <div style={{fontSize:"0.56rem",color:MUTED,fontFamily:"serif",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:"0.2rem"}}>Era</div>
+                      <div style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.85rem",color:INK}}>{entry.era}</div>
+                    </div>
+                  )}
+                  {entry.mood && (
+                    <div style={{background:SOFT,border:`1px solid ${RULE}`,borderRadius:"10px",padding:"0.55rem 0.8rem"}}>
+                      <div style={{fontSize:"0.56rem",color:MUTED,fontFamily:"serif",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:"0.2rem"}}>Defining Mood</div>
+                      <div style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.85rem",color:INK,fontStyle:"italic"}}>{entry.mood}</div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* 3. Visual Description */}
+              {entry.visual && (
+                <div style={{background:SOFT,border:`1px solid ${RULE}`,borderLeft:`4px solid ${colors.accent}`,borderRadius:"10px",padding:"0.9rem 1rem"}}>
+                  <div style={{fontSize:"0.58rem",color:colors.accent,fontFamily:"serif",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:"0.4rem"}}>Visual Description</div>
+                  <p style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.92rem",color:INK,margin:0,lineHeight:1.75}}>{entry.visual}</p>
+                </div>
+              )}
+
+              {/* 4. Colour Palette */}
+              {entry.colors?.length > 0 && (
+                <div style={{background:SOFT,border:`1px solid ${RULE}`,borderRadius:"10px",padding:"0.8rem 1rem"}}>
+                  <div style={{fontSize:"0.58rem",color:MUTED,fontFamily:"serif",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:"0.65rem"}}>Colour Palette</div>
+                  <div style={{display:"flex",gap:"0.7rem",flexWrap:"wrap",alignItems:"center"}}>
+                    {entry.colors.map((c, i) => {
+                      const hex   = c.match(/#[0-9A-Fa-f]{6}/)?.[0];
+                      const label = c.replace(/#[0-9A-Fa-f]{6}\s*/, "").trim();
+                      return (
+                        <div key={i} style={{display:"flex",alignItems:"center",gap:"0.45rem"}}>
+                          {hex && (
+                            <div style={{width:20,height:20,borderRadius:"50%",background:hex,border:"1.5px solid rgba(0,0,0,0.12)",flexShrink:0,boxShadow:"0 1px 3px rgba(0,0,0,0.1)"}}/>
+                          )}
+                          <span style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.78rem",color:INK}}>{label || c}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* 5. Key Garments */}
+              {entry.garments?.length > 0 && (
+                <div style={{background:SOFT,border:`1px solid ${RULE}`,borderRadius:"10px",padding:"0.8rem 1rem"}}>
+                  <div style={{fontSize:"0.58rem",color:MUTED,fontFamily:"serif",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:"0.6rem"}}>Key Garments</div>
+                  <div style={{display:"flex",flexWrap:"wrap",gap:"0.4rem"}}>
+                    {entry.garments.map((g,i) => (
+                      <span key={i} style={{background:"#fff",border:`1px solid ${RULE}`,borderRadius:"20px",padding:"0.22rem 0.7rem",fontSize:"0.8rem",fontFamily:"'EB Garamond',Georgia,serif",color:INK}}>{g}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 6. Sub-Aesthetics */}
+              {entry.sub_aesthetics?.length > 0 && (
+                <div style={{ background: SOFT, border: `1px solid ${RULE}`, borderRadius: "10px", padding: "1rem" }}>
+                  <div style={{ fontSize: "0.58rem", color: MUTED, fontFamily: "serif", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "0.7rem" }}>Sub-Categories</div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                    {entry.sub_aesthetics.map((sub, i) => (
+                      <button key={i} onClick={() => onSpeciesClick([sub, ""], phylumNum, className)} style={{ background: "#fff", border: `1px solid ${colors.accent}`, color: colors.accent, borderRadius: "4px", padding: "0.3rem 0.6rem", fontSize: "0.75rem", cursor: "pointer" }}>{sub}</button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <div style={{background:SOFT,borderRadius:"10px",border:`1px solid ${RULE}`,padding:"1rem"}}>
+              <p style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.9rem",color:MUTED,margin:0,fontStyle:"italic"}}>Full field guide entry pending for this species.</p>
+            </div>
+          )}
         </div>
-      )}
-    </>
-  ) : (
-    /* Placeholder for missing entries */
-    <div style={{background:SOFT,borderRadius:"10px",padding:"1rem"}}><p>Entry pending.</p></div>
-  )}
-</div>
 
 // ── PhylumView ────────────────────────────────────────────────────────────────
 function PhylumView({ phylum, onSpeciesClick }) {
