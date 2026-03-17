@@ -454,15 +454,19 @@ export default function App() {
 
   const animatedCount = useCountUp(ATLAS_DATA.total, 1800);
 const handleSpeciesClick = useCallback((species, phylumNum, className) => {
-  // This ensures "Clockwork Aesthetic" (string) 
-  // becomes ["Clockwork Aesthetic", ""] (array)
   const normalized = Array.isArray(species) ? species : [species, ""];
   
   setSelectedSpecies(normalized);
-  if (phylumNum !== undefined) setSelectedPhylumNum(phylumNum);
-  if (className !== undefined) setSelectedClassName(className);
+  
+  if (phylumNum !== undefined) {
+    setSelectedPhylumNum(phylumNum);
+  }
+  
+  if (className !== undefined) {
+    setSelectedClassName(className);
+  }
 }, []);
-
+  
   const currentPhylum = activePhylum!==null ? ATLAS_DATA.phyla.find(p=>p.number===activePhylum) : null;
 
   function switchView(v) { setView(v); window.scrollTo({top:0,behavior:"instant"}); }
