@@ -239,7 +239,8 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
       {entry.sub_aesthetics.map((sub, i) => (
         <button 
           key={i} 
-          onClick={() => onSpeciesClick(sub)} // THIS IS THE MAGIC LINE
+          /* UPDATED LINE BELOW: We send an array [sub, ""] and keep the current Phylum/Class */
+          onClick={() => onSpeciesClick([sub, ""], phylumNum, className)} 
           style={{ 
             background: "#fff", 
             border: `1px solid ${colors.accent}`, 
