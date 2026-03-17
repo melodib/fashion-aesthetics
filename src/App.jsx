@@ -693,10 +693,11 @@ export default function App() {
 
         {selectedSpecies && (
   <SpeciesCard 
+    key={Array.isArray(selectedSpecies) ? selectedSpecies[0] : selectedSpecies} // <--- ADD THIS
     species={selectedSpecies} 
     phylumNum={selectedPhylumNum} 
     className={selectedClassName} 
-    onClose={()=>setSelectedSpecies(null)}
-    onSpeciesClick={handleSpeciesClick} // <--- ADD THIS LINE
+    onClose={() => setSelectedSpecies(null)}
+    onSpeciesClick={handleSpeciesClick} 
   />
 )}
