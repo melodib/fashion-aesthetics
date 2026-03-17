@@ -129,7 +129,7 @@ const GLOBAL_CSS = `
 // ── SpeciesCard ───────────────────────────────────────────────────────────────
 function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick }) {
   // 1. Correctly extract the name from the array [name, flag]
-  const name = Array.isArray(species) ? species[0] : species;
+  const name = Array.isArray(species) ? species[0] : (typeof species === 'string' ? species : "");
   const flag = Array.isArray(species) ? species[1] : "";
 
   // 2. These MUST be inside the function so they recalculate on every click
