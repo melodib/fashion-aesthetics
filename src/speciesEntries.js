@@ -29,6 +29,11 @@ export const SPECIES_ENTRIES = {
       "Victoriana Tech Aesthetic",
     ]
   },
+ "Brass & Gears": {
+  summary: "A decorative focus on the mechanical aesthetics of the industrial age...",
+  visual: "Extensive use of polished brass, exposed clockwork, and copper piping.",
+  motif: "Verdict: This is a texture, not a worldview. REMOVE → motif tag (Pure visual subset of Steampunk).",
+}
   "Clockwork Aesthetic": {
     "summary": "A subset of Steampunk focused on the intricate mechanics of wind-up gears and horology.",
     "visual": "Brass gears, winding keys, porcelain doll-like features, and ticking mechanisms.",
