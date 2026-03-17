@@ -128,17 +128,14 @@ const GLOBAL_CSS = `
 
 // ── SpeciesCard ───────────────────────────────────────────────────────────────
 function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick }) {
-  const name = Array.isArray(species) ? species[0] : (typeof species === 'string' ? species : "");
-  const flag = Array.isArray(species) ? species[1] : "";
-
-  const colors    = PHYLUM_COLORS[phylumNum] || PHYLUM_COLORS[1];
-  const entry     = SPECIES_ENTRIES[name];
-  const sensitive = isSens(flag);
-  const crossover = isCross(flag);
-  const phylumName = phylumOf(phylumNum)?.name || "";
-
-  if (!entry) return null; 
-
+  // Extract the name regardless of format
+  const name = Array.isArray(species) ? species[0] : species;
+  
+  // LOOKUP: This is what pulls the new text from speciesEntries.js
+  const entry = SPECIES_ENTRIES[name];
+  
+  // If the entry doesn't exist yet, show a placeholder so the app doesn't crash
+  if (!entry) {
   return (
     <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.62)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1000,padding:"1rem",backdropFilter:"blur(2px)"}}>
       <div className="species-modal" onClick={e=>e.stopPropagation()} style={{background:IVORY,borderRadius:"18px",width:"100%",maxWidth:"580px",maxHeight:"90vh",overflowY:"auto",boxShadow:"0 40px 120px rgba(0,0,0,0.45)"}}>
@@ -536,12 +533,12 @@ export default function App() {
   const [selectedClassName, setSelectedClassName] = useState("");
 
   const animatedCount = useCountUp(ATLAS_DATA.total, 1800);
-
- const handleSpeciesClick = useCallback((species, phylumNum, className) => {
-  // Ensure we always have an array [name, flag]
-  const speciesData = Array.isArray(species) ? species : [species, ""];
-  setSelectedSpecies(speciesData);
+const handleSpeciesClick = useCallback((species, phylumNum, className) => {
+  // This ensures "Clockwork Aesthetic" (string) 
+  // becomes ["Clockwork Aesthetic", ""] (array)
+  const normalized = Array.isArray(species) ? species : [species, ""];
   
+  setSelectedSpecies(normalized);
   if (phylumNum !== undefined) setSelectedPhylumNum(phylumNum);
   if (className !== undefined) setSelectedClassName(className);
 }, []);
