@@ -1,9 +1,34 @@
 export const SPECIES_ENTRIES = {
-  "Steampunk": {
-    "summary": "Victorian-era aesthetics fused with speculative machinery.",
-    "sub_aesthetics": ["Clockwork Aesthetic", "Inventor Aesthetic", "Victoriana Tech Aesthetic"], 
-    "visual": "Brass gears, cogs, metallic ornament, and polished copper tubing fused with 19th-century tailoring.", 
-    "see_also": ["Dieselpunk", "Clockpunk", "Industrial"]
+ "Steampunk": {
+    "summary": "Victorian-era aesthetics fused with speculative machinery, brass-work, and steam-powered innovation.",
+    "era": "19th Century (reimagined) to c.2010s (peak subculture)",
+    "mood": "Adventurous, industrious, ornate, and retro-futuristic.",
+    "visual": "A fusion of polished mahogany, brass gears, and copper piping. Think 'The Time Machine' meets high-Victorian formalwear. Characterized by exposed clockwork mechanisms, steam-venting valves, and industrial-era romanticism.",
+    "garments": [
+      "Corsets and waistcoats",
+      "Brass aviator goggles",
+      "Top hats with gear embellishments",
+      "Leather utility belts and holsters",
+      "Frock coats with mechanical prosthetics",
+      "Pocket watches and clockwork jewelry"
+    ],
+    "habitat": "Neo-Victorian conventions, 'League of Extraordinary Gentlemen' media, maker-culture workshops, and alternative history literature.",
+    "context": "Steampunk grew from a literary genre into a massive visual culture. It reimagines a world where technology never moved past the steam engine, but achieved futuristic complexity through mechanical engineering.",
+    "rarity": "Common",
+    "see_also": ["Dieselpunk", "Clockpunk", "Neo-Victorian", "Industrial"],
+    "colors": [
+      "#B8896A Polished Brass",
+      "#4A2C2A Mahogany Wood",
+      "#704214 Antique Leather",
+      "#B87333 Copper Pipe",
+      "#E2D9CF Aged Lace"
+    ],
+    "sub_aesthetics": [
+      "Clockwork Aesthetic", 
+      "Inventor Aesthetic", 
+      "Victoriana Tech Aesthetic",
+      "Brass & Gears (Motif)"
+    ]
   },
   "Clockwork Aesthetic": {
     "summary": "A subset of Steampunk focused on the intricate mechanics of wind-up gears and horology.",
