@@ -128,18 +128,15 @@ const GLOBAL_CSS = `
 
 // ── SpeciesCard ───────────────────────────────────────────────────────────────
 function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick }) {
-  // 1. Correctly extract the name from the array [name, flag]
   const name = Array.isArray(species) ? species[0] : (typeof species === 'string' ? species : "");
   const flag = Array.isArray(species) ? species[1] : "";
 
-  // 2. These MUST be inside the function so they recalculate on every click
   const colors    = PHYLUM_COLORS[phylumNum] || PHYLUM_COLORS[1];
-  const entry     = SPECIES_ENTRIES[name]; // This looks up the new "Clockwork" data
+  const entry     = SPECIES_ENTRIES[name];
   const sensitive = isSens(flag);
   const crossover = isCross(flag);
   const phylumName = phylumOf(phylumNum)?.name || "";
 
-  // If for some reason the entry isn't found, show a fallback so the app doesn't crash
   if (!entry) return null; 
 
   return (
@@ -691,10 +688,9 @@ export default function App() {
             </div>
           )}
         </div>
-
-        {selectedSpecies && (
+{selectedSpecies && (
   <SpeciesCard 
-    key={Array.isArray(selectedSpecies) ? selectedSpecies[0] : selectedSpecies} // <--- ADD THIS
+    key={Array.isArray(selectedSpecies) ? selectedSpecies[0] : selectedSpecies}
     species={selectedSpecies} 
     phylumNum={selectedPhylumNum} 
     className={selectedClassName} 
