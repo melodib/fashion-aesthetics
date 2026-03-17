@@ -212,15 +212,38 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
                   )}
                 </div>
               )}
-
-              {/* 3. Technical Motif Note */}
-              {entry.motif && (
-                <div style={{ background: "#FDFCFB", border: `1px solid ${RULE}`, borderRadius: "10px", padding: "0.9rem 1rem", borderLeft: `4px solid ${MUTED}` }}>
-                  <div style={{ fontSize: "0.58rem", color: MUTED, textTransform: "uppercase", marginBottom: "0.4rem" }}>Classification Note: Motif</div>
-                  <p style={{ fontFamily: "'EB Garamond',serif", fontSize: "0.85rem", color: INK, margin: 0, lineHeight: 1.6, fontStyle: "italic" }}>{entry.motif}</p>
-                </div>
-              )}
-
+{/* 3. Technical Motif Note */}
+{entry.motif && (
+  <div style={{ 
+    background: "#FDFCFB", 
+    border: `1px solid ${RULE}`, 
+    borderRadius: "10px", 
+    padding: "0.9rem 1rem", 
+    borderLeft: `4px solid ${MUTED}`,
+    marginTop: "0.8rem" 
+  }}>
+    <div style={{ 
+      fontSize: "0.58rem", 
+      color: MUTED, 
+      textTransform: "uppercase", 
+      marginBottom: "0.4rem",
+      fontFamily: "serif",
+      letterSpacing: "0.12em"
+    }}>
+      Classification Note: Motif
+    </div>
+    <p style={{ 
+      fontFamily: "'EB Garamond',serif", 
+      fontSize: "0.85rem", 
+      color: INK, 
+      margin: 0, 
+      lineHeight: 1.6, 
+      fontStyle: "italic" 
+    }}>
+      {entry.motif}
+    </p>
+  </div>
+)}
               {/* 4. Visual Description */}
               {entry.visual && (
                 <div style={{background:SOFT,border:`1px solid ${RULE}`,borderLeft:`4px solid ${colors.accent}`,borderRadius:"10px",padding:"0.9rem 1rem"}}>
