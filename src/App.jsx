@@ -681,9 +681,11 @@ export default function App() {
         </div>
 
         {selectedSpecies && (
-          <SpeciesCard species={selectedSpecies} phylumNum={selectedPhylumNum} className={selectedClassName} onClose={()=>setSelectedSpecies(null)}/>
-        )}
-      </div>
-    </>
-  );
-}
+  <SpeciesCard 
+    species={selectedSpecies} 
+    phylumNum={selectedPhylumNum} 
+    className={selectedClassName} 
+    onClose={()=>setSelectedSpecies(null)}
+    onSpeciesClick={handleSpeciesClick} // <--- ADD THIS LINE
+  />
+)}
