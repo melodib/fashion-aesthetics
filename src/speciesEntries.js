@@ -27,7 +27,6 @@ export const SPECIES_ENTRIES = {
       "Clockwork Aesthetic", 
       "Inventor Aesthetic", 
       "Victoriana Tech Aesthetic",
-      "Brass & Gears (Motif)"
     ]
   },
   "Clockwork Aesthetic": {
