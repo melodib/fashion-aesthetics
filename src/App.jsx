@@ -264,6 +264,10 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
             </div>
           )}
         </div>
+      </div>
+    </div>
+  );
+}
 
 // ── PhylumView ────────────────────────────────────────────────────────────────
 function PhylumView({ phylum, onSpeciesClick }) {
