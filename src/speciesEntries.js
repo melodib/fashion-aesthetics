@@ -1,5 +1,5 @@
 export const SPECIES_ENTRIES = {
- "Steampunk": {
+  "Steampunk": {
     summary: "Victorian-era aesthetics fused with speculative machinery, brass-work, and steam-powered innovation.",
     motif: "Note on Brass & Gears: This is often mistaken for a standalone culture, but is technically a visual motif (texture) rather than a full worldview. It serves as a visual subset of the broader Steampunk lineage.",
     era: "19th Century (reimagined) to c.2010s (peak subculture)",
@@ -30,25 +30,43 @@ export const SPECIES_ENTRIES = {
       "Victoriana Tech Aesthetic"
     ]
   },
- "Brass & Gears": {
-  summary: "A decorative focus on the mechanical aesthetics of the industrial age...",
-  visual: "Extensive use of polished brass, exposed clockwork, and copper piping.",
-  motif: "Verdict: This is a texture, not a worldview. REMOVE → motif tag (Pure visual subset of Steampunk)."
-},
+  "Brass & Gears": {
+    summary: "A decorative focus on the mechanical aesthetics of the industrial age...",
+    era: "N/A (Visual Motif)",
+    mood: "Mechanical, industrial, metallic.",
+    visual: "Extensive use of polished brass, exposed clockwork, and copper piping.",
+    garments: ["Brass hardware", "Visible gears", "Copper accents"],
+    habitat: "Found as a component of Steampunk and Dieselpunk environments.",
+    context: "This is a texture, not a worldview. It is a pure visual subset of Steampunk.",
+    rarity: "Common",
+    see_also: ["Steampunk"],
+    colors: ["#B8896A Brass", "#B87333 Copper"],
+    motif: "Verdict: This is a texture, not a worldview. REMOVE → motif tag (Pure visual subset of Steampunk)."
+  },
   "Clockwork Aesthetic": {
     summary: "A subset of Steampunk focused on the intricate mechanics of wind-up gears and horology.",
-    visual: "Brass gears, winding keys, porcelain doll-like features, and ticking mechanisms.",
+    era: "18th–19th Century influence",
     mood: "Precise, elegant, rhythmic, and slightly eerie.",
-    see_also: ["Steampunk", "Toycore"]
+    visual: "Brass gears, winding keys, porcelain doll-like features, and ticking mechanisms.",
+    garments: ["Winding keys", "Gear-patterned silks", "Anatomical clockwork jewelry"],
+    habitat: "Horology shops, dollmaker ateliers, and ballet aesthetics.",
+    context: "Focuses on the internal 'heartbeat' of machinery rather than the steam-power of the broader genre.",
+    rarity: "Uncommon",
+    see_also: ["Steampunk", "Toycore"],
+    colors: ["#F5F5DC Porcelain", "#D4AF37 Gold Gear", "#333333 Iron Black"]
   },
-
   "Inventor Aesthetic": {
-    summary: "The 'workshop' side of Steampunk, focusing on the tinkerer and the scientist.",
-    visual: "Leather aprons, welding goggles, blueprints, messy workshops, and grease stains.",
-    mood: "Academic, chaotic, industrious, and curious.",
-    see_also: ["Steampunk", "Laboratory Aesthetic"]
+    summary: "A focus on the 'maker' aspect of speculative evolution, emphasizing blueprints, workbenches, and functional prototypes.",
+    era: "Industrial Revolution to Modern Maker-culture",
+    mood: "Academic, cluttered, brilliant, and practical.",
+    visual: "Ink-stained fingers, rolled blueprints, leather aprons, and half-finished gadgets.",
+    garments: ["Leather aprons", "Magnifying monocles", "Tool belts", "Smudged shirtsleeves"],
+    habitat: "Laboratory lofts, university basements, and backyard sheds.",
+    context: "The core 'science' behind the fiction, focusing on the individual genius rather than the society.",
+    rarity: "Common",
+    see_also: ["Steampunk", "Labcore"],
+    colors: ["#E2D9CF Blueprint Paper", "#3D3D3D Graphite", "#704214 Workbench Oak"]
   },
-
   "Victoriana Tech Aesthetic": {
     summary: "The fusion of high-Victorian interior design with advanced steam-powered functionality.",
     visual: "Dark mahogany wood, velvet upholstery, ornate brass piping, and telegraph systems.",
