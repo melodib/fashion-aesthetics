@@ -183,13 +183,13 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
           )}
 
           {entry ? (
-            <>
+           <>
               {/* 1. Summary */}
               <p style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"1.15rem",color:INK,lineHeight:1.85,margin:0,fontStyle:"italic"}}>{entry.summary}</p>
 
               {/* 2. Era & Mood */}
               {(entry.era || entry.mood) && (
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.5rem"}}>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.5rem", marginTop: "0.8rem"}}>
                   {entry.era && (
                     <div style={{background:SOFT,border:`1px solid ${RULE}`,borderRadius:"10px",padding:"0.55rem 0.8rem"}}>
                       <div style={{fontSize:"0.56rem",color:MUTED,fontFamily:"serif",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:"0.2rem"}}>Era</div>
@@ -205,17 +205,9 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
                 </div>
               )}
 
-              {/* 3. Visual Description */}
-              {entry.visual && (
-                <div style={{background:SOFT,border:`1px solid ${RULE}`,borderLeft:`4px solid ${colors.accent}`,borderRadius:"10px",padding:"0.9rem 1rem", marginBottom: "0.9rem"}}>
-                  <div style={{fontSize:"0.58rem",color:colors.accent,fontFamily:"serif",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:"0.4rem"}}>Visual Description</div>
-                  <p style={{fontFamily:"'EB Garamond',serif",fontSize:"0.92rem",color:INK,margin:0,lineHeight:1.75}}>{entry.visual}</p>
-                </div>
-              )}
-
-              {/* 3.5. Motif / Technical Notes */}
+              {/* 3. Motif / Technical Notes (Displays if motif exists) */}
               {entry.motif && (
-                <div style={{ background: "#FDFCFB", border: `1px solid ${RULE}`, borderRadius: "10px", padding: "0.9rem 1rem", borderLeft: `4px solid ${MUTED}`, marginBottom: "0.9rem" }}>
+                <div style={{ background: "#FDFCFB", border: `1px solid ${RULE}`, borderRadius: "10px", padding: "0.9rem 1rem", borderLeft: `4px solid ${MUTED}`, marginTop: "0.8rem" }}>
                   <div style={{ fontSize: "0.58rem", color: MUTED, fontFamily: "serif", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "0.4rem" }}>
                     Classification Note: Motif
                   </div>
@@ -224,13 +216,15 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
                   </p>
                 </div>
               )}
-                <div style={{background:SOFT,border:`1px solid ${RULE}`,borderLeft:`4px solid ${colors.accent}`,borderRadius:"10px",padding:"0.9rem 1rem"}}>
+
+              {/* 4. Visual Description */}
+              {entry.visual && (
+                <div style={{background:SOFT,border:`1px solid ${RULE}`,borderLeft:`4px solid ${colors.accent}`,borderRadius:"10px",padding:"0.9rem 1rem", marginTop: "0.8rem"}}>
                   <div style={{fontSize:"0.58rem",color:colors.accent,fontFamily:"serif",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:"0.4rem"}}>Visual Description</div>
                   <p style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.92rem",color:INK,margin:0,lineHeight:1.75}}>{entry.visual}</p>
                 </div>
               )}
-
-              {/* 4. Colour Palette */}
+              {/* 5. Colour Palette */}
               {entry.colors?.length > 0 && (
                 <div style={{background:SOFT,border:`1px solid ${RULE}`,borderRadius:"10px",padding:"0.8rem 1rem"}}>
                   <div style={{fontSize:"0.58rem",color:MUTED,fontFamily:"serif",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:"0.65rem"}}>Colour Palette</div>
@@ -251,7 +245,7 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
                 </div>
               )}
 
-              {/* 5. Key Garments */}
+              {/* 6. Key Garments */}
               {entry.garments?.length > 0 && (
                 <div style={{background:SOFT,border:`1px solid ${RULE}`,borderRadius:"10px",padding:"0.8rem 1rem"}}>
                   <div style={{fontSize:"0.58rem",color:MUTED,fontFamily:"serif",letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:"0.6rem"}}>Key Garments</div>
@@ -263,7 +257,7 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
                 </div>
               )}
 
-              {/* 6. Sub-Aesthetics */}
+              {/* 7. Sub-Aesthetics */}
               {entry.sub_aesthetics?.length > 0 && (
                 <div style={{ background: SOFT, border: `1px solid ${RULE}`, borderRadius: "10px", padding: "1rem" }}>
                   <div style={{ fontSize: "0.58rem", color: MUTED, fontFamily: "serif", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "0.7rem" }}>Sub-Categories</div>
