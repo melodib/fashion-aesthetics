@@ -581,25 +581,107 @@ const handleSpeciesClick = useCallback((species, phylumNum, className) => {
 
           {view==="search" && <SearchView query={searchQuery} onSpeciesClick={handleSpeciesClick}/>}
 
-          {view==="stats" && (
+          {view === "stats" && (
             <div>
-              <h2 style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"1.6rem",color:INK,marginBottom:"1.5rem",paddingBottom:"0.75rem",borderBottom:`1px solid ${ACCENT}`,fontWeight:400}}>
+              <h2 style={{ fontFamily: "'EB Garamond',Georgia,serif", fontSize: "1.6rem", color: INK, marginBottom: "1.5rem", paddingBottom: "0.75rem", borderBottom: `1px solid ${ACCENT}`, fontWeight: 400 }}>
                 Atlas Statistics · 2026 Edition
               </h2>
-              <StatsView/>
+              <StatsView />
             </div>
           )}
         </div>
-{selectedSpecies && (
-          <SpeciesCard 
-            species={selectedSpecies} 
-            phylumNum={selectedPhylumNum} 
-            className={selectedClassName} 
+
+        {selectedSpecies && (
+          <SpeciesCard
+            species={selectedSpecies}
+            phylumNum={selectedPhylumNum}
+            className={selectedClassName}
             onClose={() => setSelectedSpecies(null)}
-            onSpeciesClick={handleSpeciesClick} 
+            onSpeciesClick={handleSpeciesClick}
           />
         )}
       </div>
     </>
+  );
+}
+
+// ── Species Card Component ──────────────────────────────────────────────────────
+function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick }) {
+  const name = Array.isArray(species) ? species[0] : species;
+  const entry = SPECIES_ENTRIES[name];
+  const phylum = ATLAS_DATA.phyla.find(p => p.number === phylumNum);
+  const colors = PHYLUM_COLORS[phylumNum] || { bg: "#1A1A1A", accent: ACCENT };
+  const phylumName = phylum ? phylum.name : "";
+
+  return (
+    <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyCenter: "center", zIndex: 1000, padding: "1rem", backdropFilter: "blur(4px)" }}>
+      <div className="species-modal" onClick={e => e.stopPropagation()} style={{ background: IVORY, borderRadius: "20px", width: "100%", maxWidth: "600px", maxHeight: "90vh", overflowY: "auto", boxShadow: "0 30px 60px rgba(0,0,0,0.5)" }}>
+        
+        {/* Header */}
+        <div style={{ background: colors.bg, padding: "1.5rem", color: "#fff", position: "sticky", top: 0, zIndex: 2 }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div>
+              <div style={{ fontSize: "0.6rem", color: colors.accent, letterSpacing: "0.1em", textTransform: "uppercase" }}>{phylumName} › {className}</div>
+              <h2 style={{ fontFamily: "'EB Garamond',serif", fontSize: "1.8rem", margin: 0 }}>{name}</h2>
+            </div>
+            <button onClick={onClose} style={{ background: "none", border: "none", color: "#fff", fontSize: "1.5rem", cursor: "pointer" }}>×</button>
+          </div>
+        </div>
+
+        {/* Body Content */}
+        <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1.2rem" }}>
+          {entry ? (
+            <>
+              <p style={{ fontFamily: "'EB Garamond',serif", fontSize: "1.2rem", fontStyle: "italic", color: INK, margin: 0 }}>{entry.summary}</p>
+              
+              {entry.visual && (
+                <div style={{ background: SOFT, padding: "1rem", borderRadius: "10px", borderLeft: `4px solid ${colors.accent}` }}>
+                  <div style={{ fontSize: "0.6rem", color: colors.accent, fontWeight: "bold", marginBottom: "0.5rem" }}>VISUAL DESCRIPTION</div>
+                  <p style={{ margin: 0, fontSize: "0.95rem", lineHeight: 1.6 }}>{entry.visual}</p>
+                </div>
+              )}
+
+              {entry.colors && (
+                <div>
+                  <div style={{ fontSize: "0.6rem", color: MUTED, marginBottom: "0.5rem" }}>COLOUR PALETTE</div>
+                  <div style={{ display: "flex", gap: "0.8rem", flexWrap: "wrap" }}>
+                    {entry.colors.map((c, i) => (
+                      <div key={i} style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                        <div style={{ width: 14, height: 14, borderRadius: "50%", background: c.split(' ')[0], border: "1px solid rgba(0,0,0,0.1)" }} />
+                        <span style={{ fontSize: "0.75rem" }}>{c.split(' ').slice(1).join(' ')}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {entry.garments && (
+                <div>
+                  <div style={{ fontSize: "0.6rem", color: MUTED, marginBottom: "0.5rem" }}>KEY GARMENTS</div>
+                  <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                    {entry.garments.map((g, i) => (
+                      <span key={i} style={{ background: "#fff", border: `1px solid ${RULE}`, padding: "4px 10px", borderRadius: "20px", fontSize: "0.8rem" }}>{g}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {entry.sub_aesthetics && (
+                <div style={{ background: SOFT, padding: "1rem", borderRadius: "10px" }}>
+                  <div style={{ fontSize: "0.6rem", color: MUTED, marginBottom: "0.5rem" }}>SUB-CATEGORIES</div>
+                  <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                    {entry.sub_aesthetics.map((sub, i) => (
+                      <button key={i} onClick={() => onSpeciesClick([sub, ""], phylumNum, className)} style={{ background: "#fff", border: `1px solid ${colors.accent}`, color: colors.accent, padding: "4px 10px", borderRadius: "4px", cursor: "pointer", fontSize: "0.75rem" }}>{sub}</button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <div style={{ padding: "2rem", textAlign: "center", color: MUTED }}>Entry documentation in progress.</div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
