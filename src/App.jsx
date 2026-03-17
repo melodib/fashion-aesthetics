@@ -127,7 +127,7 @@ const GLOBAL_CSS = `
 `;
 
 // ── SpeciesCard ───────────────────────────────────────────────────────────────
-function SpeciesCard({ species, phylumNum, className, onClose }) {
+function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick }) {
   const [name, flag] = species;
   const colors     = PHYLUM_COLORS[phylumNum];
   const noteData   = getNote(phylumNum, name);
