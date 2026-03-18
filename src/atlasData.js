@@ -339,9 +339,9 @@ const phylum1 = {
             ["2020s Coquette Revival", "N"],
             ["2020s Brat Summer Moment", "N"],
 ["2020s Micro-Trend Acceleration", "N"],
-          ],
-        },
-      ], 
+          ]
+        }
+      ]
 };
 const phylum2 = {
     number: 2,
