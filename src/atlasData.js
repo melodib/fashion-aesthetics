@@ -3692,7 +3692,7 @@ export const futuristTechnologicalPhylum = {
         "Greenpunk", "Eco-Tech Aesthetic", "Renewable Energy Aesthetic",
         "Rewilded City Aesthetic", "Green Architecture Aesthetic", "Sustainable Future Fashion",
         "Living Material Aesthetic", "Biomimicry Aesthetic", "Hopepunk Fashion",
-        "Land Back Aesthetic", "Technozen Eco", "Lunarpunk", "Oceanpunk", "Tidalpunk",
+        "Land Back Aesthetic", "Technozen Eco", "Solarpunk", "Lunarpunk", "Oceanpunk", "Tidalpunk",
         "Feralpunk", "Mycorrhizal Network Aesthetic"
       ]
     },
@@ -3819,5 +3819,17 @@ export const futuristTechnologicalPhylum = {
   }
 };
 
-// Automate the count property
+// 1. The Function (Logic)
+const calculateSpeciesCount = (phylum) => {
+  return phylum.classes.reduce((total, currentClass) => {
+    return total + currentClass.species.length;
+  }, 0);
+};
+
+// 2. The Execution (Assigning the count)
 futuristTechnologicalPhylum.count = calculateSpeciesCount(futuristTechnologicalPhylum);
+
+// 3. The Export (Making it available to your website)
+export default futuristTechnologicalPhylum;
+
+console.log(`Phylum 12 loaded with ${futuristTechnologicalPhylum.count} species.`);
