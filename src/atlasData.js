@@ -344,9 +344,6 @@ const phylum1 = {
   ], // Closes the families/classes array
 }; // <─ ADD A SEMICOLON HERE to finish the variable
 
-convertSpecies(phylum1);
-phylum1.count = phylum1.classes.reduce((sum, cls) => sum + cls.species.length, 0);
-
 // Then start Phylum 2:
 const phylum2 = {
   number: 2,
@@ -794,8 +791,6 @@ const phylum2 = {
         },
       ],
     };
-convertSpecies(phylum2);
-    phylum2.count = phylum2.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 const phylum3 = {
       number: 3,
       name: "Elemental & Environmental",
@@ -1071,8 +1066,6 @@ const phylum3 = {
         },
       ],
     };
-convertSpecies(phylum3);
-    phylum3.count = phylum3.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 const phylum4 = {
       number: 4,
       name: "Body & Presentation",
@@ -1284,8 +1277,6 @@ const phylum4 = {
         },
       ],
     };
-convertSpecies(phylum4);
-   phylum4.count = phylum4.classes.reduce((sum, cls) => sum + cls.species.length, 0); 
 const phylum5 = {
       number: 5,
       name: "Lifestyle & Identity",
@@ -1565,8 +1556,6 @@ const phylum5 = {
         },
       ],
     };
-convertSpecies(phylum5);
-    phylum5.count = phylum5.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 const phylum6 = {
       number: 6,
       name: "Status & Class",
@@ -1837,8 +1826,6 @@ const phylum6 = {
         },
       ],
     };
-convertSpecies(phylum6);
-phylum6.count = phylum6.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 const phylum7 = {
       number: 7,
       name: "Subcultural",
@@ -2205,8 +2192,6 @@ const phylum7 = {
         },
       ],
     };
-convertSpecies(phylum7);
-phylum7.count = phylum7.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 const phylum8 = {
       number: 8,
       name: "Artistic Identity & Creative Philosophy",
@@ -2469,8 +2454,6 @@ const phylum8 = {
         },
       ],
     };
-convertSpecies(phylum8);
-    phylum8.count = phylum8.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 const phylum9 = {
       number: 9,
       name: "Mythic & Fantastical",
@@ -2855,8 +2838,6 @@ const phylum9 = {
         },
       ],
     };
-convertSpecies(phylum9);
-phylum9.count = phylum9.classes.reduce((sum, cls) => sum + cls.species.length, 0);
     const phylum10 = {
       number: 10,
       name: "Brand Born",
@@ -3193,8 +3174,6 @@ phylum9.count = phylum9.classes.reduce((sum, cls) => sum + cls.species.length, 0
         },
       ],
     };
-convertSpecies(phylum10);
-    phylum10.count = phylum10.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 const phylum11 = {
       number: 11,
       name: "Internet Born",
@@ -3591,8 +3570,6 @@ const phylum11 = {
         },
       ],
     };
-convertSpecies(phylum11);
-phylum11.count = phylum11.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 
 const calculateSpeciesCount = (phylum) => {
   if (!phylum.families) return 0;
@@ -4308,46 +4285,47 @@ export const aestheticMeta = {
 }; // <─ IMPORTANT: This closes the entire metaTags object
 
 // ... (Your Phylum 11 and Phylum 12 definitions are above this)
-// 1. First, define all the "Worker" functions
+// 1. The Worker Functions (Keep these)
 const countFuturist = (phylum) => {
-  return phylum.families.reduce((total, fam) => {
-    return total + fam.subfamilies.reduce((subTotal, sub) => {
+  return (phylum.families || []).reduce((total, fam) => {
+    return total + (fam.subfamilies || []).reduce((subTotal, sub) => {
       return subTotal + (sub.species?.length || 0);
     }, 0);
   }, 0);
 };
 
-const calculateTotal = (phyla) => {
-  return phyla.reduce((acc, p) => acc + (p.count || 0), 0);
-};
-
 const convertSpecies = (phylum) => {
   if (phylum.classes) {
     phylum.classes.forEach(cls => {
-      cls.species = cls.species.map(s => Array.isArray(s) ? s : [s, "N"]);
+      cls.species = (cls.species || []).map(s => Array.isArray(s) ? s : [s, "N"]);
     });
   }
   if (phylum.families) {
     phylum.families.forEach(family => {
-      family.subfamilies.forEach(sub => {
-        sub.species = sub.species.map(s => Array.isArray(s) ? s : [s, "N"]);
+      (family.subfamilies || []).forEach(sub => {
+        sub.species = (sub.species || []).map(s => Array.isArray(s) ? s : [s, "N"]);
       });
     });
   }
 };
 
-// 2. Second, build the list (ensure phylum1-12 are defined above this)
+// 2. Build the list 
+// IMPORTANT: Make sure these names match the "const phylumX =" names you used above
 const PHYLA_LIST = [
   phylum1, phylum2, phylum3, phylum4, phylum5, 
   phylum6, phylum7, phylum8, phylum9, phylum10, 
-  phylum11, futuristTechnologicalPhylum
+  phylum11, phylum12 // Changed 'futuristTechnologicalPhylum' to 'phylum12'
 ];
 
-// 3. Third, run the processing
-PHYLA_LIST.forEach(convertSpecies);
-
+// 3. Run the processing
 PHYLA_LIST.forEach(p => {
-  if (p.number === 12) {
+  if (!p) return; // Skip if a phylum is missing
+
+  // Prepares the species names
+  convertSpecies(p);
+
+  // Calculates the count based on the structure
+  if (p.number === 12 || p.families) {
     p.count = countFuturist(p);
   } else if (p.classes) {
     p.count = p.classes.reduce((acc, c) => acc + (c.species?.length || 0), 0);
@@ -4356,7 +4334,11 @@ PHYLA_LIST.forEach(p => {
   }
 });
 
-// 4. LASTLY, Export the final object
+// 4. The Export (This is what the rest of the app "sees")
+export const ATLAS_DATA = {
+  phyla: PHYLA_LIST,
+  totalSpecies: PHYLA_LIST.reduce((acc, p) => acc + (p.count || 0), 0)
+};
 export const ATLAS_DATA = {
   total: calculateTotal(PHYLA_LIST),
   phyla: PHYLA_LIST
