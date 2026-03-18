@@ -218,41 +218,43 @@ function SpeciesCard({ species, phylumNum, className, onClose }) {
 // ── PhylumView (Handles standard Phyla and Phylum 12 Families) ────────────────
 // ── PhylumView ───────────────────────────────────────────────────────────────
 function PhylumView({ phylum, onSpeciesClick }) {
-  const [activeGroup, setActiveGroup] = useState(null);
+  const [expandedGroup, setExpandedGroup] = useState(null); 
   const colors = PHYLUM_COLORS[phylum.number];
-
-  // This part handles the choice between 'classes' and 'families'
   const groups = phylum.classes || phylum.families || [];
-  const displayGroups = activeGroup === null ? groups : groups.filter(g => g.name === activeGroup);
 
   return (
     <div>
-      {/* ... Navigation Buttons ... */}
-
-      {displayGroups.map(group => {
-        // UPDATE THIS SPECIFIC BLOCK BELOW:
-        // We need to check if 'subfamilies' exists. If it does, we flatten them.
-        // If it doesn't, we look for 'species' directly.
+      {groups.map((group, idx) => {
         const speciesList = group.subfamilies 
           ? group.subfamilies.flatMap(sub => sub.species || []) 
           : (group.species || []);
 
-        // If this group is empty, don't render a blank header
         if (speciesList.length === 0) return null;
+        const isExpanded = expandedGroup === idx;
 
         return (
-          <div key={group.name} style={{marginBottom:"1.75rem"}}>
-            <div style={{background:INK, color:"white", padding:"0.5rem 1rem", borderRadius:"8px", borderLeft:`4px solid ${colors.accent}`, display:"flex", justifyContent:"space-between"}}>
-              <span>{group.name}</span>
-              <span style={{fontSize:"0.65rem", color:"#777"}}>{speciesList.length} species</span>
+          <div key={group.name} style={{ marginBottom: "0.8rem" }}>
+            <div 
+              onClick={() => setExpandedGroup(isExpanded ? null : idx)}
+              style={{ background: INK, color: "white", padding: "1rem", borderRadius: "8px", borderLeft: `4px solid ${colors.accent}`, display: "flex", justifyContent: "space-between", cursor: "pointer", alignItems: "center" }}
+            >
+              <span style={{ fontWeight: "600", textTransform: "uppercase", fontSize: "0.9rem" }}>{group.name}</span>
+              <span style={{ fontSize: "0.75rem", color: "#aaa" }}>{speciesList.length} species {isExpanded ? "▲" : "▼"}</span>
             </div>
 
-            <div style={{display:"flex", flexWrap:"wrap", gap:"0.4rem", marginTop: "0.75rem"}}>
-              {speciesList.map((item, idx) => {
-                const name = Array.isArray(item) ? item[0] : item;
-                // ... (the rest of your pill rendering remains the same)
-              })}
-            </div>
+            {isExpanded && (
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginTop: "0.8rem", padding: "1rem", background: SOFT, borderRadius: "0 0 8px 8px", border: `1px solid ${RULE}`, borderTop: "none" }}>
+                {speciesList.map((item, sIdx) => {
+                  const name = Array.isArray(item) ? item[0] : item;
+                  const flag = Array.isArray(item) ? item[1] : "N";
+                  return (
+                    <button key={sIdx} onClick={() => onSpeciesClick(item, phylum.number, group.name)} style={{ padding: "0.4rem 0.8rem", borderRadius: "20px", border: `1px solid ${RULE}`, background: IVORY, fontSize: "0.85rem", cursor: "pointer", fontStyle: "italic" }}>
+                      {name} {isSens(flag) && "⚠"} {isCross(flag) && "◆"}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         );
       })}
@@ -314,26 +316,28 @@ function SearchView({ results, query, onSpeciesClick }) {
 // ── StatsView (2026 Distribution Logic) ───────────────────────────────────────
 function StatsView() {
   const stats = useMemo(() => {
-    let sensitive = 0, crossover = 0, withEntries = 0, totalGroups = 0;
+   let sensitive = 0, crossover = 0, withEntries = 0, totalGroups = 0;
 
-    for (const p of ATLAS_DATA.phyla) {
-      // Handle Phylum 12 "families" vs standard "classes"
+    ATLAS_DATA.phyla.forEach(p => {
+      // This handles both your standard 'classes' and Phylum 12 'families'
       const groups = p.classes || p.families || [];
       totalGroups += groups.length;
 
-      for (const g of groups) {
-        // Handle Phylum 12 subfamilies vs standard species lists
-        const speciesList = g.subfamilies ? g.subfamilies.flatMap(s => s.species) : g.species;
+      groups.forEach(g => {
+        // This looks inside subfamilies for Phylum 12, or the regular species list for others
+        const speciesList = g.subfamilies 
+          ? g.subfamilies.flatMap(sub => sub.species || []) 
+          : (g.species || []);
         
-        for (const s of speciesList) {
+        speciesList.forEach(s => {
           const name = Array.isArray(s) ? s[0] : s;
           const flag = Array.isArray(s) ? s[1] : "";
           if (isSens(flag)) sensitive++;
           if (isCross(flag)) crossover++;
           if (getEntry(name)) withEntries++;
-        }
-      }
-    }
+        });
+      });
+    });
     return { sensitive, crossover, withEntries, totalGroups };
   }, []);
 
@@ -407,18 +411,38 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "instant" }); 
   };
 
-  const handleSearch = (val) => {
+const handleSearch = (val) => {
     setSearchQuery(val);
-    const found = queryAtlas(val); 
-    setSearchResults(found);
-
     if (val.length > 1) {
+      const found = [];
+      ATLAS_DATA.phyla.forEach(p => {
+        const groups = p.classes || p.families || [];
+        groups.forEach(g => {
+          // This ensures it looks inside both standard species and Phylum 12 subfamilies
+          const speciesList = g.subfamilies 
+            ? g.subfamilies.flatMap(s => s.species || []) 
+            : (g.species || []);
+            
+          speciesList.forEach(s => {
+            const name = Array.isArray(s) ? s[0] : s;
+            if (name.toLowerCase().includes(val.toLowerCase())) {
+              found.push({ 
+                species: s, 
+                phylumNum: p.number, 
+                phylumEmoji: p.emoji, 
+                className: g.name 
+              });
+            }
+          });
+        });
+      });
+      setSearchResults(found);
       setView("search");
-    } else if (!val) {
+    } else {
+      setSearchResults([]);
       setView(activePhylum ? "phylum" : "home");
     }
   };
-
   const goHome = () => { 
     setView("home"); 
     setActivePhylum(null); 
