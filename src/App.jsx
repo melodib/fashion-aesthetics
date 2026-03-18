@@ -78,6 +78,9 @@ const phylumOf = num => ATLAS_DATA?.phyla?.find(p => p.number === num);
 const isSens = (flag) => flag?.includes("s") || false;
 const isCross = (flag) => flag?.includes("x") || false;
 
+// FIX ISSUE 3: Normalize species data structure
+const normalizeSpecies = (s) => (Array.isArray(s) ? s : [s ?? "Unknown", ""]);
+
 function hl(text, q) {
   if (!q || !text) return text;
   const i = text.toLowerCase().indexOf(q.toLowerCase());
@@ -118,7 +121,7 @@ function useCountUp(target, duration = 1600) {
 // ── Components ───────────────────────────────────────────────────────────────
 
 function SpeciesCard({ species, phylumNum, className, onClose }) {
-  const [name, flag] = Array.isArray(species) ? species : [species ?? "Unknown", ""];
+  const [name, flag] = normalizeSpecies(species);
   const entry = getEntry(name);
   const colors = PHYLUM_COLORS[phylumNum] ?? { bg: "#1A1A1A", accent: "#B8896A" };
   const phylumName = phylumOf(phylumNum)?.name ?? "Unknown Phylum";
@@ -201,11 +204,11 @@ function PhylumView({ phylum, onSpeciesClick }) {
             </div>
             {isExpanded && (
               <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginTop: "0.8rem", padding: "1rem", background: SOFT, borderRadius: "0 0 8px 8px", border: `1px solid ${RULE}`, borderTop: "none" }}>
-                {speciesList.map((item, sIdx) => {
-                   const name = Array.isArray(item) ? item[0] : item;
-                   const flag = Array.isArray(item) ? item[1] : "N";
+                {speciesList.map((item) => {
+                   const [name, flag] = normalizeSpecies(item);
                    return (
-                     <button key={sIdx} onClick={() => onSpeciesClick(item, phylum.number, group.name)} style={{ padding: "0.4rem 0.8rem", borderRadius: "20px", border: `1px solid ${RULE}`, background: IVORY, fontSize: "0.85rem", cursor: "pointer", fontStyle: "italic" }}>
+                     // FIX ISSUE 1: Stable key based on name
+                     <button key={name} onClick={() => onSpeciesClick(item, phylum.number, group.name)} style={{ padding: "0.4rem 0.8rem", borderRadius: "20px", border: `1px solid ${RULE}`, background: IVORY, fontSize: "0.85rem", cursor: "pointer", fontStyle: "italic" }}>
                        {name} {isSens(flag) && "⚠"} {isCross(flag) && "◆"}
                      </button>
                    );
@@ -233,10 +236,10 @@ function SearchView({ results, query, onSpeciesClick }) {
     <div style={{display:"flex", flexDirection:"column", gap:"0.4rem"}}>
       <div style={{marginBottom:"1rem", color: MUTED, fontSize: "0.9rem"}}>Found {results.length} results</div>
       {results.map((res, i) => {
-        const name = Array.isArray(res.species) ? res.species[0] : res.species;
+        const [name] = normalizeSpecies(res.species);
         const colors = PHYLUM_COLORS[res.phylumNum] || { bg: SOFT, accent: MUTED };
         return (
-          <button key={i} onClick={() => onSpeciesClick(res.species, res.phylumNum, res.className)} style={{padding:"0.8rem", textAlign:"left", background: IVORY, border: `1px solid ${RULE}`, borderRadius: "10px", display:"flex", alignItems:"center", gap: "1rem", cursor: "pointer"}}>
+          <button key={`${res.phylumNum}-${name}`} onClick={() => onSpeciesClick(res.species, res.phylumNum, res.className)} style={{padding:"0.8rem", textAlign:"left", background: IVORY, border: `1px solid ${RULE}`, borderRadius: "10px", display:"flex", alignItems:"center", gap: "1rem", cursor: "pointer"}}>
              <span style={{background: colors.bg, color: colors.accent, padding:"2px 8px", borderRadius:"10px", fontSize: "0.65rem", whiteSpace: "nowrap"}}>{res.phylumEmoji} P{res.phylumNum}</span>
              <span style={{fontStyle: "italic", flex: 1}}>{hl(name, query)}</span>
              <span style={{fontSize: "0.7rem", color: MUTED}}>{res.className}</span>
@@ -256,8 +259,7 @@ function StatsView() {
       groups.forEach(g => {
         const list = g.subfamilies ? g.subfamilies.flatMap(s => s.species || []) : (g.species || []);
         list.forEach(s => {
-          const name = Array.isArray(s) ? s[0] : s;
-          const flag = Array.isArray(s) ? s[1] : "";
+          const [name, flag] = normalizeSpecies(s);
           if (isSens(flag)) sensitive++;
           if (isCross(flag)) crossover++;
           if (getEntry(name)) withEntries++;
@@ -331,8 +333,9 @@ export default function App() {
         groups.forEach(g => {
           const list = g.subfamilies ? g.subfamilies.flatMap(s => s.species || []) : (g.species || []);
           list.forEach(s => {
-            const name = Array.isArray(s) ? s[0] : s;
-            if (name.toLowerCase().includes(val.toLowerCase())) {
+            const [name] = normalizeSpecies(s);
+            // FIX ISSUE 2: Safe defensive check for string inclusion
+            if (name && typeof name === "string" && name.toLowerCase().includes(val.toLowerCase())) {
               found.push({ species: s, phylumNum: p.number, phylumEmoji: p.emoji, className: g.name });
             }
           });
@@ -382,7 +385,6 @@ export default function App() {
                       style={{ background: IVORY, border: `1px solid ${RULE}`, borderTop: `4px solid ${PHYLUM_COLORS[p.number].accent}`, borderRadius: "12px", padding: "1.5rem", textAlign: "left", cursor: "pointer", animationDelay: `${idx * 0.05}s` }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
                         <div style={{ fontSize: "1.5rem", marginBottom: "0.25rem" }}>{p.emoji}</div>
-                        {/* ISSUE 2 FIX APPLIED HERE */}
                         <span style={{ fontSize: "0.75rem", color: MUTED }}>
                           {p.count} species ({pct}%)
                         </span>
