@@ -4308,10 +4308,10 @@ export const aestheticMeta = {
 }; // <─ IMPORTANT: This closes the entire metaTags object
 
 // ... (Your Phylum 11 and Phylum 12 definitions are above this)
-// --- 1. THE LOGIC BLOCK ---
+// 1. First, define all the "Worker" functions
 const countFuturist = (phylum) => {
-  return phylum.families.reduce((total, family) => {
-    return total + family.subfamilies.reduce((subTotal, sub) => {
+  return phylum.families.reduce((total, fam) => {
+    return total + fam.subfamilies.reduce((subTotal, sub) => {
       return subTotal + (sub.species?.length || 0);
     }, 0);
   }, 0);
@@ -4336,28 +4336,27 @@ const convertSpecies = (phylum) => {
   }
 };
 
-// --- 2. THE EXECUTION BLOCK ---
-// This is where we list all your phyla so the code knows they exist
+// 2. Second, build the list (ensure phylum1-12 are defined above this)
 const PHYLA_LIST = [
   phylum1, phylum2, phylum3, phylum4, phylum5, 
   phylum6, phylum7, phylum8, phylum9, phylum10, 
   phylum11, futuristTechnologicalPhylum
 ];
-// 1. Format all species to the [Name, Flag] standard
+
+// 3. Third, run the processing
 PHYLA_LIST.forEach(convertSpecies);
 
-// 2. Calculate counts for EVERY phylum (1-12) correctly
 PHYLA_LIST.forEach(p => {
   if (p.number === 12) {
-    // Uses your special function for the nested futurist data
     p.count = countFuturist(p);
-  } else {
-    // For phyla 1-11, it sums up the species in each class
+  } else if (p.classes) {
     p.count = p.classes.reduce((acc, c) => acc + (c.species?.length || 0), 0);
+  } else {
+    p.count = 0;
   }
 });
-// --- 3. THE FINAL EXPORT ---
-// This is what your website's main page "grabs" to show the data
+
+// 4. LASTLY, Export the final object
 export const ATLAS_DATA = {
   total: calculateTotal(PHYLA_LIST),
   phyla: PHYLA_LIST
