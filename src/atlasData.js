@@ -1,31 +1,3 @@
-// 1. Helper to turn a string "Name" into ["Name", {status: "N"}]
-const formatSpecies = (name) => {
-  if (Array.isArray(name)) return name;
-  return [name, { status: "N", tier: "core" }];
-};
-
-// 2. The upgraded converter that supports BOTH structures
-const convertSpecies = (phylum) => {
-  // Case A: For Phyla 1-11 (uses .classes)
-  if (phylum.classes) {
-    phylum.classes.forEach(cls => {
-      cls.species = cls.species.map(formatSpecies);
-    });
-  }
-
-  // Case B: For Phylum 12 (uses .families -> .subfamilies)
-  if (phylum.families) {
-    phylum.families.forEach(family => {
-      if (family.subfamilies) {
-        family.subfamilies.forEach(sub => {
-          sub.species = sub.species.map(formatSpecies);
-        });
-      }
-    });
-  }
-
-  return phylum;
-};
 const phylum1 = {
       number: 1,
       name: "Historical",
