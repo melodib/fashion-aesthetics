@@ -1,8 +1,20 @@
+// 1. The "Counter" Function
 const calculateTotal = (phyla) => {
-  return phyla.reduce((total, phylum) => {
-    // This looks for 'count', which we will calculate for each phylum individually
-    return total + (phylum.count || 0);
-  }, 0);
+  return phyla.reduce((total, phylum) => total + (phylum.count || 0), 0);
+};
+
+// PLACE THE CONVERTER HERE:
+const convertSpecies = (phylum) => {
+  if (!phylum.families) return phylum; // Safety check
+  phylum.families.forEach(family => {
+    family.subfamilies.forEach(sub => {
+      sub.species = sub.species.map(name => {
+        if (Array.isArray(name)) return name;
+        return [name, { status: "N", tier: "core" }];
+      });
+    });
+  });
+  return phylum;
 };
 const phylum1 = {
       number: 1,
@@ -4243,8 +4255,6 @@ export const aestheticMeta = {
     function: ["experimental"],
     mood: ["abstract"]
   }
-};
-export const metaTags = {
   "Cyberpunk": {
     core: ["cyberpunk", "high-tech", "low-life"],
     visuals: [
@@ -4299,8 +4309,7 @@ export const metaTags = {
       "green", "earth tones", "gold"
     ],
     keywords: [
-      "renewable", "community", "nature-tech"
-    ]
+      "renewable", "community", "nature-tech"]
   } // This closes Solarpunk
 }; // <─ IMPORTANT: This closes the entire metaTags object
 
@@ -4312,7 +4321,8 @@ const countFuturist = (phylum) => {
     }, 0);
   }, 0);
 };
-
+// --- PLACE STEP 2 HERE ---
+convertSpecies(futuristTechnologicalPhylum);
 // Apply the count to Phylum 12
 futuristTechnologicalPhylum.count = countFuturist(futuristTechnologicalPhylum);
 
@@ -4323,6 +4333,12 @@ const PHYLA_LIST = [
   phylum3,
   phylum4,
   phylum5,
+  phylum6,
+  phylum7,
+  phylum8,
+  phylum9,
+  phylum10,
+  phylum11,
   futuristTechnologicalPhylum
 ];
 
