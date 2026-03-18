@@ -3593,243 +3593,431 @@ export const futuristTechnologicalPhylum = {
   number: 12,
   name: "Futurist & Technological",
   emoji: "🚀",
-  description: "Speculative science, human-machine futures, and the aesthetics of tomorrow",
-  classes: [
+  description:
+    "Speculative science, human-machine futures, and the evolving relationship between technology, body, and reality",
+
+  // NEW: Evolutionary order of families
+  families: [
     {
-      name: "STEAMPUNK & RETRO-FUTURISM",
-      species: [
-        "Stonepunk", "Cassettepunk", "Sandalpunk", "Clockpunk", "Steampunk",
-        "Airship Aesthetic", "Decopunk", "Dieselpunk", "Atompunk", "Pulp Futurism",
-        "Raygun Gothic", "Cassette Futurism", "Neo-Victorian AI / Automaton Aesthetic",
-        "Industrial Laboratory Fashion", "Airship Crew / Navigator Uniforms",
-        "Retro-Scientific Explorer", "Mythpunk", "Arcanepunk", "Elfpunk", "Nowpunk",
-        "Solarpunk Victorian", "Silkpunk", "Rococopunk", "Fiberpunk", "Transistorpunk"
+      name: "RETRO-FUTURE IMAGINARIES",
+      concept: "Futures imagined from past technological eras",
+      order: 1,
+
+      subfamilies: [
+        {
+          name: "Primitive & Mythic Futures",
+          species: [
+            "Stonepunk",
+            "Sandalpunk",
+            "Mythpunk",
+            "Elfpunk"
+          ]
+        },
+        {
+          name: "Industrial Retro-Futures",
+          species: [
+            "Clockpunk",
+            "Steampunk",
+            "Airship Aesthetic",
+            "Industrial Laboratory Fashion",
+            "Retro-Scientific Explorer"
+          ]
+        },
+        {
+          name: "Electrical & Atomic Futures",
+          species: [
+            "Dieselpunk",
+            "Decopunk",
+            "Atompunk",
+            "Raygun Gothic",
+            "Pulp Futurism",
+            "Transistorpunk",
+            "Cassettepunk",
+            "Cassette Futurism"
+          ]
+        },
+        {
+          name: "Hybrid & Ornamental Punk",
+          species: [
+            "Rococopunk",
+            "Silkpunk",
+            "Arcanepunk",
+            "Solarpunk Victorian"
+          ]
+        }
       ]
     },
+
     {
-      name: "VAPORWAVE & DIGITAL NOSTALGIA",
-      species: [
-        "Vaporwave", "Synthwave", "Retrowave", "Outrun Aesthetic", "Frutiger Aero",
-        "Frutiger Metro", "Mallsoft Aesthetic", "Pastel Vaporwave", "Dark Vaporwave",
-        "Vaporgoth", "Vaporwave Street", "Corporate Memphis Aesthetic", "Y2K Futurism",
-        "Broken Transmission Aesthetic", "Aesthetic Glitch", "Hauntology Aesthetic",
-        "Utopian Superflat", "Neo-Vaporwave", "AI-Generated Retro Aesthetic",
-        "Cyber-Memphis Hybrid", "3D Mallsoft / Virtual Arcade Fashion", "Pixel Nostalgia",
-        "Signalwave Aesthetic", "Liminal Space Aesthetic", "Weirdcore", "Analog Horror Aesthetic"
+      name: "DIGITAL NOSTALGIA & SIMULATION ROOTS",
+      concept: "Retro-digital memory, media nostalgia, and early virtual aesthetics",
+      order: 2,
+
+      subfamilies: [
+        {
+          name: "Optimistic Retro Digital",
+          species: [
+            "Vaporwave",
+            "Synthwave",
+            "Retrowave",
+            "Outrun Aesthetic",
+            "Frutiger Aero",
+            "Frutiger Metro",
+            "Y2K Futurism"
+          ]
+        },
+        {
+          name: "Corporate & Consumer Memory",
+          species: [
+            "Mallsoft Aesthetic",
+            "Corporate Memphis Aesthetic"
+          ]
+        },
+        {
+          name: "Glitch, Liminal & Decay",
+          species: [
+            "Weirdcore",
+            "Liminal Space Aesthetic",
+            "Analog Horror Aesthetic",
+            "Broken Transmission Aesthetic",
+            "Signalwave Aesthetic",
+            "Hauntology Aesthetic"
+          ]
+        }
       ]
     },
+
     {
-      name: "CYBERPREP & TECH OPTIMISM",
-      species: [
-        "Cyberprep", "Digital Nomad Tech Aesthetic", "Data Center Aesthetic",
-        "Tech Utopia Aesthetic", "Clean Tech Aesthetic", "Minimalist Tech Aesthetic",
-        "Apple Aesthetic", "Interface Aesthetic", "Operating System Aesthetic",
-        "Beta Version Aesthetic", "Holographic UI Aesthetic", "Silicon Valley Aesthetic",
-        "Silicon Valley Uniform", "Big Tech Campus Aesthetic", "Web3 / Crypto Aesthetic",
-        "Terminal Aesthetic", "Monospace Typography Wear", "ASCII Print Aesthetic",
-        "Wireframe Silhouette", "Green Code Aesthetic", "Grid System Aesthetic",
-        "Data Visualization Aesthetic", "Transparent Tech Aesthetic", "Keynote Aesthetic",
-        "Hackathon Aesthetic", "Silicon Zen", "Technozen Fashion", "Dumbphone Aesthetic",
-        "Slow Tech Aesthetic", "Digital Detox Aesthetic", "Abundance Aesthetic", "Recoverycore"
+      name: "TECH OPTIMISM & SYSTEM DESIGN",
+      concept: "Clean, structured, and utopian visions of technology",
+      order: 3,
+
+      subfamilies: [
+        {
+          name: "Corporate & Platform Aesthetic",
+          species: [
+            "Cyberprep",
+            "Silicon Valley Aesthetic",
+            "Apple Aesthetic",
+            "Big Tech Campus Aesthetic"
+          ]
+        },
+        {
+          name: "Interface & Data Abstraction",
+          species: [
+            "Interface Aesthetic",
+            "Operating System Aesthetic",
+            "Holographic UI Aesthetic",
+            "Grid System Aesthetic",
+            "Data Visualization Aesthetic",
+            "Wireframe Silhouette",
+            "Terminal Aesthetic",
+            "ASCII Print Aesthetic"
+          ]
+        },
+        {
+          name: "Minimalism & Counter-Tech",
+          species: [
+            "Minimalist Tech Aesthetic",
+            "Clean Tech Aesthetic",
+            "Transparent Tech Aesthetic",
+            "Slow Tech Aesthetic",
+            "Digital Detox Aesthetic",
+            "Dumbphone Aesthetic",
+            "Technozen Fashion",
+            "Recoverycore"
+          ]
+        }
       ]
     },
+
     {
-      name: "TECHWEAR & FUNCTIONAL FUTURE",
-      species: [
-        "Techwear", "Acronym Aesthetic", "Urban Tactical Aesthetic", "Tactical Streetwear",
-        "Gorpcore Luxe", "Technical Fabric Aesthetic", "Modular Clothing Aesthetic",
-        "Utility Vest Aesthetic", "Stealth Techwear", "Ninja Techwear", "Techwear Minimal",
-        "Techwear Maximalist", "Military Utility Fashion", "Tactical Civilian Aesthetic",
-        "Functional Dystopia Aesthetic", "Exosuit-Inspired Fashion", "Adaptive Weatherwear",
-        "Urban Recon Aesthetic", "Cybersecurity Agent Aesthetic", "Biometric-Luxe",
-        "Augmented / Smart Layering", "Extreme Climate Techwear", "Urban Mobility Techwear",
-        "Disaster Response Techwear", "Cybergrunge", "Medical Techwear",
-        "Climate Emergency Wear", "Soft Techwear", "Cargo Future Aesthetic", "Workwear Future"
+      name: "FUNCTIONAL FUTURES (TECHWEAR)",
+      concept: "Technology as utility, survival, and performance",
+      order: 4,
+
+      subfamilies: [
+        {
+          name: "Urban Tactical",
+          species: [
+            "Techwear",
+            "Acronym Aesthetic",
+            "Urban Tactical Aesthetic",
+            "Tactical Streetwear",
+            "Modular Clothing Aesthetic",
+            "Utility Vest Aesthetic",
+            "Stealth Techwear",
+            "Ninja Techwear"
+          ]
+        },
+        {
+          name: "Extreme & Climate Systems",
+          species: [
+            "Extreme Climate Techwear",
+            "Adaptive Weatherwear",
+            "Disaster Response Techwear",
+            "Climate Emergency Wear",
+            "Urban Mobility Techwear"
+          ]
+        }
       ]
     },
+
     {
-      name: "CYBERPUNK",
-      species: [
-        "Neuromancer Aesthetic", "Smart City Aesthetic", "Blade Runner Aesthetic",
-        "Akira Aesthetic", "Ghost in the Shell Aesthetic", "Cyberpunk Anime Aesthetic",
-        "Shadowrun Aesthetic", "Classic Cyberpunk Aesthetic", "Cyberpunk",
-        "Neon Cyberpunk", "Low Life High Tech Aesthetic", "Corporate Dystopia Aesthetic",
-        "Holographic Streetwear", "LED Fashion", "Augmented Reality Outfit",
-        "VR-Inspired Aesthetic", "Cyberpunk 2077 Aesthetic", "Post-Cyberpunk / Soft Cyberpunk",
-        "Bio-Neon Hybrid Aesthetic", "Corporate Espionage Aesthetic",
-        "Digital Street Hacker Aesthetic", "Corporate Gothic", "High Fashion Cyberpunk",
-        "Domestic Cyberpunk", "Pastoral Cyberpunk", "Augmented Human Aesthetic"
+      name: "CYBERPUNK & NETWORK SOCIETY",
+      concept: "High-tech systems under social tension and inequality",
+      order: 5,
+
+      subfamilies: [
+        {
+          name: "Canonical Cyberpunk",
+          species: [
+            "Neuromancer Aesthetic",
+            "Blade Runner Aesthetic",
+            "Akira Aesthetic",
+            "Ghost in the Shell Aesthetic",
+            "Classic Cyberpunk Aesthetic",
+            "Cyberpunk",
+            "Neon Cyberpunk"
+          ]
+        },
+        {
+          name: "Corporate & Surveillance",
+          species: [
+            "Corporate Dystopia Aesthetic",
+            "Low Life High Tech Aesthetic",
+            "Corporate Espionage Aesthetic",
+            "Smart City Aesthetic"
+          ]
+        },
+        {
+          name: "Variants & Evolutions",
+          species: [
+            "Post-Cyberpunk",
+            "Domestic Cyberpunk",
+            "Pastoral Cyberpunk",
+            "High Fashion Cyberpunk"
+          ]
+        }
       ]
     },
+
     {
-      name: "CYBER GOTH & DARK TECH",
-      species: [
-        "Cyber Goth", "Drone Culture Aesthetic", "Industrial Goth", "Health Goth",
-        "Neon Goth", "EBM Fashion", "Dark Electro Fashion", "Dark Cyber Aesthetic",
-        "Dystopian Club Aesthetic", "Panopticon Aesthetic", "Surveillance Aesthetic",
-        "Industrial Decay / Ruin Goth", "Hacktivist Aesthetic", "Bio-Industrial Goth",
-        "Neon Noir / Cyberpunk Club", "Synthwave Goth", "Digital Occult / Cryptographic Goth",
-        "Terminal Noir Aesthetic", "Corpcore", "Dark Rave Aesthetic", "Doomscroll Aesthetic",
-        "Necrotic Tech", "Witch House Aesthetic", "Dronecore", "CV Dazzle Aesthetic",
-        "Anti-Facial Recognition Fashion", "Machine Aesthetic", "Control Aesthetic"
+      name: "COLLAPSE & POST-APOCALYPSE",
+      concept: "Breakdown of systems and survival aesthetics",
+      order: 6,
+
+      subfamilies: [
+        {
+          name: "Survivalist Worlds",
+          species: [
+            "Mad Maxcore",
+            "Wasteland Aesthetic",
+            "Scavenger Aesthetic",
+            "Bunker Aesthetic"
+          ]
+        },
+        {
+          name: "Environmental Collapse",
+          species: [
+            "Nuclear Winter Aesthetic",
+            "Climate Apocalypse Aesthetic",
+            "Dustbowl Dystopia"
+          ]
+        }
       ]
     },
+
     {
-      name: "POST-APOCALYPTIC & DYSTOPIAN",
-      species: [
-        "Post-Apocalyptic Aesthetic", "Dystopian Fashion", "Survivalist Chic",
-        "Mad Maxcore", "Road Warrior Aesthetic", "Wasteland Aesthetic", "Scavenger Aesthetic",
-        "Bunker Aesthetic", "Biohazard Chic", "Nuclear Winter Aesthetic",
-        "Climate Apocalypse Aesthetic", "Reclaimed Fabric Aesthetic", "Rust Belt Aesthetic",
-        "Collapsed Infrastructure Aesthetic", "Dustbowl Dystopia", "Fallout Aesthetic",
-        "The Last of Us Aesthetic", "Doomsday Cult Fashion", "Social Credit Fashion",
-        "Authoritarian Uniform Aesthetic"
+      name: "ECO-FUTURES & SOLARPUNK",
+      concept: "Harmony between technology and ecology",
+      order: 7,
+
+      subfamilies: [
+        {
+          name: "Solarpunk Axis",
+          species: [
+            "Solarpunk",
+            "Lunarpunk",
+            "Oceanpunk",
+            "Tidalpunk"
+          ]
+        },
+        {
+          name: "Ecological Systems",
+          species: [
+            "Biomimicry Aesthetic",
+            "Living Material Aesthetic",
+            "Rewilded City Aesthetic",
+            "Mycorrhizal Network Aesthetic"
+          ]
+        }
       ]
     },
+
     {
-      name: "SOLARPUNK & ECO-FUTURES",
-      species: [
-        "Greenpunk", "Eco-Tech Aesthetic", "Renewable Energy Aesthetic",
-        "Rewilded City Aesthetic", "Green Architecture Aesthetic", "Sustainable Future Fashion",
-        "Living Material Aesthetic", "Biomimicry Aesthetic", "Hopepunk Fashion",
-        "Land Back Aesthetic", "Technozen Eco", "Solarpunk", "Lunarpunk", "Oceanpunk", "Tidalpunk",
-        "Feralpunk", "Mycorrhizal Network Aesthetic"
+      name: "BIO-TECH & LIVING MATERIALS",
+      concept: "Biology becomes technology",
+      order: 8,
+
+      subfamilies: [
+        {
+          name: "Material Innovation",
+          species: [
+            "Biopunk",
+            "Mycelium Fashion",
+            "Algae Fashion",
+            "Bio-Luminescent Textiles",
+            "Spider Silk Fashion"
+          ]
+        },
+        {
+          name: "Genetic Systems",
+          species: [
+            "CRISPR Fashion",
+            "Genetic Expression Fashion",
+            "Synthetic Skin Clothing"
+          ]
+        }
       ]
     },
-    {
-      name: "BIOFABRICATION & LIVING MATERIALS",
-      species: [
-        "Biopunk", "Bio-Luminescent Textiles", "Smart Fabric Aesthetic",
-        "Self-Healing Materials", "Biomimicry Couture", "Mycelium Fashion",
-        "Mushroom Leather Aesthetic", "Algae Fashion", "CRISPR Fashion",
-        "Coral Labcore Aesthetic", "Insect-Inspired Wear", "Synthetic Skin Clothing",
-        "Lab Coat Couture", "Genetic Expression Fashion", "Wetware Aesthetic",
-        "Sustainable Futurism", "Bio-Tech Symbiotic Aesthetic", "Mycelium-Tech Aesthetic",
-        "Algae-Drip Aesthetic", "Synthetic Microbe Fashion", "Programmable Genetic Textiles",
-        "Neural-Responsive Bio-Fabric", "Eco-Bio Fashion", "Kombucha Leather Aesthetic",
-        "Spider Silk Fashion", "Ocean Textile Aesthetic", "Fermentation Fashion",
-        "Bioprinted Textile Aesthetic", "Living Colour Fashion", "Mussel Adhesive Fashion",
-        "Fungal Network Fashion", "Terroir Fashion", "Epigenetic Chic"
-      ]
-    },
+
     {
       name: "TRANSHUMANISM & BODY AUGMENTATION",
-      species: [
-        "Biohacker Aesthetic", "Grinder Aesthetic", "DIY Implant Fashion",
-        "Genetic Fashion", "Quantified Self Aesthetic", "Body Modification Aesthetic",
-        "Transhumanist Aesthetic", "Cyborg Elegance", "Living Tattoo Aesthetic",
-        "Wetware Developer Aesthetic", "Exoskeletal Fashion", "Adaptive Skin Fashion",
-        "Kinetic Augmentation Fashion", "Synthetic Organ Fashion", "Biohacker Uniforms",
-        "Hacker-Maker Fusion", "CRISPR Couture", "Extreme Biohacking",
-        "Environmental Bio-Feedback Fashion", "Longevity Aesthetic", "Cryonics Aesthetic",
-        "Accelerationist Body Aesthetic", "Posthuman Eugenics Fashion",
-        "Optimized Human Aesthetic", "Immortalist Fashion", "Augmented Human Aesthetic"
+      concept: "The human body as an upgradeable platform",
+      order: 9,
+
+      subfamilies: [
+        {
+          name: "Biohacking Culture",
+          species: [
+            "Biohacker Aesthetic",
+            "Grinder Aesthetic",
+            "DIY Implant Fashion"
+          ]
+        },
+        {
+          name: "Posthuman Identity",
+          species: [
+            "Cyborg Elegance",
+            "Optimized Human Aesthetic",
+            "Immortalist Fashion",
+            "Longevity Aesthetic"
+          ]
+        }
       ]
     },
+
     {
-      name: "NEUROTECH & MIND INTERFACE",
-      species: [
-        "Neural Mod Aesthetic", "Augmented Sense Aesthetic", "Neuro-Affective Fashion",
-        "Cognitive Interface Aesthetic", "Emotion-Sensing Fashion", "Neuro-Responsive Fashion",
-        "BCI Fashion Aesthetic", "Neural Privacy Aesthetic", "Neuro-Surveillance Fashion",
-        "Sensory Enhancement Aesthetic", "Mind-State Fashion"
+      name: "AI & POSTHUMAN SYSTEMS",
+      concept: "Intelligence beyond the human",
+      order: 10,
+
+      subfamilies: [
+        {
+          name: "Machine Identity",
+          species: [
+            "AI Aesthetic",
+            "Androidcore",
+            "Robot Aesthetic"
+          ]
+        },
+        {
+          name: "Generative Systems",
+          species: [
+            "Generative AI Aesthetic",
+            "Prompt Engineering Aesthetic",
+            "Latent Space Aesthetic"
+          ]
+        }
       ]
     },
-    {
-      name: "SPACE & COSMIC FUTURISM",
-      species: [
-        "Soviet Space Aesthetic", "Orbital Infrastructure Aesthetic", "Gravitypunk",
-        "Cosmonaut Aesthetic", "Space Race Aesthetic", "NASA Aesthetic",
-        "Astronaut Aesthetic", "Space Station Aesthetic", "Cosmic Futurism",
-        "Spacecore", "Interstellar Aesthetic", "Terraforming Aesthetic", "Colony Aesthetic",
-        "Zero Gravity Fashion", "Martian Colonist Wardrobe", "Dyson Sphere Aesthetic",
-        "SpaceX Aesthetic", "Afrofuturism", "Space Opera Fashion", "Star Trek Aesthetic",
-        "Star Wars Aesthetic", "Dune Aesthetic", "Black Panther / Wakanda Tech Aesthetic",
-        "Cosmic Horror Fashion", "Afro-Caribbean Futurism", "Pan-African Futurism",
-        "Indigenous Futurism"
-      ]
-    },
-    {
-      name: "AI & POSTHUMAN",
-      species: [
-        "AI Aesthetic", "Nanopunk", "AI Chic", "Drone Swarm Aesthetic", "Androidcore",
-        "Robot Aesthetic", "Posthuman Aesthetic", "Singularity Aesthetic",
-        "Digital Human Aesthetic", "Generative AI Aesthetic", "Prompt Engineering Aesthetic",
-        "Latent Space Aesthetic", "Procedural Textile Aesthetic", "Sentient AI Aesthetic",
-        "Cyborgcore", "Bio-Digital Aesthetic", "Swarm-Tech Fashion", "Morphogenic Couture",
-        "Augmented AI Persona", "Ghost in the Network", "Longtermist Fashion"
-      ]
-    },
+
     {
       name: "DIGITAL REALITY & SIMULATION",
-      species: [
-        "Matrixcore", "Algorithmic Governance Aesthetic", "Memory Economy Aesthetic",
-        "Simulation Aesthetic", "Parallel Universe Aesthetic", "Digital Existentialism Aesthetic",
-        "Avatar Reality Aesthetic", "Rendered Aesthetic", "Uncanny Valley Aesthetic",
-        "Black Mirror Aesthetic", "Westworld Aesthetic", "Virtual Wardrobe Aesthetic",
-        "Digital Skin Aesthetic", "Metaverse Native", "Avatar Couture",
-        "Uploaded Consciousness Aesthetic", "Procedural Reality Aesthetic",
-        "Virtual Physics Aesthetic", "Alternate Self Aesthetic", "CGI Couture",
-        "Customizable Avatar Identity", "Social VR Aesthetic", "Mindscape Fashion",
-        "Cognitive Overlay Aesthetic", "Link Rot Aesthetic", "Data Corruption Fashion",
-        "Dead Website Aesthetic", "404 Fashion", "Archive.org Aesthetic",
-        "Beta Perpetual Fashion", "Ancestor Simulation Aesthetic", "Post-Internet Pastoral",
-        "Bureaucratic Futurism", "Simulation Fatigue Aesthetic", "Multiverse Aesthetic"
+      concept: "Reality becomes virtual, editable, and unstable",
+      order: 11,
+
+      subfamilies: [
+        {
+          name: "Virtual Identity",
+          species: [
+            "Matrixcore",
+            "Avatar Couture",
+            "Metaverse Native"
+          ]
+        },
+        {
+          name: "Simulation Theory",
+          species: [
+            "Simulation Aesthetic",
+            "Multiverse Aesthetic",
+            "Parallel Universe Aesthetic"
+          ]
+        }
       ]
     },
+
     {
-      name: "Y3K & SPECULATIVE FUTURES",
-      species: [
-        "Y3K Aesthetic", "Chronopunk", "Planetary Infrastructure Aesthetic",
-        "Future Minimalism", "Alien Minimalism", "Post-Human Chic", "Soft Futurism",
-        "Hard Futurism", "Genderless Future Aesthetic", "Printed Fashion Aesthetic",
-        "Smart Textile Aesthetic", "Wearable Tech Aesthetic", "Transhumanist Wardrobe",
-        "Quantum Textile Experiment", "Anti-Gravity Couture", "Climate-Adapted Futurewear",
-        "Virtual Runway Aesthetic", "Post-Scarcity Aesthetic", "Liquid Metal Aesthetic",
-        "Post-Scarcity Maximalism", "Symbiotic Fashion", "Self-Repairing Textile Aesthetic",
-        "Morphing Fashion", "Modular Futurewear", "Algorithmic Fashion",
-        "Generative Pattern Fashion", "Datawear Aesthetic", "Avatar Fashion",
-        "Holographic Fashion", "Augmented Reality Fashion", "Space Habitat Fashion",
-        "Extreme Environment Fashion", "Micro-Climate Fashion", "Non-Human Fashion",
-        "Quantum Entanglement Wear", "Extinction Aesthetic"
+      name: "SPACE & COSMIC FUTURISM",
+      concept: "Expansion beyond Earth",
+      order: 12,
+
+      subfamilies: [
+        {
+          name: "Space Age Foundations",
+          species: [
+            "NASA Aesthetic",
+            "Space Race Aesthetic",
+            "Astronaut Aesthetic"
+          ]
+        },
+        {
+          name: "Sci-Fi Civilizations",
+          species: [
+            "Dune Aesthetic",
+            "Star Wars Aesthetic",
+            "Star Trek Aesthetic"
+          ]
+        }
+      ]
+    },
+
+    {
+      name: "SPECULATIVE END-STATES (Y3K)",
+      concept: "Far-future abstraction beyond current human logic",
+      order: 13,
+
+      subfamilies: [
+        {
+          name: "Post-Scarcity & Abstract Futures",
+          species: [
+            "Y3K Aesthetic",
+            "Post-Scarcity Aesthetic",
+            "Liquid Metal Aesthetic",
+            "Quantum Textile Experiment",
+            "Non-Human Fashion"
+          ]
+        }
       ]
     }
-  ],
-  extras: {
-    motifs: [
-      "Brass & Gears", "Clockwork", "Chrome", "Exposed Mechanics", "Reflective Metallics",
-      "CRT / Grain Textures", "Glitch Effects", "Blur / Glow Pastels", "Signalwave Patterns",
-      "Keypad / Terminal Prints", "Wireframe / Grid Silhouettes", "ASCII Print",
-      "Data Visualization Patterns", "Procedural Textures", "AI-Generated Retro",
-      "Holographic / Transparent Surfaces"
-    ],
-    functionalFeatures: [
-      "Thermoregulation-Core", "Cargo Pockets / Modular Storage", "Temperature-Adaptive Clothing",
-      "Adaptive Layering", "Exosuit-Inspired Functional Wear", "Biofeedback / Neuro-Responsive Layer",
-      "Self-Healing Materials", "Programmable Genetic Textiles", "Micro-Climate Tech",
-      "Wearable Sensors / BCI Integration", "Smart Fabrics", "Environmental Adaptive Textiles"
-    ],
-    conceptualTags: [
-      "Innovation Aesthetic", "Future Perfect", "Abundance", "Recoverycore", "Technozen",
-      "Orbital Designer Fashion", "Quantum Fashion", "Computational Aesthetic",
-      "Cognitive Couture", "Coded Reality Aesthetic", "Fashion Futurism", "Fluid Future",
-      "Bio-Fashion", "Emergency Fashion", "Climate Engineering", "Community Tech",
-      "Biometric Clothing", "DNA Wardrobe", "Phenotype Fashion"
-    ]
-  }
+  ]
 };
 
-// 1. The Function (Logic)
+
+// Utility: count species across new structure
 const calculateSpeciesCount = (phylum) => {
-  return phylum.classes.reduce((total, currentClass) => {
-    return total + currentClass.species.length;
+  return phylum.families.reduce((total, family) => {
+    return total + family.subfamilies.reduce((subTotal, sub) => {
+      return subTotal + sub.species.length;
+    }, 0);
   }, 0);
 };
 
-// 2. The Execution (Assigning the count)
 futuristTechnologicalPhylum.count = calculateSpeciesCount(futuristTechnologicalPhylum);
 
-// 3. The Export (Making it available to your website)
 export default futuristTechnologicalPhylum;
 
-console.log(`Phylum 12 loaded with ${futuristTechnologicalPhylum.count} species.`);
+console.log(
+  `Phylum 12 (Refactored) loaded with ${futuristTechnologicalPhylum.count} species.`
+);
