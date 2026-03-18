@@ -2,6 +2,8 @@ import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { ATLAS_DATA } from "./atlasData.js";
 import { NOTES } from "./notes.js";
 import { SPECIES_ENTRIES } from "./speciesEntries.js";
+import { futuristTechnologicalPhylum } from './atlasData';
+import { queryAtlas } from './searchUtils';
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 const ACCENT = "#B8896A";
@@ -333,7 +335,7 @@ function PhylumView({ phylum, onSpeciesClick }) {
 }
 
 // ── SearchView ────────────────────────────────────────────────────────────────
-function SearchView({ query, onSpeciesClick }) {
+function SearchView({ results, query, onSpeciesClick }) {
   const results = useMemo(() => {
     if (!query||query.length<2) return [];
     const q=query.toLowerCase();
@@ -480,6 +482,7 @@ export default function App() {
   const [selectedSpecies, setSelectedSpecies]     = useState(null);
   const [selectedPhylumNum, setSelectedPhylumNum] = useState(null);
   const [selectedClassName, setSelectedClassName] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   const animatedCount = useCountUp(ATLAS_DATA.total, 1800);
 
@@ -499,6 +502,12 @@ export default function App() {
 
   function handleSearch(val) {
     setSearchQuery(val);
+    
+    // This tells your new 'searchUtils' to find matches
+    // For now, we are searching by 'mood', but you can change this to 'ideology' or 'environment'!
+    const found = queryAtlas({ mood: val }); 
+    setSearchResults(found);
+
     if (val.length > 1) switchView("search");
     else if (!val) switchView(activePhylum ? "phylum" : "home");
   }
@@ -625,8 +634,15 @@ export default function App() {
             </div>
           )}
 
-          {view === "search" && <SearchView query={searchQuery} onSpeciesClick={handleSpeciesClick} />}
-
+          {/* SEARCH VIEW */}
+          {view === "search" && (
+            <SearchView 
+              results={searchResults} 
+              query={searchQuery} 
+              onSpeciesClick={handleSpeciesClick} 
+            />
+          )}
+{/* Stats view */}
           {view === "stats" && (
             <div>
               <h2 style={{ fontFamily: "'EB Garamond',Georgia,serif", fontSize: "1.6rem", color: INK, marginBottom: "1.5rem", paddingBottom: "0.75rem", borderBottom: `1px solid ${ACCENT}`, fontWeight: 400 }}>
