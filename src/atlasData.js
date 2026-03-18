@@ -4278,8 +4278,9 @@ export const aestheticMeta = {
     techRelation: "post-tech",
     function: ["experimental"],
     mood: ["abstract"]
-}, // Added comma here
-  export const metaTags = { // <--- MAKE SURE THIS LINE IS HERE
+}
+    };
+  export const metaTags = {
 "Cyberpunk": {
     core: ["cyberpunk", "high-tech", "low-life"],
     visuals: [
