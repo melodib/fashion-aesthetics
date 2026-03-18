@@ -4158,8 +4158,141 @@ export const futuristTechnologicalPhylum = {
 
   ]
 };
+export const tagDimensions = {
+  timeline: [
+    "primitive", "industrial", "analog", "digital",
+    "networked", "biotech", "posthuman", "cosmic"
+  ],
 
+  ideology: [
+    "utopian", "neutral", "dystopian", "critical"
+  ],
 
+  environment: [
+    "urban", "corporate", "domestic", "wilderness",
+    "underground", "virtual", "space"
+  ],
+
+  techRelation: [
+    "low-tech", "mechanical", "electronic",
+    "digital", "biological", "hybrid", "post-tech"
+  ],
+
+  function: [
+    "aesthetic", "functional", "survival",
+    "ceremonial", "experimental"
+  ],
+
+  mood: [
+    "optimistic", "nostalgic", "anxious",
+    "aggressive", "minimal", "maximal", "eerie"
+  ]
+};
+export const aestheticMeta = {
+  "Cyberpunk": {
+    timeline: "networked",
+    ideology: "dystopian",
+    environment: ["urban", "corporate"],
+    techRelation: "digital",
+    function: ["aesthetic", "narrative"],
+    mood: ["anxious", "neon"]
+  },
+
+  "Solarpunk": {
+    timeline: "biotech",
+    ideology: "utopian",
+    environment: ["urban", "wilderness"],
+    techRelation: "hybrid",
+    function: ["functional", "aesthetic"],
+    mood: ["optimistic"]
+  },
+
+  "Techwear": {
+    timeline: "digital",
+    ideology: "neutral",
+    environment: ["urban"],
+    techRelation: "hybrid",
+    function: ["functional", "survival"],
+    mood: ["minimal"]
+  },
+
+  "Biopunk": {
+    timeline: "biotech",
+    ideology: "critical",
+    environment: ["laboratory"],
+    techRelation: "biological",
+    function: ["experimental"],
+    mood: ["eerie"]
+  },
+
+  "Y3K Aesthetic": {
+    timeline: "posthuman",
+    ideology: "speculative",
+    environment: ["virtual", "space"],
+    techRelation: "post-tech",
+    function: ["experimental"],
+    mood: ["abstract"]
+  }
+};
+export const metaTags = {
+  "Cyberpunk": {
+    core: ["cyberpunk", "high-tech", "low-life"],
+    visuals: [
+      "neon", "chrome", "rain", "holograms",
+      "dark city", "LED", "glitch"
+    ],
+    materials: [
+      "leather", "PVC", "metal", "synthetics"
+    ],
+    silhouettes: [
+      "layered", "armored", "streetwear"
+    ],
+    colors: [
+      "black", "neon blue", "neon pink", "purple"
+    ],
+    keywords: [
+      "hacker", "megacorp", "AI", "surveillance"
+    ]
+  },
+
+  "Techwear": {
+    core: ["functional", "utility", "performance"],
+    visuals: [
+      "straps", "pockets", "zippers", "modular"
+    ],
+    materials: [
+      "gore-tex", "nylon", "technical fabrics"
+    ],
+    silhouettes: [
+      "layered", "tactical", "ergonomic"
+    ],
+    colors: [
+      "black", "gray", "olive"
+    ],
+    keywords: [
+      "urban", "mobility", "weatherproof"
+    ]
+  },
+
+  "Solarpunk": {
+    core: ["eco-future", "sustainability"],
+    visuals: [
+      "plants", "solar panels", "organic shapes"
+    ],
+    materials: [
+      "linen", "hemp", "bioplastics"
+    ],
+    silhouettes: [
+      "flowing", "adaptive", "lightweight"
+    ],
+    colors: [
+      "green", "earth tones", "gold"
+    ],
+    keywords: [
+      "renewable", "community", "nature-tech"
+    ]
+  }
+};
 // COUNT FUNCTION (UPDATED)
 const calculateSpeciesCount = (phylum) => {
   return phylum.families.reduce((total, family) => {
