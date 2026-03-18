@@ -1,7 +1,16 @@
-export const ATLAS_DATA = {
-  total: 3275,
-  phyla: [
-    {
+// 1. The "Counter" Function
+const calculateTotal = (phyla) => {
+  return phyla.reduce((total, phylum) => {
+    const phylumCount = phylum.classes.reduce((classSum, cls) => {
+      return classSum + cls.species.length;
+    }, 0);
+    return total + phylumCount;
+  }, 0);
+};
+
+// 2. Your Massive List (Start)
+const PHYLA_LIST = [
+  {
       number: 1,
       name: "Historical",
       emoji: "🏛",
@@ -343,9 +352,6 @@ export const ATLAS_DATA = {
             ["2020s Brat Summer Moment", "N"],
             ["2020s Micro-Trend Acceleration", "N"],
           ],
-        },
-      ],
-      count: 267,
     },
     {
       number: 2,
@@ -4309,3 +4315,8 @@ export default futuristTechnologicalPhylum;
 console.log(
   `Phylum 12 FULL atlas loaded with ${futuristTechnologicalPhylum.count} species.`
 );
+// This goes at the very, very end of the file!
+export const ATLAS_DATA = {
+  total: calculateTotal(PHYLA_LIST),
+  phyla: PHYLA_LIST
+};
