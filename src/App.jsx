@@ -161,6 +161,7 @@ export default function App() {
 function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick }) {
   const [name, flag] = Array.isArray(species) ? species : [species ?? "Unknown", ""];
   const entry = SPECIES_ENTRIES?.[name];
+  console.log(name);
   const colors = PHYLUM_COLORS[phylumNum] ?? { bg: "#1A1A1A", accent: "#B8896A" };
   const phylumName = phylumOf(phylumNum)?.name ?? "Unknown Phylum";
   
@@ -213,7 +214,7 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
                 </div>
               )}
 {/* 3. Technical Motif Note */}
-<div>
+{entry.motif && (
   <div style={{ 
     background: "#FDFCFB", 
     border: `1px solid ${RULE}`, 
