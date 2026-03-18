@@ -4333,12 +4333,7 @@ PHYLA_LIST.forEach(p => {
     p.count = 0;
   }
 });
-
-// 4. The Export (This is what the rest of the app "sees")
-export const ATLAS_DATA = {
-  phyla: PHYLA_LIST,
-  totalSpecies: PHYLA_LIST.reduce((acc, p) => acc + (p.count || 0), 0)
-};
+// 4. The Export (ONLY USE THIS ONE)
 export const ATLAS_DATA = {
   total: calculateTotal(PHYLA_LIST),
   phyla: PHYLA_LIST
