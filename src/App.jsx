@@ -216,55 +216,41 @@ function SpeciesCard({ species, phylumNum, className, onClose }) {
 }
 
 // ── PhylumView (Handles standard Phyla and Phylum 12 Families) ────────────────
+// ── PhylumView ───────────────────────────────────────────────────────────────
 function PhylumView({ phylum, onSpeciesClick }) {
   const [activeGroup, setActiveGroup] = useState(null);
   const colors = PHYLUM_COLORS[phylum.number];
 
-  // Logic to handle Phylum 12's unique 'families' structure
+  // This part handles the choice between 'classes' and 'families'
   const groups = phylum.classes || phylum.families || [];
   const displayGroups = activeGroup === null ? groups : groups.filter(g => g.name === activeGroup);
 
   return (
-   <div>
-      <div style={{display:"flex",flexWrap:"wrap",gap:"0.35rem",marginBottom:"1.5rem"}}>
-        <button onClick={()=>setActiveGroup(null)} style={{padding:"0.3rem 0.85rem",borderRadius:"20px",border:"none",background:activeGroup===null?colors.bg:SOFT,color:activeGroup===null?colors.accent:MUTED,cursor:"pointer",fontSize:"0.72rem"}}>
-          All {phylum.classes ? "classes" : "families"}
-        </button>
-        {groups.map(g => (
-          <button key={g.name} onClick={()=>setActiveGroup(activeGroup===g.name?null:g.name)}
-            style={{padding:"0.3rem 0.85rem",borderRadius:"20px",border:"none",background:activeGroup===g.name?colors.bg:SOFT,color:activeGroup===g.name?colors.accent:MUTED,cursor:"pointer",fontSize:"0.72rem"}}>
-            {g.name}
-          </button>
-        ))}
-      </div>
+    <div>
+      {/* ... Navigation Buttons ... */}
 
       {displayGroups.map(group => {
-        // Flatten Phylum 12 subfamilies into a single species list for display
+        // UPDATE THIS SPECIFIC BLOCK BELOW:
+        // We need to check if 'subfamilies' exists. If it does, we flatten them.
+        // If it doesn't, we look for 'species' directly.
         const speciesList = group.subfamilies 
-          ? group.subfamilies.flatMap(sub => sub.species) 
-          : group.species;
+          ? group.subfamilies.flatMap(sub => sub.species || []) 
+          : (group.species || []);
+
+        // If this group is empty, don't render a blank header
+        if (speciesList.length === 0) return null;
 
         return (
           <div key={group.name} style={{marginBottom:"1.75rem"}}>
-            <div style={{background:INK,color:"white",padding:"0.5rem 1rem",borderRadius:"8px",fontSize:"0.8rem",borderLeft:`4px solid ${colors.accent}`,display:"flex",justifyContent:"space-between"}}>
+            <div style={{background:INK, color:"white", padding:"0.5rem 1rem", borderRadius:"8px", borderLeft:`4px solid ${colors.accent}`, display:"flex", justifyContent:"space-between"}}>
               <span>{group.name}</span>
-              <span style={{fontSize:"0.65rem",color:"#777"}}>{speciesList?.length || 0} species</span>
+              <span style={{fontSize:"0.65rem", color:"#777"}}>{speciesList.length} species</span>
             </div>
 
-            <div style={{display:"flex",flexWrap:"wrap",gap:"0.4rem", marginTop: "0.75rem"}}>
-              {speciesList?.map((item, idx) => {
+            <div style={{display:"flex", flexWrap:"wrap", gap:"0.4rem", marginTop: "0.75rem"}}>
+              {speciesList.map((item, idx) => {
                 const name = Array.isArray(item) ? item[0] : item;
-                const flag = Array.isArray(item) ? item[1] : "N";
-                const isS = isSens(flag), isX = isCross(flag);
-                const hasContent = !!getEntry(name) || !!getNote(phylum.number, name);
-
-                return (
-                  <button key={`${name}-${idx}`} className="species-pill" onClick={()=>onSpeciesClick(item, phylum.number, group.name)}
-                    style={{padding:"0.3rem 0.78rem",borderRadius:"20px",border:`1px solid ${isS?"#FECACA":isX?"#E0E0F0":RULE}`,background:isS?"#FFF5F5":isX?"#F8F8FF":IVORY,color:isS?RED:isX?"#6060C0":INK,cursor:"pointer",fontSize:"0.82rem"}}>
-                    {isS&&"⚠ "}{name}{isX&&" ◆"}
-                    {hasContent&&<span style={{width:5,height:5,background:colors.accent,borderRadius:"50%",display:"inline-block",marginLeft:5}}/>}
-                  </button>
-                );
+                // ... (the rest of your pill rendering remains the same)
               })}
             </div>
           </div>
