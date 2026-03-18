@@ -4279,6 +4279,7 @@ export const aestheticMeta = {
     function: ["experimental"],
     mood: ["abstract"]
 }, // Added comma here
+  export const metaTags = { // <--- MAKE SURE THIS LINE IS HERE
 "Cyberpunk": {
     core: ["cyberpunk", "high-tech", "low-life"],
     visuals: [
@@ -4337,39 +4338,43 @@ export const aestheticMeta = {
   } // This closes Solarpunk
 }; // <─ IMPORTANT: This closes the entire metaTags object
 
-// 1. Calculate count for the Futurist Phylum (Families/Subfamilies style)
+// 1. Logic to handle the unique P12 structure
 const countFuturist = (phylum) => {
   return phylum.families.reduce((total, family) => {
     return total + family.subfamilies.reduce((subTotal, sub) => {
-      return subTotal + sub.species.length;
+      return subTotal + (sub.species?.length || 0);
     }, 0);
   }, 0);
 };
-// --- PLACE STEP 2 HERE ---
+
+// 2. Helper to calculate total across all phyla
+const calculateTotal = (phyla) => {
+  return phyla.reduce((acc, p) => acc + (p.count || 0), 0);
+};
+
+// 3. Helper to ensure species are in the correct format [Name, Flag]
+const convertSpecies = (phylum) => {
+  phylum.families.forEach(family => {
+    family.subfamilies.forEach(sub => {
+      sub.species = sub.species.map(s => Array.isArray(s) ? s : [s, "N"]);
+    });
+  });
+};
+
+// --- Execution ---
 convertSpecies(futuristTechnologicalPhylum);
 futuristTechnologicalPhylum.count = countFuturist(futuristTechnologicalPhylum);
 
-// 2. Combine all phyla into one master list
+// 4. Combine all phyla into one master list
+// Note: Ensure phylum1 through phylum11 are defined above this point in your file!
 const PHYLA_LIST = [
-  phylum1,
-  phylum2,
-  phylum3,
-  phylum4,
-  phylum5,
-  phylum6,
-  phylum7,
-  phylum8,
-  phylum9,
-  phylum10,
-  phylum11,
-  futuristTechnologicalPhylum
+  phylum1, phylum2, phylum3, phylum4, phylum5, 
+  phylum6, phylum7, phylum8, phylum9, phylum10, 
+  phylum11, futuristTechnologicalPhylum
 ];
 
-// 3. Final Exports for your App
+// 5. Final Exports
 export const ATLAS_DATA = {
   total: calculateTotal(PHYLA_LIST),
   phyla: PHYLA_LIST
 };
-
-// Default export
-export default futuristTechnologicalPhylum;
