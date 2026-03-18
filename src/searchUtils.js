@@ -15,12 +15,15 @@ export function queryAtlas(query) {
     
     groups.forEach(group => {
       // Handle both standard species and Phylum 12 subfamilies
-      const speciesList = group.subfamilies 
-        ? group.subfamilies.flatMap(sub => sub.species) 
-        : group.species;
+     const speciesList = group.subfamilies 
+  ? group.subfamilies.flatMap(sub => sub.species || []) 
+  : (group.species || []);
 
       speciesList.forEach(item => {
-        const name = Array.isArray(item) ? item[0] : item;
+  if (!item) return;
+
+  const name = Array.isArray(item) ? item[0] : item;
+  if (!name) return;
         
         // Match logic: Check if the species name or category name contains the query
         if (name.toLowerCase().includes(q) || group.name.toLowerCase().includes(q)) {
