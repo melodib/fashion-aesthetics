@@ -140,10 +140,83 @@ const GLOBAL_CSS = `
 `;
 
 // ── Global styles component ───────────────────────────────────────────────────
-// This small function "injects" the blueprint above into your website's head.
-function GlobalStyles() {
-  return <style dangerouslySetInnerHTML={{ __html: GLOBAL_CSS }} />;
-}
+import { createGlobalStyle } from 'styled-components';
+
+const GlobalStyles = createGlobalStyle`
+  /* 1. Typography: Loading the Scholar's Font */
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+  body {
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #F7F3F0; /* IVORY */
+    color: #1A1A1A; /* INK */
+    overflow-x: hidden;
+  }
+
+  /* 2. Custom Scrollbar: Thin and Elegant */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #F7F3F0;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #D1C7BD;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #B8896A; /* ACCENT */
+  }
+
+  /* 3. Interactive Animations */
+  .phylum-card {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: translateY(0);
+    opacity: 0;
+    animation: slideUp 0.5s ease forwards;
+  }
+
+  .phylum-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(184, 137, 106, 0.15);
+  }
+
+  .species-pill {
+    transition: all 0.2s ease;
+  }
+
+  .search-input:focus {
+    border-color: #B8896A !important;
+    box-shadow: 0 0 0 3px rgba(184, 137, 106, 0.2);
+  }
+
+  /* 4. Keyframes for the 'Entrance' feel */
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* 5. Modal Backdrop Blur */
+  .species-modal {
+    animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes modalPop {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+`;
+
+export default GlobalStyles;
 
 // ── SpeciesCard ───────────────────────────────────────────────────────────────
 function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick }) {
