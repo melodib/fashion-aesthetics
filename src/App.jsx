@@ -56,7 +56,8 @@ function hl(text, q) {
     </>
   );
 }
-
+const isSens = (flag) => flag?.includes("s") || false;
+const isCross = (flag) => flag?.includes("x") || false;
 // ── Animated count-up hook (Fixed Memory Leaks) ───────────────────────────────
 function useCountUp(target, duration = 1600) {
   const [count, setCount] = useState(0);
@@ -144,21 +145,6 @@ function GlobalStyles() {
   return <style dangerouslySetInnerHTML={{ __html: GLOBAL_CSS }} />;
 }
 
-// ── Main App ──────────────────────────────────────────────────────────────────
-export default function App() {
-  // ... your other logic like [view, setView] stays here ...
-
-  return (
-    <>
-      {/* ALWAYS keep this at the top of your return so your styles load first */}
-      <GlobalStyles />
-      
-      <div style={{ minHeight: "100vh", color: INK, fontFamily: "'EB Garamond', serif" }}>
-         {/* The rest of your app code goes here */}
-      </div>
-    </>
-  );
-}
 // ── SpeciesCard ───────────────────────────────────────────────────────────────
 function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick }) {
   const [name, flag] = Array.isArray(species) ? species : [species ?? "Unknown", ""];
@@ -336,28 +322,8 @@ function PhylumView({ phylum, onSpeciesClick }) {
 
 // ── SearchView ────────────────────────────────────────────────────────────────
 function SearchView({ results, query, onSpeciesClick }) {
-  const results = useMemo(() => {
-    if (!query||query.length<2) return [];
-    const q=query.toLowerCase();
-    const matches=[];
-    for (const p of ATLAS_DATA.phyla) {
-      for (const c of p.classes) {
-        for (const s of c.species) {
-          const nd=getNote(p.number,s[0]);
-          const ent=getEntry(s[0]);
-          const hit=s[0].toLowerCase().includes(q)||nd?.note?.toLowerCase().includes(q)||nd?.cross?.toLowerCase().includes(q)||ent?.summary?.toLowerCase().includes(q)||ent?.context?.toLowerCase().includes(q);
-          if (hit) {
-            const mt=s[0].toLowerCase().includes(q)?"name":nd?.note?.toLowerCase().includes(q)?"note":nd?.cross?.toLowerCase().includes(q)?"crossover":"entry";
-            matches.push({species:s,phylumNum:p.number,phylumEmoji:p.emoji,className:c.name,matchType:mt});
-            if (matches.length>=100) return matches;
-          }
-        }
-      }
-    }
-    return matches;
-  },[query]);
-
-  if (!query||query.length<2) return (
+  // If no search is happening, show the "Empty" state
+  if (!query || query.length < 2) return (
     <div style={{textAlign:"center",padding:"5rem 2rem",color:MUTED}}>
       <div style={{fontSize:"2.5rem",marginBottom:"1rem",opacity:0.4}}>◉</div>
       <div style={{fontFamily:"'EB Garamond',Georgia,serif",fontStyle:"italic",fontSize:"1.1rem"}}>
@@ -365,6 +331,36 @@ function SearchView({ results, query, onSpeciesClick }) {
       </div>
     </div>
   );
+
+  // If there are results, show them in a list
+  return (
+    <div>
+      <div style={{marginBottom:"1.25rem",color:MUTED,fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.9rem"}}>
+        {results.length === 100 ? "100+" : results.length} result{results.length !== 1 && "s"} for <strong style={{color:INK}}>"{query}"</strong>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:"0.4rem"}}>
+        {results.map(({species, phylumNum, phylumEmoji, className, matchType}) => {
+          const colors = PHYLUM_COLORS[phylumNum];
+          const isS = isSens(species[1]);
+          const isX = isCross(species[1]);
+          return (
+            <button key={`${phylumNum}-${species[0]}`} onClick={() => onSpeciesClick(species, phylumNum, className)}
+              style={{display:"flex",alignItems:"center",gap:"0.75rem",padding:"0.7rem 0.9rem",borderRadius:"10px",border:`1px solid ${RULE}`,background:IVORY,cursor:"pointer",textAlign:"left",transition:"all 0.12s"}}
+              onMouseEnter={e => {e.currentTarget.style.background = SOFT; e.currentTarget.style.borderColor = ACCENT; e.currentTarget.style.transform = "translateX(2px)";}}
+              onMouseLeave={e => {e.currentTarget.style.background = IVORY; e.currentTarget.style.borderColor = RULE; e.currentTarget.style.transform = "none";}}
+            >
+              <span style={{background:colors.bg, color:colors.accent, padding:"0.15rem 0.55rem", borderRadius:"20px", fontSize:"0.65rem", fontFamily:"serif", whiteSpace:"nowrap"}}>{phylumEmoji} P{phylumNum}</span>
+              <span style={{fontFamily:"'EB Garamond',Georgia,serif", fontSize:"0.95rem", color:INK, flex:1}}>{hl(species[0], query)}</span>
+              <span style={{fontSize:"0.7rem", color:MUTED, fontFamily:"serif", maxWidth:"150px", textAlign:"right", flexShrink:0}}>{className}</span>
+              {isS && <span style={{color:RED, fontSize:"0.7rem", flexShrink:0}}>⚠</span>}
+              {isX && <span style={{color:"#6060C0", fontSize:"0.7rem", flexShrink:0}}>◆</span>}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
   return (
     <div>
@@ -522,8 +518,35 @@ export default function App() {
 
   return (
     <>
-      <style>{GLOBAL_CSS}</style>
+      <GlobalStyles /> {/* Step 4a: Add this component here */}
       <div style={{ background: IVORY, minHeight: "100vh" }}>
+        
+        {/* ... keep your existing Navigation/Title code here ... */}
+
+        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1.5rem 5rem" }}>
+          
+          {view === "home" && ( /* ... */ )}
+
+          {view === "phylum" && currentPhylum && ( /* ... */ )}
+
+          {/* Step 4b: Ensure this block uses 'results={searchResults}' */}
+          {view === "search" && (
+            <SearchView 
+              results={searchResults} 
+              query={searchQuery} 
+              onSpeciesClick={handleSpeciesClick} 
+            />
+          )}
+
+          {view === "stats" && ( /* ... */ )}
+
+        </div>
+
+        {/* ... keep your SpeciesCard code at the bottom ... */}
+
+      </div>
+    </>
+  );
 
         {/* Header */}
         <div style={{ background: INK, padding: "0.75rem 1.5rem", display: "flex", alignItems: "center", gap: "1rem", position: "sticky", top: 0, zIndex: 100, boxShadow: "0 1px 0 rgba(255,255,255,0.06), 0 4px 20px rgba(0,0,0,0.4)" }}>
