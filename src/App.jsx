@@ -227,7 +227,7 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
                   <div style={{fontSize:"0.58rem",color:MUTED,textTransform:"uppercase",marginBottom:"0.65rem", letterSpacing:"0.1em"}}>Colour Palette</div>
                   <div style={{display:"flex",gap:"0.7rem",flexWrap:"wrap",alignItems:"center"}}>
                     {entry.colors.map((c, i) => {
-                      const hex = c.match(/#[0-9A-Fa-f]{6}/)?.[0];
+                      const hex = c.match(/#[0-9A-Fa-f]{3,6}/)?.[0];
                       const label = c.replace(/#[0-9A-Fa-f]{6}\s*/, "").trim();
                       return (
                         <div key={i} style={{display:"flex",alignItems:"center",gap:"0.45rem"}}>
@@ -332,11 +332,11 @@ function SearchView({ results, query, onSpeciesClick }) {
     </div>
   );
 
-  // If there are results, show them in a list
+  // Show the results
   return (
     <div>
       <div style={{marginBottom:"1.25rem",color:MUTED,fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.9rem"}}>
-        {results.length === 100 ? "100+" : results.length} result{results.length !== 1 && "s"} for <strong style={{color:INK}}>"{query}"</strong>
+        {results.length >= 100 ? "100+" : results.length} result{results.length !== 1 && "s"} for <strong style={{color:INK}}>"{query}"</strong>
       </div>
       <div style={{display:"flex",flexDirection:"column",gap:"0.4rem"}}>
         {results.map(({species, phylumNum, phylumEmoji, className, matchType}) => {
@@ -354,6 +354,7 @@ function SearchView({ results, query, onSpeciesClick }) {
               <span style={{fontSize:"0.7rem", color:MUTED, fontFamily:"serif", maxWidth:"150px", textAlign:"right", flexShrink:0}}>{className}</span>
               {isS && <span style={{color:RED, fontSize:"0.7rem", flexShrink:0}}>⚠</span>}
               {isX && <span style={{color:"#6060C0", fontSize:"0.7rem", flexShrink:0}}>◆</span>}
+              {matchType !== "name" && <span style={{fontSize:"0.6rem", color:MUTED, fontFamily:"serif", background:SOFT, padding:"0.1rem 0.4rem", borderRadius:"10px", flexShrink:0}}>in {matchType}</span>}
             </button>
           );
         })}
@@ -361,35 +362,6 @@ function SearchView({ results, query, onSpeciesClick }) {
     </div>
   );
 }
-
-  return (
-    <div>
-      <div style={{marginBottom:"1.25rem",color:MUTED,fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.9rem"}}>
-        {results.length===100?"100+":results.length} result{results.length!==1&&"s"} for <strong style={{color:INK}}>"{query}"</strong>
-      </div>
-      <div style={{display:"flex",flexDirection:"column",gap:"0.4rem"}}>
-        {results.map(({species,phylumNum,phylumEmoji,className,matchType}) => {
-          const colors=PHYLUM_COLORS[phylumNum],isS=isSens(species[1]),isX=isCross(species[1]);
-          return (
-            <button key={`${phylumNum}-${species[0]}`} onClick={()=>onSpeciesClick(species,phylumNum,className)}
-              style={{display:"flex",alignItems:"center",gap:"0.75rem",padding:"0.7rem 0.9rem",borderRadius:"10px",border:`1px solid ${RULE}`,background:IVORY,cursor:"pointer",textAlign:"left",transition:"all 0.12s"}}
-              onMouseEnter={e=>{e.currentTarget.style.background=SOFT;e.currentTarget.style.borderColor=ACCENT;e.currentTarget.style.transform="translateX(2px)";}}
-              onMouseLeave={e=>{e.currentTarget.style.background=IVORY;e.currentTarget.style.borderColor=RULE;e.currentTarget.style.transform="none";}}
-            >
-              <span style={{background:colors.bg,color:colors.accent,padding:"0.15rem 0.55rem",borderRadius:"20px",fontSize:"0.65rem",fontFamily:"serif",whiteSpace:"nowrap"}}>{phylumEmoji} P{phylumNum}</span>
-              <span style={{fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.95rem",color:INK,flex:1}}>{hl(species[0],query)}</span>
-              <span style={{fontSize:"0.7rem",color:MUTED,fontFamily:"serif",maxWidth:"150px",textAlign:"right",flexShrink:0}}>{className}</span>
-              {isS&&<span style={{color:RED,fontSize:"0.7rem",flexShrink:0}}>⚠</span>}
-              {isX&&<span style={{color:"#6060C0",fontSize:"0.7rem",flexShrink:0}}>◆</span>}
-              {matchType!=="name"&&<span style={{fontSize:"0.6rem",color:MUTED,fontFamily:"serif",background:SOFT,padding:"0.1rem 0.4rem",borderRadius:"10px",flexShrink:0}}>in {matchType}</span>}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 // ── StatsView ─────────────────────────────────────────────────────────────────
 function StatsView() {
   const stats = useMemo(() => {
@@ -472,24 +444,25 @@ function StatsView() {
 }
 // ── App ───────────────────────────────────────────────────────────────────────
 export default function App() {
-  const [view, setView]                           = useState("home");
-  const [activePhylum, setActivePhylum]           = useState(null);
-  const [searchQuery, setSearchQuery]             = useState("");
-  const [selectedSpecies, setSelectedSpecies]     = useState(null);
+  // 1. All your "States" (Memory)
+  const [view, setView] = useState("home");
+  const [activePhylum, setActivePhylum] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedSpecies, setSelectedSpecies] = useState(null);
   const [selectedPhylumNum, setSelectedPhylumNum] = useState(null);
   const [selectedClassName, setSelectedClassName] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
+  // 2. Your animations and derived data
   const animatedCount = useCountUp(ATLAS_DATA.total, 1800);
+  const currentPhylum = activePhylum !== null ? ATLAS_DATA.phyla.find(p => p.number === activePhylum) : null;
 
-  // Updated handleSpeciesClick to properly handle data selection
+  // 3. The "Actions" (Functions)
   const handleSpeciesClick = useCallback((species, phylumNum, className) => {
     setSelectedSpecies(species);
     setSelectedPhylumNum(phylumNum);
     setSelectedClassName(className);
   }, []);
-  
-  const currentPhylum = activePhylum !== null ? ATLAS_DATA.phyla.find(p => p.number === activePhylum) : null;
 
   function switchView(v) { 
     setView(v); 
@@ -498,14 +471,15 @@ export default function App() {
 
   function handleSearch(val) {
     setSearchQuery(val);
-    
-    // This tells your new 'searchUtils' to find matches
-    // For now, we are searching by 'mood', but you can change this to 'ideology' or 'environment'!
-    const found = queryAtlas({ mood: val }); 
+    // This tells your search tool to find matches across names, notes, and entries
+    const found = queryAtlas(val); 
     setSearchResults(found);
 
-    if (val.length > 1) switchView("search");
-    else if (!val) switchView(activePhylum ? "phylum" : "home");
+    if (val.length > 1) {
+      setView("search");
+    } else if (!val) {
+      setView(activePhylum ? "phylum" : "home");
+    }
   }
 
   function goHome() { 
@@ -516,122 +490,53 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: "instant" }); 
   }
 
+  // 4. THE ONLY RETURN (The Visuals)
   return (
     <>
-      <GlobalStyles /> {/* Step 4a: Add this component here */}
+      <GlobalStyles />
       <div style={{ background: IVORY, minHeight: "100vh" }}>
         
-        {/* ... keep your existing Navigation/Title code here ... */}
-
-        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1.5rem 5rem" }}>
-          
-          {view === "home" && ( /* ... */ )}
-
-          {view === "phylum" && currentPhylum && ( /* ... */ )}
-
-          {/* Step 4b: Ensure this block uses 'results={searchResults}' */}
-          {view === "search" && (
-            <SearchView 
-              results={searchResults} 
-              query={searchQuery} 
-              onSpeciesClick={handleSpeciesClick} 
-            />
-          )}
-
-          {view === "stats" && ( /* ... */ )}
-
-        </div>
-
-        {/* ... keep your SpeciesCard code at the bottom ... */}
-
-      </div>
-    </>
-  );
-
-        {/* Header */}
-        <div style={{ background: INK, padding: "0.75rem 1.5rem", display: "flex", alignItems: "center", gap: "1rem", position: "sticky", top: 0, zIndex: 100, boxShadow: "0 1px 0 rgba(255,255,255,0.06), 0 4px 20px rgba(0,0,0,0.4)" }}>
-          <button onClick={goHome} style={{ background: "none", border: "none", cursor: "pointer", padding: 0, flexShrink: 0, letterSpacing: "0.01em" }}>
-            <span style={{ fontFamily: "'EB Garamond',Georgia,serif", fontSize: "1.05rem", color: IVORY, fontWeight: 400 }}>Atlas of</span>
-            <span style={{ fontFamily: "'EB Garamond',Georgia,serif", fontSize: "1.05rem", color: ACCENT, fontStyle: "italic" }}> Fashion Aesthetics</span>
+        {/* Navigation Bar */}
+        <div style={{ background: INK, padding: "0.75rem 1.5rem", display: "flex", alignItems: "center", gap: "1rem", position: "sticky", top: 0, zIndex: 100, boxShadow: "0 4px 20px rgba(0,0,0,0.4)" }}>
+          <button onClick={goHome} style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+            <span style={{ fontFamily: "'EB Garamond',serif", fontSize: "1.05rem", color: IVORY }}>Atlas of</span>
+            <span style={{ fontFamily: "'EB Garamond',serif", fontSize: "1.05rem", color: ACCENT, fontStyle: "italic" }}> Fashion Aesthetics</span>
           </button>
+          
           <input
             className="search-input"
             placeholder={`Search ${ATLAS_DATA.total.toLocaleString()} species…`}
             value={searchQuery}
             onChange={e => handleSearch(e.target.value)}
-            style={{ flex: 1, padding: "0.42rem 1rem", borderRadius: "20px", border: "1px solid #3a3a3a", background: "#222", color: IVORY, fontFamily: "'EB Garamond',Georgia,serif", fontSize: "0.9rem", outline: "none", transition: "border-color 0.15s, box-shadow 0.15s" }}
+            style={{ flex: 1, padding: "0.42rem 1rem", borderRadius: "20px", border: "1px solid #3a3a3a", background: "#222", color: IVORY, outline: "none" }}
           />
-          <button onClick={() => switchView("stats")} style={{ background: view === "stats" ? ACCENT : "transparent", border: `1px solid ${view === "stats" ? ACCENT : "#444"}`, color: view === "stats" ? INK : "#888", padding: "0.32rem 0.7rem", borderRadius: "7px", cursor: "pointer", fontSize: "0.8rem", flexShrink: 0, transition: "all 0.15s" }}>📊</button>
+
+          <button onClick={() => switchView("stats")} style={{ background: view === "stats" ? ACCENT : "transparent", border: `1px solid ${view === "stats" ? ACCENT : "#444"}`, color: view === "stats" ? INK : "#888", padding: "0.32rem 0.7rem", borderRadius: "7px", cursor: "pointer" }}>📊</button>
         </div>
 
+        {/* Main Content Area */}
         <div style={{ maxWidth: "980px", margin: "0 auto", padding: "1.5rem" }}>
 
-          {/* Home */}
+          {/* HOME VIEW */}
           {view === "home" && (
             <div>
-              <div style={{ textAlign: "center", padding: "3rem 0 3.5rem", borderBottom: `1px solid ${RULE}`, marginBottom: "2rem", position: "relative" }}>
-                <div style={{ width: 48, height: 2, background: `linear-gradient(90deg, transparent, ${ACCENT}, transparent)`, margin: "0 auto 1.5rem" }} />
-                <div style={{ fontFamily: "serif", fontSize: "0.72rem", color: ACCENT, letterSpacing: "0.28em", textTransform: "uppercase", marginBottom: "0.75rem" }}>
-                  Kingdom · Fashion Aesthetic Culture
-                </div>
-                <h1 style={{ fontFamily: "'EB Garamond',Georgia,serif", fontSize: "2.8rem", color: INK, margin: "0 0 0.5rem", lineHeight: 1.15, fontWeight: 400 }}>
-                  Atlas of <em>Fashion Aesthetics</em>
-                </h1>
-                <p style={{ color: MUTED, fontFamily: "'EB Garamond',Georgia,serif", fontStyle: "italic", margin: "0 0 1rem", fontSize: "0.95rem", letterSpacing: "0.02em" }}>
-                  <span style={{ color: ACCENT, fontStyle: "normal", fontWeight: 500, fontSize: "1.05rem" }}>
-                    {animatedCount.toLocaleString()}
-                  </span>
-                  {" "}Species · 12 Phyla · 2026 Edition
-                </p>
-                <p style={{ color: INK, fontFamily: "'EB Garamond',Georgia,serif", fontSize: "0.9rem", maxWidth: "520px", margin: "0 auto 0.9rem", lineHeight: 1.9, opacity: 0.7 }}>
-                  Organised by origin engine, not visual appearance. Click any species to open its full field guide entry.
-                </p>
-                <div style={{ width: 48, height: 2, background: `linear-gradient(90deg, transparent, ${ACCENT}, transparent)`, margin: "1.5rem auto 0" }} />
+              <div style={{ textAlign: "center", padding: "3rem 0 3.5rem", borderBottom: `1px solid ${RULE}`, marginBottom: "2rem" }}>
+                <div style={{ fontFamily: "serif", fontSize: "0.72rem", color: ACCENT, letterSpacing: "0.28em", textTransform: "uppercase" }}>Kingdom · Fashion Aesthetic Culture</div>
+                <h1 style={{ fontFamily: "'EB Garamond',serif", fontSize: "2.8rem", color: INK }}>Atlas of <em>Fashion Aesthetics</em></h1>
+                <p style={{ color: MUTED, fontStyle: "italic" }}><span style={{ color: ACCENT, fontWeight: 500 }}>{animatedCount.toLocaleString()}</span> Species · 12 Phyla · 2026 Edition</p>
               </div>
 
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))", gap: "0.8rem" }}>
                 {ATLAS_DATA.phyla.map((p, idx) => {
                   const colors = PHYLUM_COLORS[p.number];
                   return (
-                    <button 
-                      key={p.number} 
-                      className="phylum-card"
-                      onClick={() => {
-                        setActivePhylum(p.number);
-                        switchView("phylum");
-                      }}
-                      style={{
-                        background: IVORY,
-                        border: `1px solid ${RULE}`,
-                        borderTop: `3px solid ${colors.accent}`,
-                        borderRadius: "12px",
-                        padding: "1.3rem",
-                        cursor: "pointer",
-                        textAlign: "left",
-                        animationDelay: `${idx * 0.05}s`,
-                      }}
-                      onMouseEnter={e => {
-                        const el = e.currentTarget;
-                        el.style.background = colors.bg;
-                        el.style.borderColor = colors.accent;
-                        el.querySelectorAll(".pn,.pd,.pc").forEach((x, i) => {
-                          x.style.color = i === 0 ? colors.accent : i === 1 ? "#aaa" : "rgba(255,255,255,0.5)";
-                        });
-                      }}
-                      onMouseLeave={e => {
-                        const el = e.currentTarget;
-                        el.style.background = IVORY;
-                        el.style.borderColor = RULE;
-                        el.querySelectorAll(".pn,.pd,.pc").forEach((x, i) => {
-                          x.style.color = i === 0 ? INK : i === 1 ? MUTED : colors.accent;
-                        });
-                      }}
+                    <button key={p.number} className="phylum-card" onClick={() => { setActivePhylum(p.number); switchView("phylum"); }}
+                      style={{ background: IVORY, border: `1px solid ${RULE}`, borderTop: `3px solid ${colors.accent}`, borderRadius: "12px", padding: "1.3rem", cursor: "pointer", textAlign: "left", animationDelay: `${idx * 0.05}s` }}
                     >
-                      <div style={{ fontSize: "1.5rem", marginBottom: "0.45rem", lineHeight: 1 }}>{p.emoji}</div>
-                      <div style={{ fontSize: "0.58rem", color: ACCENT, fontFamily: "serif", letterSpacing: "0.12em", marginBottom: "0.2rem" }}>PHYLUM {p.number}</div>
-                      <div className="pn" style={{ fontFamily: "'EB Garamond',Georgia,serif", fontSize: "1rem", fontWeight: 500, color: INK, marginBottom: "0.25rem", transition: "color 0.2s", lineHeight: 1.25 }}>{p.name}</div>
-                      <div className="pd" style={{ fontFamily: "serif", fontSize: "0.7rem", color: MUTED, lineHeight: 1.45, marginBottom: "0.55rem", transition: "color 0.2s" }}>{p.description}</div>
-                      <div className="pc" style={{ fontFamily: "serif", fontSize: "0.7rem", color: colors.accent, transition: "color 0.2s" }}>{p.count} species · {p.classes.length} classes</div>
+                      <div style={{ fontSize: "1.5rem", marginBottom: "0.45rem" }}>{p.emoji}</div>
+                      <div style={{ fontSize: "0.58rem", color: ACCENT, fontFamily: "serif" }}>PHYLUM {p.number}</div>
+                      <div style={{ fontWeight: 500, fontSize: "1rem" }}>{p.name}</div>
+                      <div style={{ fontSize: "0.7rem", color: MUTED }}>{p.description}</div>
                     </button>
                   );
                 })}
@@ -639,44 +544,28 @@ export default function App() {
             </div>
           )}
 
-          {/* Phylum view */}
+          {/* PHYLUM VIEW */}
           {view === "phylum" && currentPhylum && (
             <div>
-              <button onClick={goHome} style={{ background: "none", border: "none", color: ACCENT, cursor: "pointer", fontFamily: "'EB Garamond',Georgia,serif", fontSize: "0.9rem", padding: 0, marginBottom: "1.25rem", letterSpacing: "0.02em" }}>
-                ← All Phyla
-              </button>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: "1rem", marginBottom: "1.75rem", paddingBottom: "1.25rem", borderBottom: `1px solid ${RULE}` }}>
-                <span style={{ fontSize: "2.4rem", lineHeight: 1, flexShrink: 0 }}>{currentPhylum.emoji}</span>
-                <div>
-                  <div style={{ fontSize: "0.62rem", color: ACCENT, fontFamily: "serif", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: "0.15rem" }}>Phylum {currentPhylum.number}</div>
-                  <h2 style={{ fontFamily: "'EB Garamond',Georgia,serif", fontSize: "2rem", color: INK, margin: "0 0 0.3rem", fontWeight: 400 }}>{currentPhylum.name}</h2>
-                  <div style={{ color: MUTED, fontFamily: "serif", fontSize: "0.82rem" }}>{currentPhylum.description} · {currentPhylum.count} species · {currentPhylum.classes.length} classes</div>
-                </div>
-              </div>
+              <button onClick={goHome} style={{ background: "none", border: "none", color: ACCENT, cursor: "pointer", marginBottom: "1.25rem" }}>← All Phyla</button>
+              <h2 style={{ fontSize: "2rem" }}>{currentPhylum.emoji} {currentPhylum.name}</h2>
               <PhylumView phylum={currentPhylum} onSpeciesClick={handleSpeciesClick} />
             </div>
           )}
 
           {/* SEARCH VIEW */}
           {view === "search" && (
-            <SearchView 
-              results={searchResults} 
-              query={searchQuery} 
-              onSpeciesClick={handleSpeciesClick} 
-            />
+            <SearchView results={searchResults} query={searchQuery} onSpeciesClick={handleSpeciesClick} />
           )}
-{/* Stats view */}
+
+          {/* STATS VIEW */}
           {view === "stats" && (
-            <div>
-              <h2 style={{ fontFamily: "'EB Garamond',Georgia,serif", fontSize: "1.6rem", color: INK, marginBottom: "1.5rem", paddingBottom: "0.75rem", borderBottom: `1px solid ${ACCENT}`, fontWeight: 400 }}>
-                Atlas Statistics · 2026 Edition
-              </h2>
-              <StatsView />
-            </div>
+            <StatsView />
           )}
+
         </div>
 
-        {/* This triggers the pop-up field guide card */}
+        {/* FIELD GUIDE MODAL */}
         {selectedSpecies && (
           <SpeciesCard
             species={selectedSpecies}
