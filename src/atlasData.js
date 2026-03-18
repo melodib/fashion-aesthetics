@@ -339,15 +339,14 @@ const phylum1 = {
             ["2020s Coquette Revival", "N"],
             ["2020s Brat Summer Moment", "N"],
 ["2020s Micro-Trend Acceleration", "N"],
-          ], // Closes the classes array
-    }, // Closes the 2020s class
-  ], // Closes the families/classes array
-}; // <─ ADD A SEMICOLON HERE to finish the variable
-
-// Then start Phylum 2:
+          ],
+        },
+      ], 
+};
 const phylum2 = {
-  number: 2,
-  name: "Cultural & Regional",
+    number: 2,
+    name: "Cultural & Regional",
+    // ... rest of phylum 2
       emoji: "🌍",
       description: "Geography, heritage, and localized traditions",
       classes: [
