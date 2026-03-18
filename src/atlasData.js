@@ -2,30 +2,32 @@
 const calculateTotal = (phyla) => {
   return phyla.reduce((total, phylum) => total + (phylum.count || 0), 0);
 };
+// 1. Helper to turn a string "Name" into ["Name", {status: "N"}]
+const formatSpecies = (name) => {
+  if (Array.isArray(name)) return name;
+  return [name, { status: "N", tier: "core" }];
+};
 
-// PLACE THE CONVERTER HERE:
+// 2. The upgraded converter that supports BOTH structures
 const convertSpecies = (phylum) => {
-  // Fix for Phyla 1-11 (Classes structure)
+  // Case A: For Phyla 1-11 (uses .classes)
   if (phylum.classes) {
     phylum.classes.forEach(cls => {
-      cls.species = cls.species.map(name => {
-        if (Array.isArray(name)) return name;
-        return [name, "N"]; // Standardizes to [Name, Status]
-      });
+      cls.species = cls.species.map(formatSpecies);
     });
   }
-  
-  // Fix for Phylum 12 (Families/Subfamilies structure)
+
+  // Case B: For Phylum 12 (uses .families -> .subfamilies)
   if (phylum.families) {
     phylum.families.forEach(family => {
-      family.subfamilies.forEach(sub => {
-        sub.species = sub.species.map(name => {
-          if (Array.isArray(name)) return name;
-          return [name, "N"];
+      if (family.subfamilies) {
+        family.subfamilies.forEach(sub => {
+          sub.species = sub.species.map(formatSpecies);
         });
-      });
+      }
     });
   }
+
   return phylum;
 };
 const phylum1 = {
