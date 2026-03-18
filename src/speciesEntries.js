@@ -1,2 +1,1 @@
-export const SPECIES_ENTRIES = {
-  
+export const SPECIES_ENTRIES = {};
