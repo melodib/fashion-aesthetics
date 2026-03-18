@@ -141,22 +141,6 @@ const GLOBAL_CSS = `
 function GlobalStyles() {
   return <style dangerouslySetInnerHTML={{ __html: GLOBAL_CSS }} />;
 }
-
-// ── Main App ──────────────────────────────────────────────────────────────────
-export default function App() {
-  // ... your other logic like [view, setView] stays here ...
-
-  return (
-    <>
-      {/* ALWAYS keep this at the top of your return so your styles load first */}
-      <GlobalStyles />
-      
-      <div style={{ minHeight: "100vh", color: INK, fontFamily: "'EB Garamond', serif" }}>
-         {/* The rest of your app code goes here */}
-      </div>
-    </>
-  );
-}
 // ── SpeciesCard ───────────────────────────────────────────────────────────────
 function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick }) {
   const [name, flag] = Array.isArray(species) ? species : [species ?? "Unknown", ""];
