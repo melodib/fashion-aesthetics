@@ -4343,13 +4343,19 @@ const PHYLA_LIST = [
   phylum6, phylum7, phylum8, phylum9, phylum10, 
   phylum11, futuristTechnologicalPhylum
 ];
-
-// This actually runs the "formatter" on every phylum in that list
+// 1. Format all species to the [Name, Flag] standard
 PHYLA_LIST.forEach(convertSpecies);
 
-// This specifically updates the count for your new Phylum 12
-futuristTechnologicalPhylum.count = countFuturist(futuristTechnologicalPhylum);
-
+// 2. Calculate counts for EVERY phylum (1-12) correctly
+PHYLA_LIST.forEach(p => {
+  if (p.number === 12) {
+    // Uses your special function for the nested futurist data
+    p.count = countFuturist(p);
+  } else {
+    // For phyla 1-11, it sums up the species in each class
+    p.count = p.classes.reduce((acc, c) => acc + (c.species?.length || 0), 0);
+  }
+});
 // --- 3. THE FINAL EXPORT ---
 // This is what your website's main page "grabs" to show the data
 export const ATLAS_DATA = {
