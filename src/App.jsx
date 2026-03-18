@@ -1,8 +1,7 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
-import { ATLAS_DATA } from "./atlasData.js";
+import { ATLAS_DATA, futuristTechnologicalPhylum } from "./atlasData.js";
 import { NOTES } from "./notes.js";
 import { SPECIES_ENTRIES } from "./speciesEntries.js";
-import { futuristTechnologicalPhylum } from './atlasData';
 import { queryAtlas } from './searchUtils';
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
