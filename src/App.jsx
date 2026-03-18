@@ -213,7 +213,7 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
                 </div>
               )}
 {/* 3. Technical Motif Note */}
-{entry.motif && (
+<div>
   <div style={{ 
     background: "#FDFCFB", 
     border: `1px solid ${RULE}`, 
