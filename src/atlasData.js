@@ -1,3 +1,4 @@
+import { convertSpecies } from "./speciesUtils";
 const phylum1 = {
       number: 1,
       name: "Historical",
@@ -659,7 +660,7 @@ const phylum2 = {
             ["Andean Indigenous Textile Fashion", "S"],
             ["Aztec / Maya Contemporary Fashion", "S"],
             ["Mapuche Traditional Dress", "S"],
-            ["M■ori Fashion", "S"],
+      ["Māori Fashion", "S"],
             ["Hawaiian Traditional Dress", "S"],
             ["Pacific Islander Fashion", "N"],
             ["Samoan Fashion", "S"],
