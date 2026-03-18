@@ -5,15 +5,27 @@ const calculateTotal = (phyla) => {
 
 // PLACE THE CONVERTER HERE:
 const convertSpecies = (phylum) => {
-  if (!phylum.families) return phylum; // Safety check
-  phylum.families.forEach(family => {
-    family.subfamilies.forEach(sub => {
-      sub.species = sub.species.map(name => {
+  // Fix for Phyla 1-11 (Classes structure)
+  if (phylum.classes) {
+    phylum.classes.forEach(cls => {
+      cls.species = cls.species.map(name => {
         if (Array.isArray(name)) return name;
-        return [name, { status: "N", tier: "core" }];
+        return [name, "N"]; // Standardizes to [Name, Status]
       });
     });
-  });
+  }
+  
+  // Fix for Phylum 12 (Families/Subfamilies structure)
+  if (phylum.families) {
+    phylum.families.forEach(family => {
+      family.subfamilies.forEach(sub => {
+        sub.species = sub.species.map(name => {
+          if (Array.isArray(name)) return name;
+          return [name, "N"];
+        });
+      });
+    });
+  }
   return phylum;
 };
 const phylum1 = {
@@ -362,7 +374,7 @@ const phylum1 = {
   ], // Closes the families/classes array
 }; // <─ ADD A SEMICOLON HERE to finish the variable
 
-// NOW you can put the count line here:
+convertSpecies(phylum1);
 phylum1.count = phylum1.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 
 // Then start Phylum 2:
@@ -812,6 +824,7 @@ const phylum2 = {
         },
       ],
     };
+convertSpecies(phylum2);
     phylum2.count = phylum2.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 const phylum3 = {
       number: 3,
@@ -1088,6 +1101,7 @@ const phylum3 = {
         },
       ],
     };
+convertSpecies(phylum3);
     phylum3.count = phylum3.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 const phylum4 = {
       number: 4,
@@ -1300,6 +1314,7 @@ const phylum4 = {
         },
       ],
     };
+convertSpecies(phylum4);
    phylum4.count = phylum4.classes.reduce((sum, cls) => sum + cls.species.length, 0); 
 const phylum5 = {
       number: 5,
@@ -1580,6 +1595,7 @@ const phylum5 = {
         },
       ],
     };
+convertSpecies(phylum5);
     phylum5.count = phylum5.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 const phylum6 = {
       number: 6,
@@ -1851,6 +1867,7 @@ const phylum6 = {
         },
       ],
     };
+convertSpecies(phylum6);
 phylum6.count = phylum6.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 const phylum7 = {
       number: 7,
@@ -2218,6 +2235,7 @@ const phylum7 = {
         },
       ],
     };
+convertSpecies(phylum7);
 phylum7.count = phylum7.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 const phylum8 = {
       number: 8,
@@ -2481,6 +2499,7 @@ const phylum8 = {
         },
       ],
     };
+convertSpecies(phylum8);
     phylum8.count = phylum8.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 const phylum9 = {
       number: 9,
@@ -2866,6 +2885,7 @@ const phylum9 = {
         },
       ],
     };
+convertSpecies(phylum9);
 phylum9.count = phylum9.classes.reduce((sum, cls) => sum + cls.species.length, 0);
     const phylum10 = {
       number: 10,
@@ -3203,6 +3223,7 @@ phylum9.count = phylum9.classes.reduce((sum, cls) => sum + cls.species.length, 0
         },
       ],
     };
+convertSpecies(phylum10);
     phylum10.count = phylum10.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 const phylum11 = {
       number: 11,
@@ -3600,6 +3621,7 @@ const phylum11 = {
         },
       ],
     };
+convertSpecies(phylum11);
 phylum11.count = phylum11.classes.reduce((sum, cls) => sum + cls.species.length, 0);
 
 const calculateSpeciesCount = (phylum) => {
@@ -4323,7 +4345,6 @@ const countFuturist = (phylum) => {
 };
 // --- PLACE STEP 2 HERE ---
 convertSpecies(futuristTechnologicalPhylum);
-// Apply the count to Phylum 12
 futuristTechnologicalPhylum.count = countFuturist(futuristTechnologicalPhylum);
 
 // 2. Combine all phyla into one master list
