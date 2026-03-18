@@ -350,9 +350,11 @@ const PHYLA_LIST = [
             ["2020s Gorpcore Mainstream", "N"],
             ["2020s Coquette Revival", "N"],
             ["2020s Brat Summer Moment", "N"],
-            ["2020s Micro-Trend Acceleration", "N"],
+["2020s Micro-Trend Acceleration", "N"],
           ],
-    },
+        }, // <─ This closes the 2020s class
+      ], // <─ This closes the "classes" array for Phylum 1
+    }, // <─ This closes Phylum 1 (Historical)
     {
       number: 2,
       name: "Cultural & Regional",
@@ -798,7 +800,6 @@ const PHYLA_LIST = [
           ],
         },
       ],
-      count: 353,
     },
     {
       number: 3,
@@ -1074,7 +1075,6 @@ const PHYLA_LIST = [
           ],
         },
       ],
-      count: 207,
     },
     {
       number: 4,
@@ -1286,7 +1286,6 @@ const PHYLA_LIST = [
           ],
         },
       ],
-      count: 157,
     },
     {
       number: 5,
@@ -1566,7 +1565,6 @@ const PHYLA_LIST = [
           ],
         },
       ],
-      count: 215,
     },
     {
       number: 6,
@@ -1837,7 +1835,6 @@ const PHYLA_LIST = [
           ],
         },
       ],
-      count: 212,
     },
     {
       number: 7,
@@ -2204,7 +2201,6 @@ const PHYLA_LIST = [
           ],
         },
       ],
-      count: 288,
     },
     {
       number: 8,
@@ -2852,7 +2848,6 @@ const PHYLA_LIST = [
           ],
         },
       ],
-      count: 301,
     },
     {
       number: 10,
@@ -3189,7 +3184,6 @@ const PHYLA_LIST = [
           ],
         },
       ],
-      count: 257,
     },
     {
       number: 11,
@@ -3289,7 +3283,6 @@ const PHYLA_LIST = [
             ["Coconut Girl", "N"],
             ["Ethereal Girl", "N"],
             ["Daydreamcore & Whimsy", "N"],
-            ["Main Character Aesthetic", "X"],
             ["Love Letter Aesthetic", "X"],
             ["Fairycore Girl", "X"],
             ["Poetcore", "N"],
@@ -3587,11 +3580,13 @@ const PHYLA_LIST = [
           ],
         },
       ],
-      count: 309,
     },
 const calculateSpeciesCount = (phylum) => {
-  return phylum.classes.reduce((total, currentClass) => {
-    return total + currentClass.species.length;
+  if (!phylum.families) return 0;
+  return phylum.families.reduce((total, family) => {
+    return total + (family.subfamilies || []).reduce((subTotal, sub) => {
+      return subTotal + (sub.species ? sub.species.length : 0);
+    }, 0);
   }, 0);
 };
 
@@ -4308,15 +4303,18 @@ const calculateSpeciesCount = (phylum) => {
   }, 0);
 };
 
+// Apply the count
 futuristTechnologicalPhylum.count = calculateSpeciesCount(futuristTechnologicalPhylum);
 
-export default futuristTechnologicalPhylum;
+// FINAL ATLAS EXPORT (Connects Phylum 11 and 12)
+const PHYLA_LIST = [
+  // communityInternetPhylum, // Assuming Phylum 11 is defined above
+  futuristTechnologicalPhylum
+];
 
-console.log(
-  `Phylum 12 FULL atlas loaded with ${futuristTechnologicalPhylum.count} species.`
-);
-// This goes at the very, very end of the file!
 export const ATLAS_DATA = {
-  total: calculateTotal(PHYLA_LIST),
+  total: PHYLA_LIST.reduce((acc, p) => acc + (p.count || 0), 0),
   phyla: PHYLA_LIST
 };
+
+export default futuristTechnologicalPhylum;
