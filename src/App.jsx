@@ -144,17 +144,20 @@ function GlobalStyles() {
 // ── SpeciesCard ───────────────────────────────────────────────────────────────
 function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick }) {
   const [name, flag] = Array.isArray(species) ? species : [species ?? "Unknown", ""];
-  const entry = SPECIES_ENTRIES?.[name?.trim()];
+  const entry = SPECIES_ENTRIES[name];
   console.log(name);
   const colors = PHYLUM_COLORS[phylumNum] ?? { bg: "#1A1A1A", accent: "#B8896A" };
   const phylumName = phylumOf(phylumNum)?.name ?? "Unknown Phylum";
   
   const sensitive = isSens(flag);
-
-  return (
-    <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.62)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1000,padding:"1rem",backdropFilter:"blur(2px)"}}>
-      <div className="species-modal" onClick={e=>e.stopPropagation()} style={{background:IVORY,borderRadius:"18px",width:"100%",maxWidth:"580px",maxHeight:"90vh",overflowY:"auto",boxShadow:"0 40px 120px rgba(0,0,0,0.45)"}}>
-
+return (
+  <div>
+    <h2>{name}</h2>
+    <p>{entry?.summary}</p>
+    <p>{entry?.motif}</p>
+  </div>
+);
+  
         {/* Header */}
         <div style={{background:`linear-gradient(135deg, ${colors.bg} 0%, ${colors.bg}ee 100%)`,borderRadius:"18px 18px 0 0",padding:"1.4rem 1.5rem 1.1rem",position:"sticky",top:0,zIndex:10}}>
           <div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg, ${colors.accent}44, ${colors.accent}, ${colors.accent}44)`,borderRadius:"18px 18px 0 0"}}/>
@@ -167,7 +170,7 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
                 {name} {sensitive && "⚠"}
               </h2>
             </div>
-            <button onClick={onClose} style={{background:"rgba(255,255,255,0.1)",border:"1px solid rgba(255,255,255,0.2)",borderRadius:"50%",width:34,height:34,cursor:"pointer",color:"#fff",fontSize:"1rem"}}>×</button>
+             onClick={onClose} style={{background:"rgba(255,255,255,0.1)",border:"1px solid rgba(255,255,255,0.2)",borderRadius:"50%",width:34,height:34,cursor:"pointer",color:"#fff",fontSize:"1rem"}}>×</button>
           </div>
         </div>
 
@@ -305,27 +308,12 @@ function PhylumView({ phylum, onSpeciesClick }) {
                 const isS=isSens(sflag),isX=isCross(sflag);
                 const hasContent=!!getEntry(sname)||!!getNote(phylum.number,sname);
                 return (
-                  <button key={sname} className="species-pill"
-                    onClick={() => {
-  console.log("CLICK WORKS", sname);
-  onSpeciesClick(sname, phylum.number, cls.name);
-}}
-                    style={{padding:"0.3rem 0.78rem",borderRadius:"20px",border:`1px solid ${isS?"#FECACA":isX?"#E0E0F0":RULE}`,background:isS?"#FFF5F5":isX?"#F8F8FF":IVORY,color:isS?RED:isX?"#6060C0":INK,cursor:"pointer",fontSize:"0.82rem",fontFamily:"'EB Garamond',Georgia,serif"}}
-                    onMouseEnter={e=>{e.currentTarget.style.background=colors.bg;e.currentTarget.style.color=colors.accent;e.currentTarget.style.borderColor=colors.accent;}}
-                    onMouseLeave={e=>{e.currentTarget.style.background=isS?"#FFF5F5":isX?"#F8F8FF":IVORY;e.currentTarget.style.color=isS?RED:isX?"#6060C0":INK;e.currentTarget.style.borderColor=isS?"#FECACA":isX?"#E0E0F0":RULE;}}
-                  >
-                    {isS&&"⚠ "}{sname}{isX&&" ◆"}
-                    {hasContent&&<span style={{width:5,height:5,background:colors.accent,borderRadius:"50%",display:"inline-block",marginLeft:5,verticalAlign:"middle",opacity:0.75}}/>}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
+                  <button
+  key={sname}
+  onClick={() => onSpeciesClick(sname, phylum.number, cls.name)}
+>
+  {sname}
+</button>
 
 // ── SearchView ────────────────────────────────────────────────────────────────
 function SearchView({ query, onSpeciesClick }) {
