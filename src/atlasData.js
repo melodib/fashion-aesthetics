@@ -1,16 +1,10 @@
-// 1. The "Counter" Function
 const calculateTotal = (phyla) => {
   return phyla.reduce((total, phylum) => {
-    const phylumCount = phylum.classes.reduce((classSum, cls) => {
-      return classSum + cls.species.length;
-    }, 0);
-    return total + phylumCount;
+    // This looks for 'count', which we will calculate for each phylum individually
+    return total + (phylum.count || 0);
   }, 0);
 };
-
-// 2. Your Massive List (Start)
-const PHYLA_LIST = [
-  {
+const phylum1 = {
       number: 1,
       name: "Historical",
       emoji: "🏛",
@@ -351,13 +345,18 @@ const PHYLA_LIST = [
             ["2020s Coquette Revival", "N"],
             ["2020s Brat Summer Moment", "N"],
 ["2020s Micro-Trend Acceleration", "N"],
-          ],
-        }, // <─ This closes the 2020s class
-      ], // <─ This closes the "classes" array for Phylum 1
-    }, // <─ This closes Phylum 1 (Historical)
-    {
-      number: 2,
-      name: "Cultural & Regional",
+          ], // Closes the classes array
+    }, // Closes the 2020s class
+  ], // Closes the families/classes array
+}; // <─ ADD A SEMICOLON HERE to finish the variable
+
+// NOW you can put the count line here:
+phylum1.count = phylum1.classes.reduce((sum, cls) => sum + cls.species.length, 0);
+
+// Then start Phylum 2:
+const phylum2 = {
+  number: 2,
+  name: "Cultural & Regional",
       emoji: "🌍",
       description: "Geography, heritage, and localized traditions",
       classes: [
@@ -800,8 +799,9 @@ const PHYLA_LIST = [
           ],
         },
       ],
-    },
-    {
+    };
+    phylum2.count = phylum2.classes.reduce((sum, cls) => sum + cls.species.length, 0);
+const phylum3 = {
       number: 3,
       name: "Elemental & Environmental",
       emoji: "🌿",
@@ -1075,8 +1075,9 @@ const PHYLA_LIST = [
           ],
         },
       ],
-    },
-    {
+    };
+    phylum3.count = phylum3.classes.reduce((sum, cls) => sum + cls.species.length, 0);
+const phylum4 = {
       number: 4,
       name: "Body & Presentation",
       emoji: "⚡",
@@ -1286,8 +1287,9 @@ const PHYLA_LIST = [
           ],
         },
       ],
-    },
-    {
+    };
+   phylum4.count = phylum4.classes.reduce((sum, cls) => sum + cls.species.length, 0); 
+const phylum5 = {
       number: 5,
       name: "Lifestyle & Identity",
       emoji: "☕",
@@ -1565,8 +1567,9 @@ const PHYLA_LIST = [
           ],
         },
       ],
-    },
-    {
+    };
+    phylum5.count = phylum5.classes.reduce((sum, cls) => sum + cls.species.length, 0);
+const phylum6 = {
       number: 6,
       name: "Status & Class",
       emoji: "💎",
@@ -1835,8 +1838,9 @@ const PHYLA_LIST = [
           ],
         },
       ],
-    },
-    {
+    };
+phylum6.count = phylum6.classes.reduce((sum, cls) => sum + cls.species.length, 0);
+const phylum7 = {
       number: 7,
       name: "Subcultural",
       emoji: "🎸",
@@ -2201,8 +2205,9 @@ const PHYLA_LIST = [
           ],
         },
       ],
-    },
-    {
+    };
+phylum7.count = phylum7.classes.reduce((sum, cls) => sum + cls.species.length, 0);
+const phylum8 = {
       number: 8,
       name: "Artistic Identity & Creative Philosophy",
       emoji: "🎨",
@@ -2463,9 +2468,9 @@ const PHYLA_LIST = [
           ],
         },
       ],
-      count: 203,
-    },
-    {
+    };
+    phylum8.count = phylum8.classes.reduce((sum, cls) => sum + cls.species.length, 0);
+const phylum9 = {
       number: 9,
       name: "Mythic & Fantastical",
       emoji: "🌙",
@@ -2848,8 +2853,9 @@ const PHYLA_LIST = [
           ],
         },
       ],
-    },
-    {
+    };
+phylum9.count = phylum9.classes.reduce((sum, cls) => sum + cls.species.length, 0);
+    const phylum10 = {
       number: 10,
       name: "Brand Born",
       emoji: "🏷",
@@ -3184,8 +3190,9 @@ const PHYLA_LIST = [
           ],
         },
       ],
-    },
-    {
+    };
+    phylum10.count = phylum10.classes.reduce((sum, cls) => sum + cls.species.length, 0);
+const phylum11 = {
       number: 11,
       name: "Internet Born",
       emoji: "📱",
@@ -3580,7 +3587,9 @@ const PHYLA_LIST = [
           ],
         },
       ],
-    },
+    };
+phylum11.count = phylum11.classes.reduce((sum, cls) => sum + cls.species.length, 0);
+
 const calculateSpeciesCount = (phylum) => {
   if (!phylum.families) return 0;
   return phylum.families.reduce((total, family) => {
@@ -4292,10 +4301,11 @@ export const metaTags = {
     keywords: [
       "renewable", "community", "nature-tech"
     ]
-  }
-};
-// COUNT FUNCTION (UPDATED)
-const calculateSpeciesCount = (phylum) => {
+  } // This closes Solarpunk
+}; // <─ IMPORTANT: This closes the entire metaTags object
+
+// 1. Calculate count for the Futurist Phylum (Families/Subfamilies style)
+const countFuturist = (phylum) => {
   return phylum.families.reduce((total, family) => {
     return total + family.subfamilies.reduce((subTotal, sub) => {
       return subTotal + sub.species.length;
@@ -4303,18 +4313,24 @@ const calculateSpeciesCount = (phylum) => {
   }, 0);
 };
 
-// Apply the count
-futuristTechnologicalPhylum.count = calculateSpeciesCount(futuristTechnologicalPhylum);
+// Apply the count to Phylum 12
+futuristTechnologicalPhylum.count = countFuturist(futuristTechnologicalPhylum);
 
-// FINAL ATLAS EXPORT (Connects Phylum 11 and 12)
+// 2. Combine all phyla into one master list
 const PHYLA_LIST = [
-  // communityInternetPhylum, // Assuming Phylum 11 is defined above
+  phylum1,
+  phylum2,
+  phylum3,
+  phylum4,
+  phylum5,
   futuristTechnologicalPhylum
 ];
 
+// 3. Final Exports for your App
 export const ATLAS_DATA = {
-  total: PHYLA_LIST.reduce((acc, p) => acc + (p.count || 0), 0),
+  total: calculateTotal(PHYLA_LIST),
   phyla: PHYLA_LIST
 };
 
+// Default export
 export default futuristTechnologicalPhylum;
