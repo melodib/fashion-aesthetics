@@ -91,53 +91,6 @@ function useCountUp(target, duration = 1600) {
 
   return count;
 }
-// ── Global styles definition ──────────────────────────────────────────────────
-// This is the "blueprint" of how the site should look.
-const GLOBAL_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap');
-
-  *, *::before, *::after { box-sizing: border-box; }
-
-  body {
-    margin: 0;
-    background: ${IVORY};
-    /* Subtle paper/grain texture */
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  }
-
-  .phylum-card {
-    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.2s ease, border-color 0.2s ease;
-  }
-  .phylum-card:hover {
-    transform: translateY(-3px) scale(1.015);
-    box-shadow: 0 12px 36px rgba(0,0,0,0.15);
-  }
-
-  .species-pill {
-    transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease, transform 0.12s ease;
-  }
-  .species-pill:hover {
-    transform: translateY(-1px);
-  }
-
-  .search-input:focus {
-    border-color: ${ACCENT} !important;
-    box-shadow: 0 0 0 2px rgba(184,137,106,0.2);
-  }
-
-  @keyframes cardIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .phylum-card { animation: cardIn 0.4s ease both; }
-
-  @keyframes modalIn {
-    from { opacity: 0; transform: scale(0.97) translateY(8px); }
-    to   { opacity: 1; transform: scale(1) translateY(0); }
-  }
-  .species-modal { animation: modalIn 0.22s ease both; }
-`;
-
 // ── Global styles component ───────────────────────────────────────────────────
 import { createGlobalStyle } from 'styled-components';
 
