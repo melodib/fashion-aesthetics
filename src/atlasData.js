@@ -4336,7 +4336,6 @@ export const aestheticMeta = {
 }; // <─ IMPORTANT: This closes the entire metaTags object
 
 // ... (Your Phylum 11 and Phylum 12 definitions are above this)
-
 // --- 1. THE LOGIC BLOCK ---
 const countFuturist = (phylum) => {
   return phylum.families.reduce((total, family) => {
@@ -4344,6 +4343,10 @@ const countFuturist = (phylum) => {
       return subTotal + (sub.species?.length || 0);
     }, 0);
   }, 0);
+};
+
+const calculateTotal = (phyla) => {
+  return phyla.reduce((acc, p) => acc + (p.count || 0), 0);
 };
 
 const convertSpecies = (phylum) => {
@@ -4362,19 +4365,21 @@ const convertSpecies = (phylum) => {
 };
 
 // --- 2. THE EXECUTION BLOCK ---
+// This is where we list all your phyla so the code knows they exist
 const PHYLA_LIST = [
   phylum1, phylum2, phylum3, phylum4, phylum5, 
   phylum6, phylum7, phylum8, phylum9, phylum10, 
   phylum11, futuristTechnologicalPhylum
 ];
 
-// Apply the formatter to every phylum in the list
+// This actually runs the "formatter" on every phylum in that list
 PHYLA_LIST.forEach(convertSpecies);
 
-// Specifically update the count for Phylum 12
+// This specifically updates the count for your new Phylum 12
 futuristTechnologicalPhylum.count = countFuturist(futuristTechnologicalPhylum);
 
 // --- 3. THE FINAL EXPORT ---
+// This is what your website's main page "grabs" to show the data
 export const ATLAS_DATA = {
   total: calculateTotal(PHYLA_LIST),
   phyla: PHYLA_LIST
