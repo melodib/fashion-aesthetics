@@ -1,37 +1,38 @@
 import { ATLAS_DATA } from './atlasData';
 
-/**
- * A simplified search that looks through Phyla, Classes, and Species names.
- * This removes the dependency on missing metaTags.
- */
 export function queryAtlas(query) {
   if (!query || query.length < 2) return [];
   
   const results = [];
   const q = query.toLowerCase();
 
+  if (!ATLAS_DATA?.phyla) return [];
+
   ATLAS_DATA.phyla.forEach(phylum => {
-    const groups = phylum.classes || phylum.families || [];
+    const groups = phylum?.classes || phylum?.families || [];
     
     groups.forEach(group => {
-      // Handle both standard species and Phylum 12 subfamilies
-     const speciesList = group.subfamilies 
-  ? group.subfamilies.flatMap(sub => sub.species || []) 
-  : (group.species || []);
+      const speciesList = group.subfamilies 
+        ? group.subfamilies.flatMap(sub => sub.species || []) 
+        : (group.species || []);
+
+      const groupName = group.name || "";
 
       speciesList.forEach(item => {
-  if (!item) return;
+        if (!item) return;
 
-  const name = Array.isArray(item) ? item[0] : item;
-  if (!name) return;
+        const name = Array.isArray(item) ? item[0] : item;
+        if (!name) return;
         
-        // Match logic: Check if the species name or category name contains the query
-        if (name.toLowerCase().includes(q) || group.name.toLowerCase().includes(q)) {
+        if (
+          name.toLowerCase().includes(q) || 
+          groupName.toLowerCase().includes(q)
+        ) {
           results.push({
             species: item,
-            phylumNum: phylum.number,
-            phylumEmoji: phylum.emoji,
-            className: group.name,
+           phylumNum: phylum?.number,
+phylumEmoji: phylum?.emoji,
+            className: groupName,
             matchType: "name"
           });
         }
@@ -39,6 +40,5 @@ export function queryAtlas(query) {
     });
   });
 
-  // Return the first 100 matches to keep the UI fast
   return results.slice(0, 100);
 }
