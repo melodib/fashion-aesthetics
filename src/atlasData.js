@@ -1,7 +1,3 @@
-// 1. The "Counter" Function
-const calculateTotal = (phyla) => {
-  return phyla.reduce((total, phylum) => total + (phylum.count || 0), 0);
-};
 // 1. Helper to turn a string "Name" into ["Name", {status: "N"}]
 const formatSpecies = (name) => {
   if (Array.isArray(name)) return name;
@@ -4348,10 +4344,6 @@ const countFuturist = (phylum) => {
       return subTotal + (sub.species?.length || 0);
     }, 0);
   }, 0);
-};
-
-const calculateTotal = (phyla) => {
-  return phyla.reduce((acc, p) => acc + (p.count || 0), 0);
 };
 
 const convertSpecies = (phylum) => {
