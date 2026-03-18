@@ -3,10 +3,10 @@ import { ATLAS_DATA } from "./atlasData.js";
 import { SPECIES_ENTRIES } from "./speciesEntries.js";
 
 const IVORY = "#FAF8F5";
-const INK   = "#1C1C1C";
+const INK = "#1C1C1C";
 const ACCENT = "#B8896A";
-const RULE  = "#E2D9CF";
-const SOFT  = "#F0EBE3";
+const RULE = "#E2D9CF";
+const SOFT = "#F0EBE3";
 
 const PHYLUM_COLORS = {
   1: { bg: "#2C1810", accent: "#C4956A" },
@@ -22,6 +22,7 @@ const PHYLUM_COLORS = {
   11: { bg: "#001A33", accent: "#00B4D8" },
   12: { bg: "#001220", accent: "#00E5FF" },
 };
+
 function SpeciesCard({ speciesName, phylumNum, onClose }) {
   const entry = SPECIES_ENTRIES[speciesName];
   const colors = PHYLUM_COLORS[phylumNum] || { bg: "#1A1A1A", accent: "#B8896A" };
@@ -30,17 +31,13 @@ function SpeciesCard({ speciesName, phylumNum, onClose }) {
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.8)", zIndex: 1000, display: "flex", justifyContent: "center", alignItems: "center", padding: "20px" }}>
       <div style={{ background: IVORY, width: "100%", maxWidth: "550px", maxHeight: "85vh", borderRadius: "20px", display: "flex", flexDirection: "column", overflow: "hidden", position: "relative" }}>
         
-        {/* Header */}
         <div style={{ background: colors.bg, padding: "20px", color: "white" }}>
           <div style={{ fontSize: "0.7rem", color: colors.accent, textTransform: "uppercase", marginBottom: "5px" }}>Phylum {phylumNum}</div>
           <h2 style={{ fontFamily: "serif", margin: 0, fontStyle: "italic" }}>{speciesName}</h2>
           <button onClick={onClose} style={{ position: "absolute", top: "20px", right: "20px", background: "none", border: "none", color: "white", fontSize: "1.5rem", cursor: "pointer" }}>×</button>
         </div>
 
-        {/* Scrollable Content */}
         <div style={{ padding: "25px", overflowY: "auto", flex: 1 }}>
-          
-          {/* Categories/Tags (This is the simple way you asked for!) */}
           {entry?.categories && (
             <div style={{ display: "flex", gap: "8px", marginBottom: "20px", flexWrap: "wrap" }}>
               {entry.categories.map(tag => (
@@ -64,6 +61,7 @@ function SpeciesCard({ speciesName, phylumNum, onClose }) {
     </div>
   );
 }
+
 export default function App() {
   const [selectedSpecies, setSelectedSpecies] = useState(null);
   const [activePhylum, setActivePhylum] = useState(null);
@@ -75,7 +73,6 @@ export default function App() {
         <p style={{ color: ACCENT, letterSpacing: "2px" }}>KINGDOM • CULTURE • 2026</p>
       </header>
 
-      {/* Grid of Phyla */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "20px", maxWidth: "1000px", margin: "0 auto" }}>
         {ATLAS_DATA.phyla.map((p) => (
           <div key={p.number} style={{ background: "white", padding: "20px", borderRadius: "15px", border: `1px solid ${RULE}`, borderTop: `4px solid ${PHYLUM_COLORS[p.number]?.accent}` }}>
@@ -103,7 +100,6 @@ export default function App() {
         ))}
       </div>
 
-      {/* The Pop-up Trigger */}
       {selectedSpecies && (
         <SpeciesCard 
           speciesName={selectedSpecies} 
