@@ -4278,7 +4278,7 @@ export const aestheticMeta = {
     techRelation: "post-tech",
     function: ["experimental"],
     mood: ["abstract"]
-  }
+  },
   "Cyberpunk": {
     core: ["cyberpunk", "high-tech", "low-life"],
     visuals: [
