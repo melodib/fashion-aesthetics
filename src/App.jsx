@@ -338,49 +338,55 @@ function SpeciesCard({ species, phylumNum, className, onClose, onSpeciesClick })
 }
 // ── PhylumView ────────────────────────────────────────────────────────────────
 function PhylumView({ phylum, onSpeciesClick }) {
-  const [activeClass, setActiveClass] = useState(null);
+  const [activeGroup, setActiveGroup] = useState(null);
   const colors = PHYLUM_COLORS[phylum.number];
-  const displayClasses = activeClass === null ? phylum.classes : phylum.classes.filter(c => c.name === activeClass);
+
+  // 1. Determine if we are looking at 'classes' (1-11) or 'families' (12)
+  const groups = phylum.classes || phylum.families || [];
+  const displayGroups = activeGroup === null ? groups : groups.filter(g => g.name === activeGroup);
 
   return (
-    <div>
+   <div>
+      {/* CATEGORY BUTTONS */}
       <div style={{display:"flex",flexWrap:"wrap",gap:"0.35rem",marginBottom:"1.5rem"}}>
-        <button onClick={()=>setActiveClass(null)} style={{padding:"0.3rem 0.85rem",borderRadius:"20px",border:"none",background:activeClass===null?colors.bg:SOFT,color:activeClass===null?colors.accent:MUTED,cursor:"pointer",fontSize:"0.72rem",fontFamily:"'EB Garamond',Georgia,serif",transition:"all 0.15s"}}>
-          All classes
+        <button onClick={()=>setActiveGroup(null)} style={{padding:"0.3rem 0.85rem",borderRadius:"20px",border:"none",background:activeGroup===null?colors.bg:SOFT,color:activeGroup===null?colors.accent:MUTED,cursor:"pointer",fontSize:"0.72rem",fontFamily:"'EB Garamond',Georgia,serif"}}>
+          All {phylum.classes ? "classes" : "families"}
         </button>
-        {phylum.classes.map(c => (
-          <button key={c.name} onClick={()=>setActiveClass(activeClass===c.name?null:c.name)}
-            style={{padding:"0.3rem 0.85rem",borderRadius:"20px",border:"none",background:activeClass===c.name?colors.bg:SOFT,color:activeClass===c.name?colors.accent:MUTED,cursor:"pointer",fontSize:"0.72rem",fontFamily:"'EB Garamond',Georgia,serif",transition:"all 0.15s"}}>
-            {c.name}
+        {groups.map(g => (
+          <button key={g.name} onClick={()=>setActiveGroup(activeGroup===g.name?null:g.name)}
+            style={{padding:"0.3rem 0.85rem",borderRadius:"20px",border:"none",background:activeGroup===g.name?colors.bg:SOFT,color:activeGroup===g.name?colors.accent:MUTED,cursor:"pointer",fontSize:"0.72rem",fontFamily:"'EB Garamond',Georgia,serif"}}>
+            {g.name}
           </button>
         ))}
       </div>
-      {displayClasses.map(cls => {
-        const sc = cls.species.filter(s=>isSens(s[1])).length;
-        const xc = cls.species.filter(s=>isCross(s[1])).length;
+     {/* DISPLAY THE SPECIES */}
+      {displayGroups.map(group => {
+        // If it's a family (Phylum 12), we need to look into subfamilies
+        const speciesList = group.subfamilies 
+          ? group.subfamilies.flatMap(sub => sub.species) 
+          : group.species;
+
         return (
-          <div key={cls.name} style={{marginBottom:"1.75rem"}}>
-            <div style={{background:INK,color:"white",padding:"0.5rem 1rem",borderRadius:"8px",fontSize:"0.8rem",fontFamily:"'EB Garamond',Georgia,serif",letterSpacing:"0.04em",marginBottom:"0.75rem",borderLeft:`4px solid ${colors.accent}`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <span>{cls.name}</span>
-              <span style={{fontSize:"0.65rem",color:"#777",fontWeight:"normal"}}>
-                {cls.species.length} species
-                {sc>0&&<span style={{color:"#f87171",marginLeft:"0.5rem"}}>· {sc} sensitive</span>}
-                {xc>0&&<span style={{color:"#93c5fd",marginLeft:"0.5rem"}}>· {xc} crossover</span>}
-              </span>
+          <div key={group.name} style={{marginBottom:"1.75rem"}}>
+            <div style={{background:INK,color:"white",padding:"0.5rem 1rem",borderRadius:"8px",fontSize:"0.8rem",borderLeft:`4px solid ${colors.accent}`,display:"flex",justifyContent:"space-between"}}>
+              <span>{group.name}</span>
+              <span style={{fontSize:"0.65rem",color:"#777"}}>{speciesList.length} species</span>
             </div>
-            <div style={{display:"flex",flexWrap:"wrap",gap:"0.4rem"}}>
-              {cls.species.map(s => {
-                const [sname,sflag]=s;
-                const isS=isSens(sflag),isX=isCross(sflag);
-                const hasContent=!!getEntry(sname)||!!getNote(phylum.number,sname);
+
+            <div style={{display:"flex",flexWrap:"wrap",gap:"0.4rem", marginTop: "0.75rem"}}>
+              {speciesList.map((item, idx) => {
+                // SAFE ACCESS: Handle both ["Name", "Status"] and "Name"
+                const name = Array.isArray(item) ? item[0] : item;
+                const flag = Array.isArray(item) ? item[1] : "N";
+                
+                const isS = isSens(flag), isX = isCross(flag);
+                const hasContent = !!getEntry(name) || !!getNote(phylum.number, name);
+
                 return (
-                  <button key={sname} className="species-pill" onClick={()=>onSpeciesClick(s,phylum.number,cls.name)}
-                    style={{padding:"0.3rem 0.78rem",borderRadius:"20px",border:`1px solid ${isS?"#FECACA":isX?"#E0E0F0":RULE}`,background:isS?"#FFF5F5":isX?"#F8F8FF":IVORY,color:isS?RED:isX?"#6060C0":INK,cursor:"pointer",fontSize:"0.82rem",fontFamily:"'EB Garamond',Georgia,serif"}}
-                    onMouseEnter={e=>{e.currentTarget.style.background=colors.bg;e.currentTarget.style.color=colors.accent;e.currentTarget.style.borderColor=colors.accent;}}
-                    onMouseLeave={e=>{e.currentTarget.style.background=isS?"#FFF5F5":isX?"#F8F8FF":IVORY;e.currentTarget.style.color=isS?RED:isX?"#6060C0":INK;e.currentTarget.style.borderColor=isS?"#FECACA":isX?"#E0E0F0":RULE;}}
-                  >
-                    {isS&&"⚠ "}{sname}{isX&&" ◆"}
-                    {hasContent&&<span style={{width:5,height:5,background:colors.accent,borderRadius:"50%",display:"inline-block",marginLeft:5,verticalAlign:"middle",opacity:0.75}}/>}
+                  <button key={`${name}-${idx}`} className="species-pill" onClick={()=>onSpeciesClick(item, phylum.number, group.name)}
+                    style={{padding:"0.3rem 0.78rem",borderRadius:"20px",border:`1px solid ${isS?"#FECACA":isX?"#E0E0F0":RULE}`,background:isS?"#FFF5F5":isX?"#F8F8FF":IVORY,color:isS?RED:isX?"#6060C0":INK,cursor:"pointer",fontSize:"0.82rem"}}>
+                    {isS&&"⚠ "}{name}{isX&&" ◆"}
+                    {hasContent&&<span style={{width:5,height:5,background:colors.accent,borderRadius:"50%",display:"inline-block",marginLeft:5}}/>}
                   </button>
                 );
               })}
@@ -391,7 +397,6 @@ function PhylumView({ phylum, onSpeciesClick }) {
     </div>
   );
 }
-
 // ── SearchView ────────────────────────────────────────────────────────────────
 function SearchView({ results, query, onSpeciesClick }) {
   // If no search is happening, show the "Empty" state
@@ -404,29 +409,48 @@ function SearchView({ results, query, onSpeciesClick }) {
     </div>
   );
 
-  // Show the results
   return (
     <div>
       <div style={{marginBottom:"1.25rem",color:MUTED,fontFamily:"'EB Garamond',Georgia,serif",fontSize:"0.9rem"}}>
         {results.length >= 100 ? "100+" : results.length} result{results.length !== 1 && "s"} for <strong style={{color:INK}}>"{query}"</strong>
       </div>
       <div style={{display:"flex",flexDirection:"column",gap:"0.4rem"}}>
-        {results.map(({species, phylumNum, phylumEmoji, className, matchType}) => {
-          const colors = PHYLUM_COLORS[phylumNum];
-          const isS = isSens(species[1]);
-          const isX = isCross(species[1]);
+        {results.map(({species, phylumNum, phylumEmoji, className, matchType}, idx) => {
+          // SAFE ACCESS: Support both ["Name", "Status"] and plain "Name"
+          const name = Array.isArray(species) ? species[0] : species;
+          const flag = Array.isArray(species) ? species[1] : "N";
+          
+          // Safety check for colors in case phylumNum is missing
+          const colors = PHYLUM_COLORS[phylumNum] || { bg: SOFT, accent: MUTED };
+          const isS = isSens(flag);
+          const isX = isCross(flag);
+
           return (
-            <button key={`${phylumNum}-${species[0]}`} onClick={() => onSpeciesClick(species, phylumNum, className)}
+            <button key={`${phylumNum}-${name}-${idx}`} onClick={() => onSpeciesClick(species, phylumNum, className)}
               style={{display:"flex",alignItems:"center",gap:"0.75rem",padding:"0.7rem 0.9rem",borderRadius:"10px",border:`1px solid ${RULE}`,background:IVORY,cursor:"pointer",textAlign:"left",transition:"all 0.12s"}}
               onMouseEnter={e => {e.currentTarget.style.background = SOFT; e.currentTarget.style.borderColor = ACCENT; e.currentTarget.style.transform = "translateX(2px)";}}
               onMouseLeave={e => {e.currentTarget.style.background = IVORY; e.currentTarget.style.borderColor = RULE; e.currentTarget.style.transform = "none";}}
             >
-              <span style={{background:colors.bg, color:colors.accent, padding:"0.15rem 0.55rem", borderRadius:"20px", fontSize:"0.65rem", fontFamily:"serif", whiteSpace:"nowrap"}}>{phylumEmoji} P{phylumNum}</span>
-              <span style={{fontFamily:"'EB Garamond',Georgia,serif", fontSize:"0.95rem", color:INK, flex:1}}>{hl(species[0], query)}</span>
-              <span style={{fontSize:"0.7rem", color:MUTED, fontFamily:"serif", maxWidth:"150px", textAlign:"right", flexShrink:0}}>{className}</span>
-              {isS && <span style={{color:RED, fontSize:"0.7rem", flexShrink:0}}>⚠</span>}
-              {isX && <span style={{color:"#6060C0", fontSize:"0.7rem", flexShrink:0}}>◆</span>}
-              {matchType !== "name" && <span style={{fontSize:"0.6rem", color:MUTED, fontFamily:"serif", background:SOFT, padding:"0.1rem 0.4rem", borderRadius:"10px", flexShrink:0}}>in {matchType}</span>}
+              <span style={{background:colors.bg, color:colors.accent, padding:"0.15rem 0.55rem", borderRadius:"20px", fontSize:"0.65rem", fontFamily:"serif", whiteSpace:"nowrap"}}>
+                {phylumEmoji} P{phylumNum}
+              </span>
+              
+              <span style={{fontFamily:"'EB Garamond',Georgia,serif", fontSize:"0.95rem", color:INK, flex:1}}>
+                {typeof hl === 'function' ? hl(name, query) : name}
+              </span>
+
+              <span style={{fontSize:"0.7rem", color:MUTED, fontFamily:"serif", maxWidth:"150px", textAlign:"right", flexShrink:0}}>
+                {className}
+              </span>
+
+              {isS && <span style={{color:RED, fontSize:"0.7rem", flexShrink:0, marginLeft:"5px"}}>⚠</span>}
+              {isX && <span style={{color:"#6060C0", fontSize:"0.7rem", flexShrink:0, marginLeft:"5px"}}>◆</span>}
+              
+              {matchType !== "name" && (
+                <span style={{fontSize:"0.6rem", color:MUTED, fontFamily:"serif", background:SOFT, padding:"0.1rem 0.4rem", borderRadius:"10px", flexShrink:0, marginLeft:"5px"}}>
+                  in {matchType}
+                </span>
+              )}
             </button>
           );
         })}
