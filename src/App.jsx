@@ -305,10 +305,11 @@ function PhylumView({ phylum, onSpeciesClick }) {
                 const isS=isSens(sflag),isX=isCross(sflag);
                 const hasContent=!!getEntry(sname)||!!getNote(phylum.number,sname);
                 return (
-                  <button key={sname} className="species-pill"onClick={() => {
-  console.log("CLICK WORKS", s);
-  onSpeciesClick(s, phylum.number, cls.name);
-}} 
+                  <button key={sname} className="species-pill"
+                    onClick={() => {
+  console.log("CLICK WORKS", sname);
+  onSpeciesClick(sname, phylum.number, cls.name);
+}}
                     style={{padding:"0.3rem 0.78rem",borderRadius:"20px",border:`1px solid ${isS?"#FECACA":isX?"#E0E0F0":RULE}`,background:isS?"#FFF5F5":isX?"#F8F8FF":IVORY,color:isS?RED:isX?"#6060C0":INK,cursor:"pointer",fontSize:"0.82rem",fontFamily:"'EB Garamond',Georgia,serif"}}
                     onMouseEnter={e=>{e.currentTarget.style.background=colors.bg;e.currentTarget.style.color=colors.accent;e.currentTarget.style.borderColor=colors.accent;}}
                     onMouseLeave={e=>{e.currentTarget.style.background=isS?"#FFF5F5":isX?"#F8F8FF":IVORY;e.currentTarget.style.color=isS?RED:isX?"#6060C0":INK;e.currentTarget.style.borderColor=isS?"#FECACA":isX?"#E0E0F0":RULE;}}
