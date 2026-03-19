@@ -3,6 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 import { ATLAS_DATA } from "./atlasData.js";
 import { NOTES } from "./notes.js";
 import { SPECIES_ENTRIES } from "./speciesEntries.js";
+import { someSearchFunction } from "./searchUtils.js"; // <--- Add this
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 const ACCENT = "#B8896A";
