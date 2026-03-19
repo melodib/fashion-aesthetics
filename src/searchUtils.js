@@ -4,9 +4,10 @@ export function queryAtlas(query, atlasData) {
   const results = [];
   const q = query.toLowerCase();
 
+  // This now uses the 'atlasData' you pass in from App.jsx
   if (!atlasData?.phyla) return [];
 
-atlasData.phyla.forEach(phylum => {
+  atlasData.phyla.forEach(phylum => {
     const groups = phylum?.classes || phylum?.families || [];
     
     groups.forEach(group => {
@@ -28,8 +29,8 @@ atlasData.phyla.forEach(phylum => {
         ) {
           results.push({
             species: item,
-           phylumNum: phylum?.number,
-phylumEmoji: phylum?.emoji,
+            phylumNum: phylum?.number,
+            phylumEmoji: phylum?.emoji,
             className: groupName,
             matchType: "name"
           });
