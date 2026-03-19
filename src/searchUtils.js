@@ -1,14 +1,12 @@
-import { ATLAS_DATA } from './atlasData';
-
-export function queryAtlas(query) {
+export function queryAtlas(query, atlasData) { 
   if (!query || query.length < 2) return [];
   
   const results = [];
   const q = query.toLowerCase();
 
-  if (!ATLAS_DATA?.phyla) return [];
+  if (!atlasData?.phyla) return [];
 
-  ATLAS_DATA.phyla.forEach(phylum => {
+atlasData.phyla.forEach(phylum => {
     const groups = phylum?.classes || phylum?.families || [];
     
     groups.forEach(group => {
