@@ -326,28 +326,19 @@ export default function App() {
   }, []);
 
   const handleSearch = (val) => {
-    setSearchQuery(val);
-    if (val.length > 1) {
-      const found = [];
-      ATLAS_DATA.phyla.forEach(p => {
-        const groups = p.classes || p.families || [];
-        groups.forEach(g => {
-          const list = g.subfamilies ? g.subfamilies.flatMap(s => s.species || []) : (g.species || []);
-          list.forEach(s => {
-            const [name] = normalizeSpecies(s);
-            // FIX ISSUE 2: Safe defensive check for string inclusion
-            if (name && typeof name === "string" && name.toLowerCase().includes(val.toLowerCase())) {
-              found.push({ species: s, phylumNum: p.number, phylumEmoji: p.emoji, className: g.name });
-            }
-          });
-        });
-      });
-      setSearchResults(found);
-      setView("search");
-    } else {
-      setView(activePhylum ? "phylum" : "home");
-    }
-  };
+  setSearchQuery(val);
+  
+  if (val.length > 1) {
+    // This one line replaces that whole wall of text!
+    // It calls the brain (searchUtils) and hands it the data (ATLAS_DATA)
+    const found = queryAtlas(val, ATLAS_DATA); 
+    
+    setSearchResults(found);
+    setView("search");
+  } else {
+    setView(activePhylum ? "phylum" : "home");
+  }
+};
 
   const goHome = () => { setView("home"); setActivePhylum(null); setSearchQuery(""); };
 
